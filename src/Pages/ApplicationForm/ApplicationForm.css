@@ -1,0 +1,161 @@
+/* src/pages/ApplicationForm/ApplicationForm.css */
+
+.application-form-container {
+    padding: 40px;
+    max-width: 800px;
+    margin: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+.application-form-container h1 {
+    text-align: center;
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 40px;
+    margin-top: -10px;
+    font-weight: bold;
+}
+
+.application-form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.application-form-container .input-container {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.application-form-container label {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    font-weight: bold;
+    color: #555;
+    transition: 0.2s ease all;
+    pointer-events: none; /* Prevents label from capturing clicks */
+}
+
+.application-form-container input,
+.application-form-container textarea {
+    padding: 12px;
+    padding-top: 10px; /* Space for the label */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 95%;
+    transition: border-color 0.3s;
+}
+
+.application-form-container input:focus,
+.application-form-container textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.application-form-container input:focus + label,
+.application-form-container input:not(:placeholder-shown) + label,
+.damn {
+    top: -20px; /* Move label above the input */
+    left: 12px;
+    font-size: 0.8em; /* Smaller font size */
+    color: #007bff; /* Change color on focus */
+}
+
+.application-form-container button {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.application-form-container button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.application-form-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.application-form-container h3 {
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+.application-form-container .attach-button {
+    background-color: #28a745;
+    margin-top: 10px;
+}
+
+.application-form-container .attach-button:hover {
+    background-color: #218838;
+}
+
+.application-form-container .checkbox-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.application-form-container .checkbox-label input {
+    margin-right: 10px;
+}
+
+.application-form-container select {
+    padding: 12px;
+    width: 98%;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: #ffffff;
+    color: #333;
+    appearance: none; /* Remove default arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="%23007bff"><polygon points="0,0 20,0 10,10"/></svg>'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Position the arrow */
+    background-size:  12px; /* Size of the arrow */
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.application-form-container select:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #f0f8ff; /* Light background on focus */
+}
+
+.checkbox-container {
+    margin-top: 20px;
+}
+
+.checkbox-container p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    text-align: justify;
+    width: 98%;
+}
+
+.checkbox-container input {
+    margin-right: 20px; /* Space between checkbox and label text */
+    width: fit-content;
+}
+
+@media only screen and (max-width: 767px) {
+    .application-form-container select{
+        width: 102%;
+    }
+  }
