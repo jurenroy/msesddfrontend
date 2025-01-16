@@ -29,9 +29,9 @@ const ApplicationForm = () => {
         presentCompanyName: '',
         presentCompanyAddress: '',
         education: [{ school: '', address: '', date: '', degree: '' }],
-        boardExams: [{ title: '', dateTaken: '', rating: '', regNo: '', regDate: '' }],
-        workExperience: [{ position: '', from: '', to: '', length: '', status: '' }],
-        trainings: [{ title: '', from: '', to: '', hours: '', conductedBy: '' }],
+        boardExams: [{ title: '', dateTaken: '', rating: '', kind: '', regNo: '', regDate: '' }],
+        workExperience: [{ position: '', from: '', to: '', length: '', status: '', company: '' }],
+        trainings: [{ title: '', from: '', to: '', hours: '', conductedBy: '', venue: '' }],
         documents: false,
         compliance: false,
         understanding: false,
@@ -93,7 +93,7 @@ const ApplicationForm = () => {
     const addBoardExamRow = () => {
         setFormData({
             ...formData,
-            boardExams: [...formData.boardExams, { title: '', dateTaken: '', rating: '', regNo: '', regDate: '' }],
+            boardExams: [...formData.boardExams, { title: '', dateTaken: '', rating: '', kind: '', regNo: '', regDate: '' }],
         });
     };
 
@@ -106,7 +106,7 @@ const ApplicationForm = () => {
     const addWorkExperienceRow = () => {
         setFormData({
             ...formData,
-            workExperience: [...formData.workExperience, { position: '', from: '', to: '', length: '', status: '' }],
+            workExperience: [...formData.workExperience, { position: '', from: '', to: '', length: '', status: '', company: ''}],
         });
     };
 
@@ -119,7 +119,7 @@ const ApplicationForm = () => {
     const addTrainingRow = () => {
         setFormData({
             ...formData,
-            trainings: [...formData.trainings, { title: '', from: '', to: '', hours: '', conductedBy: '' }],
+            trainings: [...formData.trainings, { title: '', from: '', to: '', hours: '', conductedBy: '', venue: ''}],
         });
     };
 
@@ -395,6 +395,10 @@ const ApplicationForm = () => {
                                 <input type="text" name="status" placeholder=" " value={work.status} onChange={(e) => handleWorkExperienceChange(index, e)} />
                                 <label htmlFor={`status-${index}`}>Status of Appointment</label>
                             </div>
+                            <div className="input-container">
+                                <input type="text" name="company" placeholder=" " value={work.company} onChange={(e) => handleWorkExperienceChange(index, e)} />
+                                <label htmlFor={`company-${index}`}>Company Name</label>
+                            </div>
                         </div>
                     ))}
                     <button type="button" onClick={addWorkExperienceRow}>Add Work Experience</button>
@@ -444,6 +448,10 @@ const ApplicationForm = () => {
                             <div className="input-container">
                                 <input type="text" name="conductedBy" placeholder=" " value={training.conductedBy} onChange={(e) => handleTrainingChange(index, e)} />
                                 <label htmlFor={`conductedBy-${index}`}>Conducted By</label>
+                            </div>
+                            <div className="input-container">
+                                <input type="text" name="venue" placeholder=" " value={training.venue} onChange={(e) => handleTrainingChange(index, e)} />
+                                <label htmlFor={`venue-${index}`}>Venue</label>
                             </div>
                         </div>
                     ))}
