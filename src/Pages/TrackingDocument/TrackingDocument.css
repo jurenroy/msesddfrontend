@@ -1,7 +1,7 @@
 /* Container for the entire A4 page */
 .a4-container {
     width: 210mm;  /* A4 width */
-    height: 297mm; /* A4 height */
+    height: auto; /* A4 height */
     margin: 0 auto; /* Center the content */
     padding: 15mm;  /* Padding inside the A4 container */
     box-sizing: border-box;
@@ -100,16 +100,123 @@
     text-align: left;
     font-size: 13px;
 }
+.buttoncontainerzz{
+   display: flex;
+   flex-direction: column; 
+   position: fixed; 
+   bottom: 0; 
+   right: 20px;
+   z-index: 1000;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-content {
+    background: white;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .drop-area {
+    border: 2px dashed #007bff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    color: #007bff;
+    background-color: #f8f9fa;
+    cursor: pointer;
+  }
+  
+  .drop-area:hover {
+    background-color: #e9ecef;
+  }
+  
+  .file-list {
+    margin-top: 15px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f8f9fa;
+  }
+  
+  .file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 5px;
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+  }
+  
+  .file-item button {
+    background-color: #dc3545;
+    color: white;
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
 
 
 /* Reusable row layout */
-
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .a4-container {
+        transform: scale(1); /* Scale down to 25% */
+        transform-origin: top left; /* Set the origin for scaling */
+        width: auto; /* Reset width to auto */
+        height: auto; /* Reset height to auto */
+        margin: 0; /* Remove margin to avoid overflow */
+        padding: 5mm; /* Adjust padding as needed */
+        margin-top: 50px;
+    }
+    .popup-content {
+        width: 95%;
+      }
+    
+      button {
+        font-size: 14px;
+        padding: 8px 12px;
+      }
+    
+      .drop-area {
+        font-size: 14px;
+        padding: 15px;
+      }
+    
+      .file-item {
+        font-size: 14px;
+        padding: 5px;
+      }
+}
 
 /* Style for printing */
 @media print {
     .a4-container {
         width: 210mm;
-        height: 297mm;
+        height: auto;
         margin: 0 auto;
         padding: 15mm;
         box-sizing: border-box;
@@ -157,5 +264,9 @@
         border: 1px solid #ddd; /* Add borders for table cells */
         padding: 2px; /* Add padding for table cells */
         word-wrap: break-word; /* Allow long words to break */
+    }
+
+    .buttoncontainerzz{
+        display: none;
     }
 }

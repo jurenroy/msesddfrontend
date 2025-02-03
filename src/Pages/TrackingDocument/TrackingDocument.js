@@ -2,16 +2,88 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './TrackingDocument.css'
+import API_BASE_URL from '../../config';
 
 const TrackingDocument = () => {
     const { role, trackingcode } = useParams();
     const [trackingData, setTrackingData] = useState(null);
     const [error, setError] = useState(null);
 
+    const [showPopup, setShowPopup] = useState(false);
+    const [files, setFiles] = useState([]);
+
+    const [showViewPopup, setShowViewPopup] = useState(false);
+    const [notarizedFiles, setNotarizedFiles] = useState([]); 
+
+    const handleFileChange = (event) => {
+      const newFiles = Array.from(event.target.files);
+      setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    };
+
+    const handleDragOver = (event) => {
+      event.preventDefault();
+    };
+
+    const handleDrop = (event) => {
+      event.preventDefault();
+      const droppedFiles = Array.from(event.dataTransfer.files);
+      setFiles((prevFiles) => [...prevFiles, ...droppedFiles]);
+    };
+
+    const handleRemoveFile = (index) => {
+      setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    };
+
+    const handleUpload = async (event) => {
+        event.preventDefault();
+        if (files.length === 0 || !trackingcode) {
+            console.log('Please select at least one file and enter a tracking number.');
+            return;
+        }
+        const formData = new FormData();
+        // Append notarized files
+        for (let file of files) {
+            formData.append('notarizedFiles', file); // Use 'notarizedFiles' to handle multiple files
+        }
+        try {
+            const response = await axios.post(`${API_BASE_URL}api/safety/notarized-file/${trackingcode}/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            // setMessage('Files uploaded successfully!');
+            setFiles([]);
+            setShowPopup(false);
+        } catch (error) {
+            // setMessage('Error uploading files: ' + error.message);
+            console.log('file error')
+        }
+        
+    };
+
+    const fetchNotarizedFiles = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}api/safety/${trackingcode}/notarized-files/`);
+            const filesWithUrls = response.data.map(file => ({
+                ...file,
+                url: `${API_BASE_URL}${file.file}` // Construct the full URL
+            }));
+            setNotarizedFiles(filesWithUrls);
+            console.log(notarizedFiles)
+        } catch (err) {
+            console.error('Error fetching notarized files:', err);
+        }
+    };
+
+    const handleViewFiles = () => {
+        fetchNotarizedFiles();
+        setShowViewPopup(true);
+    };
+
     useEffect(() => {
         const fetchTrackingData = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/safety/${trackingcode}`);
+                const response = await axios.get(`${API_BASE_URL}api/safety/${trackingcode}`);
                 setTrackingData(response.data);
                 setError(null);
                 console.log(response.data)
@@ -24,7 +96,71 @@ const TrackingDocument = () => {
         fetchTrackingData();
     }, [trackingcode]);
 
+    const handlePrint = () => {
+        window.print();
+      };
+
+
     return (
+        <div style={{backgroundColor: 'gray', height: 'auto', position: 'relative'}}>
+            {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <h2>Upload Files</h2>
+
+            <div
+              className="drop-area"
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+            >
+              <input
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+                id="fileInput"
+              />
+              <label htmlFor="fileInput" className="file-select">Click or drag files here to upload</label>
+            </div>
+
+            <div className="file-list">
+              {files.map((file, index) => (
+                <div key={index} className="file-item">
+                  {file.name}
+                  <button onClick={() => handleRemoveFile(index)}>X</button>
+                </div>
+              ))}
+            </div>
+
+            <div className="actions">
+              <button onClick={() => setShowPopup(false)} style={{backgroundColor: 'red'}}>Cancel</button>
+              <button onClick={handleUpload} disabled={files.length === 0}>Upload</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* View Popup */}
+      {showViewPopup && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <h2>Notarized Files</h2>
+                        <div className="file-list">
+                            {notarizedFiles.length > 0 ? (
+                                notarizedFiles.map((file, index) => (
+                                    <div key={index} className="file-item">
+                                        <a href={file.url} target="_blank" rel="noopener noreferrer">File URL{index+1}</a>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No notarized files available.</p>
+                            )}
+                        </div>
+                        <div className="actions">
+                            <button onClick={() => setShowViewPopup(false)} style={{ backgroundColor: 'red' }}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         <div className="a4-container">
             {trackingData && (
                 <div className="tracking-content">
@@ -251,6 +387,14 @@ const TrackingDocument = () => {
                     </div>
                 </div>
             )}
+        </div>
+        {/* Button Container */}
+            <div className='buttoncontainerzz'>
+              <button onClick={handleViewFiles}>View Notarize File</button>
+              <button onClick={() => setShowPopup(true)}>Upload Notarize File</button>
+              <button onClick={handlePrint}>Download / Print</button>
+              
+            </div>
         </div>
     );
 };

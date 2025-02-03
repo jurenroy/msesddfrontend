@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ExistingApplication.css'; // Import the CSS file for styling
+import API_BASE_URL from '../../config';
 
 const ExistingApplication = () => {
     const { role } = useParams();
@@ -19,7 +20,7 @@ const ExistingApplication = () => {
         setData(null);
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/safety/${trackingNumber}`);
+            const response = await fetch(`${API_BASE_URL}api/safety/${trackingNumber}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

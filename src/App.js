@@ -7,6 +7,7 @@ import SafetyRole from './Pages/SafetyRole/SafetyRole';
 import ApplicationForm from './Pages/ApplicationForm/ApplicationForm';
 import ExistingApplication from './Pages/ExistingApplication/ExistingApplication';
 import TrackingDocument from './Pages/TrackingDocument/TrackingDocument';
+import Checklist from './Pages/Checklist/Checklist';
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/safety/:role/new" element={<ApplicationForm />} /> {/* Updated route */}
                 <Route path="/safety/:role/existing" element={<ExistingApplication />} />
                 <Route path="/safety/:role/existing/:trackingcode" element={<TrackingDocument />} />
+                <Route path="/safety/:role/existing/:trackingcode/checklist" element={<Checklist />} />
             </Routes>
         </Router>
     );
