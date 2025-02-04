@@ -126,6 +126,14 @@ const ApplicationForm = () => {
         });
     };
 
+    const removeFile = (index) => {
+        setEducationFiles((prevFiles) => {
+            const newFiles = [...prevFiles];
+            newFiles.splice(index, 1);
+            return newFiles;
+        });
+    };
+
     
 
     const handleSubmit = async (event) => {
@@ -279,52 +287,60 @@ const ApplicationForm = () => {
                     <label htmlFor="presentCompanyAddress">Present Company Address:</label>
                 </div>
                 <div>
-                    <h3>Educational Attainment:</h3>
-                    {formData.education.map((edu, index) => (
-                        <div key={index}>
-                            <div className="input-container">
-                                <input type="text" name="school" placeholder=" " value={edu.school} onChange={(e) => handleEducationChange(index, e)} />
-                                <label htmlFor={`school-${index}`}>Name of School</label>
+                        <h3>Educational Attainment:</h3>
+                        {formData.education.map((edu, index) => (
+                            <div key={index}>
+                                <div className="input-container">
+                                    <input type="text" name="school" placeholder=" " value={edu.school} onChange={(e) => handleEducationChange(index, e)} />
+                                    <label htmlFor={`school-${index}`}>Name of School</label>
+                                </div>
+                                <div className="input-container">
+                                    <input type="text" name="address" placeholder=" " value={edu.address} onChange={(e) => handleEducationChange(index, e)} />
+                                    <label htmlFor={`address-${index}`}>Address/Location</label>
+                                </div>
+                                <div className="input-container">
+                                    <input type="text" name="date" placeholder=" " value={edu.date} onChange={(e) => handleEducationChange(index, e)} />
+                                    <label htmlFor={`date-${index}`}>Date of Attendance</label>
+                                </div>
+                                <div className="input-container">
+                                    <input type="text" name="degree" placeholder=" " value={edu.degree} onChange={(e) => handleEducationChange(index, e)} />
+                                    <label htmlFor={`degree-${index}`}>Units Earned or Degree Obtained</label>
+                                </div>
                             </div>
-                            <div className="input-container">
-                                <input type="text" name="address" placeholder=" " value={edu.address} onChange={(e) => handleEducationChange(index, e)} />
-                                <label htmlFor={`address-${index}`}>Address/Location</label>
+                        ))}
+                        <button type="button" onClick={addEducationRow}>Add Education</button>
+                    </div>
+                    <div className="input-container">
+                        <input 
+                            type="file" 
+                            multiple 
+                            onChange={handleFileChange(setEducationFiles)} 
+                            style={{ display: 'none' }} 
+                            ref={educationFileInputRef} 
+                        />
+                        <button type="button" onClick={() => educationFileInputRef.current.click()}>
+                            Attach Education Document
+                        </button>
+                        {educationFiles.length > 0 && (
+                            <div>
+                                <h4>Selected Education Files:</h4>
+                                <ul>
+                                    {Array.from(educationFiles).map((file, index) => (
+                                        <li key={index}>
+                                        {file.name} 
+                                        <button 
+                                            type="button" 
+                                            onClick={() => removeFile(index)} 
+                                            style={{ marginLeft: '10px',padding: '2px', color: 'red', cursor: 'pointer' }}>
+                                             X
+                                        </button>
+                                    </li>
+                                        
+                                    ))}
+                                </ul>
                             </div>
-                            <div className="input-container">
-                                <input type="text" name="date" placeholder=" " value={edu.date} onChange={(e) => handleEducationChange(index, e)} />
-                                <label htmlFor={`date-${index}`}>Date of Attendance</label>
-                            </div>
-                            <div className="input-container">
-                                <input type="text" name="degree" placeholder=" " value={edu.degree} onChange={(e) => handleEducationChange(index, e)} />
-                                <label htmlFor={`degree-${index}`}>Units Earned or Degree Obtained</label>
-                            </div>
-                        </div>
-                    ))}
-                    <button type="button" onClick={addEducationRow}>Add Education</button>
-                </div>
-                <div className="input-container">
-                    <input 
-                        type="file" 
-                        multiple 
-                        onChange={handleFileChange(setEducationFiles)} 
-                        style={{ display: 'none' }} 
-                        ref={educationFileInputRef} 
-                    />
-                    <button type="button" onClick={() => educationFileInputRef.current.click()}>
-                        Attach Education Document
-                    </button>
-                    {educationFiles.length > 0 && (
-                        <div>
-                            <h4>Selected Education Files:</h4>
-                            <ul>
-                                {Array.from(educationFiles).map((file, index) => (
-                                    <li key={index}>{file.name}</li>
-                                    
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
                 <div>
                     <h3>Board Examination Taken:</h3>
                     {formData.boardExams.map((exam, index) => (
