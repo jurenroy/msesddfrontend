@@ -8,6 +8,8 @@ import mgbxImage from '../../Assets/mgbx.png';
 const Checklist = () => {
   const { role, trackingcode } = useParams();
   const [trackingData, setTrackingData] = useState(null);
+  const [checklist, setChecklist] = useState(null);
+  const [notarizedFiles, setNotarizedFiles] = useState(null);
   const [error, setError] = useState(null);
   
   useEffect(() => {
@@ -25,6 +27,44 @@ const Checklist = () => {
 
     fetchTrackingData();
 }, [trackingcode]);
+
+useEffect(() => {
+    const fetchNotarizedFiles = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}api/safety/${trackingcode}/notarized-files/`);
+            setNotarizedFiles(response.data);
+            setError(null);
+            console.log(response.data)
+        } catch (err) {
+            setError('Error fetching Notarized Files.');
+            console.error(err);
+        }
+    };
+
+    fetchNotarizedFiles();
+}, [trackingcode]);
+
+useEffect(() => {
+    const fetchChecklist = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}api/checklist/${trackingcode}`);
+            setChecklist(response.data);
+            setError(null);
+            console.log(response.data)
+        } catch (err) {
+            setError('Error fetching checklist.');
+            console.error(err);
+        }
+    };
+
+    fetchChecklist();
+}, [trackingcode]);
+
+const handleClick = (media) => {
+    // Access the link based on the checklist.college_diploma value
+    const url = `${API_BASE_URL}${media}`;
+    window.open(url, '_blank'); // Open the URL in a new tab
+  };
 
   return (
     <div style={{backgroundColor: 'gray', height: 'auto', position: 'relative'}}>
@@ -63,6 +103,7 @@ const Checklist = () => {
                         <p style={{ margin: 0, flex: 1 }}>{trackingData.date}</p>
                     </div>
                 </div>
+                {checklist && (
                 <div style={{ marginTop: '30px', fontSize: '12px' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center' }}>
                         <thead>
@@ -87,13 +128,22 @@ const Checklist = () => {
                             </tr>
                     
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Duly filled-up Application Form	</td>
+                                <td style={{ border: '1px solid black', padding: '5px' }}> 
+                                    <div>
+                                        <p>Duly filled-up Application Form</p>
+                                        <div>
+                                            (  <span onClick={() => handleClick(notarizedFiles[0].file)} style={{cursor: 'pointer', fontStyle: 'italic', fontWeight: 'bold', textDecoration: 'underline'}}>{notarizedFiles[0].file ? 'View File' : ''}</span> )Duly Notarized
+                                            (  <span onClick={() => handleClick(notarizedFiles[1].file)} style={{cursor: 'pointer', fontStyle: 'italic', fontWeight: 'bold', textDecoration: 'underline'}}>{notarizedFiles[1].file ? 'View File' : ''}</span> )Duly Notarized
+                                            (  <span onClick={() => handleClick(notarizedFiles[2].file)} style={{cursor: 'pointer', fontStyle: 'italic', fontWeight: 'bold', textDecoration: 'underline'}}>{notarizedFiles[2].file ? 'View File' : ''}</span> )Duly Notarized
+                                        </div>
+                                    </div>
+                                </td>
                                 <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
                                 <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
                                 <td style={{ border: '1px solid black', padding: '5px' }}>Form is complete</td>
                             </tr>
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Certified photocopy of college diploma or high school diploma, or pertinent credentials, as the case may be;</td>
+                                <td style={{ border: '1px solid black', padding: '5px' }}>Certified photocopy of college diploma or high school diploma, or pertinent credentials, as the case may be; ( <span onClick={() => handleClick(checklist.college_diploma)} style={{cursor: 'pointer', fontStyle: 'italic', fontWeight: 'bold', textDecoration: 'underline'}}>{checklist.college_diploma ? 'View File' : ''}</span>  )Duly Notarized</td>
                                 <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
                                 <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
                                 <td style={{ border: '1px solid black', padding: '5px' }}>Valid ID provided</td>
@@ -166,6 +216,7 @@ const Checklist = () => {
                         </tbody>
                     </table>
                 </div>
+                )}
             </div>)}
         </div>
     </div>  
