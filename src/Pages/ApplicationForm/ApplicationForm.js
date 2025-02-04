@@ -279,7 +279,7 @@ const ApplicationForm = () => {
                     <label htmlFor="presentCompanyAddress">Present Company Address:</label>
                 </div>
                 <div>
-                    <h3>Educational Attainment: Testing</h3>
+                    <h3>Educational Attainment:</h3>
                     {formData.education.map((edu, index) => (
                         <div key={index}>
                             <div className="input-container">
