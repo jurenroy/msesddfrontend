@@ -46,7 +46,7 @@ const TrackingDocument = () => {
             formData.append('notarizedFiles', file); // Use 'notarizedFiles' to handle multiple files
         }
         try {
-            const response = await axios.post(`${API_BASE_URL}api/safety/notarized-file/${trackingcode}/`, formData, {
+            const response = await axios.post(`${API_BASE_URL}api/safety/${trackingcode}/notarized-file/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
