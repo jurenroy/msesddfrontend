@@ -53,8 +53,11 @@ const ApplicationForm = () => {
     const workExperienceFileInputRef = useRef(null);
     const trainingFileInputRef = useRef(null);
 
-    const handleFileChange = (setter) => (event) => {
-        setter(event.target.files);
+    const handleFileChange = (setFiles) => (event) => {
+        const selectedFiles = event.target.files;
+        if (selectedFiles.length > 0) {
+            setFiles((prevFiles) => [...prevFiles, ...Array.from(selectedFiles)]);
+        }
     };
 
     const [isAlien, setIsAlien] = useState(false);
@@ -316,6 +319,7 @@ const ApplicationForm = () => {
                             <ul>
                                 {Array.from(educationFiles).map((file, index) => (
                                     <li key={index}>{file.name}</li>
+                                    
                                 ))}
                             </ul>
                         </div>
