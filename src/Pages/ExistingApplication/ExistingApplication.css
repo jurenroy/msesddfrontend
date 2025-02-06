@@ -1,125 +1,139 @@
-/* src/pages/SafetyRole/ExistingTracking.css */
+/* Apply background only to this specific page */
+.existing-page {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh; /* Ensures full viewport height */
+    overflow: hidden; /* Prevents scrolling */
+    background-image: url('../images/tracking.jpg'); /* Background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 
+/* Navbar */
+.navbar-existing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: rgba(48, 183, 217, 0.536);
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-/* Container Styles */
+.navbar-existing .logo {
+    background: url('../images/denr\ logo.png') no-repeat center;
+    background-size: contain;
+    width: 50px;
+    height: 50px;
+    display: block;
+}
+
+/* Form Container */
 .existing-tracking-form {
-    max-width: 600px; /* Maximum width for larger screens */
-    margin: auto; /* Center the container horizontally */
-    padding: 20px; /* Padding around the content */
-    background-color: #f9f9f9; /* Light background color */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    text-align: center; /* Center text */
-    position: absolute; /* Positioning for centering */
-    top: 50%; /* Move down 50% from the top */
-    left: 50%; /* Move right 50% from the left */
-    transform: translate(-50%, -50%); /* Adjust position to center */
-    width: 90%; /* Full width for smaller screens */
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
 }
 
-/* Heading Styles */
-.existing-tracking-heading {
-    color: #333; /* Dark text color */
-    margin-bottom: 20px; /* Space below the heading */
-    font-size: 1.5em; /* Responsive font size */
+/* Headings */
+h1 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
 }
 
-/* Input Container Styles */
-.existing-tracking-input-container {
-    position: relative; /* Positioning for the input container */
-    margin-bottom: 20px; /* Space below the input */
-}
-
-/* Input Styles */
+/* Input Field */
 .existing-tracking-input {
-    width: 90%; /* Full width for mobile */
-    padding: 15px; /* Padding inside the input */
-    font-size: 16px; /* Font size */
-    border: 2px solid #007bff; /* Border color */
-    border-radius: 5px; /* Rounded corners */
-    transition: border-color 0.3s; /* Smooth transition for border color */
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
 }
 
 .existing-tracking-input:focus {
-    border-color: #0056b3; /* Darker border on focus */
-    outline: none; /* Remove default outline */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Shadow on focus */
+    border-color: #007bff;
 }
 
-/* Button Container Styles */
+/* Buttons */
 .existing-tracking-button-container {
-    display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Space between buttons */
-    margin-top: 20px; /* Space above the button container */
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-/* Button Styles */
+button {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
 .existing-tracking-button {
-    padding: 10px 20px; /* Padding for the button */
-    font-size: 16px; /* Font size */
-    color: #fff; /* White text color */
-    background-color: #007bff; /* Button background color */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s; /* Smooth transition for background color */
-    flex: 1; /* Allow buttons to grow equally */
-    margin-right: 10px; /* Space between buttons */
-}
-
-.existing-tracking-button:last-child {
-    margin-right: 0; /* Remove margin from the last button */
+    background: #4fbadd;
+    color: #fff;
 }
 
 .existing-tracking-button:hover {
-    background-color: #0056b3; /* Darker background on hover */
+    background: #0056b3;
 }
 
-/* Error Message Styles */
-.existing-tracking-error {
-    color: red; /* Red text for error messages */
-    margin-top: 10px; /* Space above the error message */
-}
-
-/* Back Button Styles */
 .existing-tracking-back-button {
-    padding: 10px 20px; /* Padding for the button */
-    font-size: 16px; /* Font size */
-    color: #fff; /* White text color */
-    background-color: #6c757d; /* Gray background color */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s; /* Smooth transition for background color */
+    background: #4fbadd;
+    color: #fff;
 }
 
 .existing-tracking-back-button:hover {
-    background-color: #5a6268; /* Darker gray on hover */
+    background: #0056b3;
 }
 
-/* Media Queries for Mobile Responsiveness */
-@media (max-width: 768px) {
+.existing-tracking-error {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Footer Styling */
+.footer-existing {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: black;
+    background: whitesmoke;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
     .existing-tracking-form {
-        padding: 15px; /* Less padding on smaller screens */
+        padding: 15px;
     }
-
-    .existing-tracking-heading {
-        font-size: 1.2em; /* Smaller font size for mobile */
-    }
-
-    .existing-tracking-input {
-        padding: 12px; /* Less padding for input on mobile */
-        font-size: 14px; /* Smaller font size for input */
-    }
-
-    .existing-tracking-button {
-        width: 95%; /* Full width buttons on mobile */
- padding: 12px; /* Less padding for buttons on mobile */
-        font-size: 14px; /* Smaller font size for buttons */
-        margin-right: 0; /* No margin on mobile */
-    }
-
+    
     .existing-tracking-button-container {
-        flex-direction: column; /* Stack buttons vertically on mobile */
+        flex-direction: column;
+    }
+    
+    button {
+        width: 100%;
     }
 }
