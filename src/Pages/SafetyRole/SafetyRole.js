@@ -1,5 +1,3 @@
-// src/pages/SafetyRole/SafetyRole.js
-
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './SafetyRole.css'; // Import the CSS file
@@ -8,27 +6,36 @@ const SafetyRole = () => {
     const { role } = useParams();
     const navigate = useNavigate();
 
+    // Apply different background classes based on role
+    const pageClass = role === 'Engineer' ? 'safety-role-page-engineer' : 'safety-role-page-inspector';
+
     const handleButtonClick = (actionType) => {
-        if (actionType === 'New') {
-            // Navigate to the application form for the selected role
-            navigate(`/safety/${role}/new`);
-        } else if (actionType === 'Existing'){
-            // Navigate to the application form for the selected role
-            navigate(`/safety/${role}/existing`);
-        }
+        navigate(`/safety/${role}/${actionType.toLowerCase()}`);
     };
 
     return (
-        <div className="safety-role-container">
-            <h1>{role === 'Engineer' ? 'Safety Engineer' : 'Safety Inspector'}</h1>
-            <h2>Please choose an action:</h2>
-            <div>
-                <button onClick={() => handleButtonClick('New')}>New</button>
-                <button onClick={() => handleButtonClick('Existing')}>Existing</button>
+        <div className={pageClass}>
+            {/* Navbar with logo and text */}
+            <nav className="navbar">
+                <h2>Mines and Geosciences Bureau</h2>
+            </nav>
+
+            {/* Main container */}
+            <div className="safety-role-container">
+                <h1>{role === 'Engineer' ? 'Safety Engineer' : 'Safety Inspector'}</h1>
+                <h2>Please choose an action:</h2>
+                <div className="button-group">
+                    <button onClick={() => handleButtonClick('New')}>New</button>
+                    <button onClick={() => handleButtonClick('Existing')}>Existing</button>
+                </div>
+                <button className="back-button" onClick={() => navigate('/')}>Back to Home</button>
             </div>
-            <button onClick={() => navigate('/')}>Back to Home</button>
+
+            {/* Footer */}
+            <footer className="footer">© 2025 Mines and Geosciences Bureau</footer>
         </div>
     );
 };
 
 export default SafetyRole;
+
