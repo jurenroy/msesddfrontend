@@ -1,10 +1,12 @@
 /* src/pages/ApplicationForm/ApplicationForm.css */
 
 .application-form-container {
-    padding: 40px;
-    max-width: 800px;
+    padding: 50px;
+    max-width: 700px;
     margin: auto;
-    border: 1px solid #e0e0e0;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    border: 1px solid #4f4a4a;
     border-radius: 10px;
     background-color: #ffffff;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -42,14 +44,16 @@
 
 .application-form-container input,
 .application-form-container textarea {
-    padding: 12px;
-    padding-top: 10px; /* Space for the label */
+    padding: 20px;
+    padding-top: 20px; /* Space for the label */
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1em;
-    width: 95%;
+    width: 100%;
+    box-sizing: border-box; /* Ensure the input fills the container */
     transition: border-color 0.3s;
 }
+
 
 .application-form-container input:focus,
 .application-form-container textarea:focus {
@@ -65,17 +69,54 @@
     font-size: 0.8em; /* Smaller font size */
     color: #007bff; /* Change color on focus */
 }
+.application-form-container .button-container {
+    display: flex; /* Ensure buttons are in a row */
+    justify-content: center; /* Center the buttons */
+    gap: 10px; /* Space between buttons */
+    margin-top: 3px; /* Space above the button container */
+    margin-left: 0; /* Removed left margin for centering */
+    width: 50%; /* Set the container width to 100% */
+}
 
 .application-form-container button {
-    padding: 12px;
+   
+    padding: 10px; /* Padding for button size */
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1.1em;
+    font-size: 0.9em; /* Reduced font size */
     transition: background-color 0.3s, transform 0.2s;
+    align-items: center;
 }
+
+.application-form-container .button-container {
+    display:grid;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.application-form-container button {
+    padding: 10px 12px; /* Reduce padding to make the button smaller */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em; /* Keep font size smaller */
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 200px; /* Set a fixed width for a smaller button */
+    min-width: auto;
+}
+
 
 .application-form-container button:hover {
     background-color: #0056b3;
@@ -83,15 +124,15 @@
 }
 
 .application-form-container button:disabled {
-    background-color: #ccc;
+    background-color: #0fcb5a;
     cursor: not-allowed;
 }
 
 .application-form-container h3 {
-    margin-top: 20px;
+    margin-top: 30px;
     font-size: 1.5em;
     color: #333;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 1px solid #ff0080;
     padding-bottom: 10px;
 }
 
@@ -116,7 +157,7 @@
 
 .application-form-container select {
     padding: 12px;
-    width: 98%;
+    width: 70%;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -127,7 +168,7 @@
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="%23007bff"><polygon points="0,0 20,0 10,10"/></svg>'); /* Custom arrow */
     background-repeat: no-repeat;
     background-position: right 10px center; /* Position the arrow */
-    background-size:  12px; /* Size of the arrow */
+    background-size:  10px; /* Size of the arrow */
     transition: border-color 0.3s, background-color 0.3s;
 }
 
