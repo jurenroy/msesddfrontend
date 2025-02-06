@@ -297,7 +297,9 @@ const ApplicationForm = () => {
                             </div>
                         </div>
                     ))}
+                    <div className="button-container">
                     <button type="button" onClick={addEducationRow}>Add Education</button>
+                    </div>
                 </div>
                 <div className="input-container">
                     <input 
@@ -307,9 +309,11 @@ const ApplicationForm = () => {
                         style={{ display: 'none' }} 
                         ref={educationFileInputRef} 
                     />
+                    <div className="button-container">
                     <button type="button" onClick={() => educationFileInputRef.current.click()}>
                         Attach Education Document
                     </button>
+                    </div>
                     {educationFiles.length > 0 && (
                         <div>
                             <h4>Selected Education Files:</h4>
@@ -347,7 +351,9 @@ const ApplicationForm = () => {
                             </div>
                         </div>
                     ))}
+                    <div className="button-container">
                     <button type="button" onClick={addBoardExamRow}>Add Board Exam</button>
+                    </div>
                 </div>
                 <div className="input-container">
                     <input 
@@ -357,9 +363,10 @@ const ApplicationForm = () => {
                         style={{ display: 'none' }} 
                         ref={boardExamFileInputRef} 
                     />
+                    <div className="button-container">
                     <button type="button" onClick={() => boardExamFileInputRef.current.click()}>
                         Attach Board Exam Document
-                    </button>
+                    </button></div>
                     {boardExamFiles.length > 0 && (
                         <div>
                             <h4>Selected Board Exam Files:</h4>
@@ -401,7 +408,9 @@ const ApplicationForm = () => {
                             </div>
                         </div>
                     ))}
+                    <div className="button-container">
                     <button type="button" onClick={addWorkExperienceRow}>Add Work Experience</button>
+                    </div>
                 </div>
                 <div className="input-container">
                     <input 
@@ -411,9 +420,10 @@ const ApplicationForm = () => {
                         style={{ display: 'none' }} 
                         ref={workExperienceFileInputRef} 
                     />
+                    <div className="button-container">
                     <button type="button" onClick={() => workExperienceFileInputRef.current.click()}>
                         Attach Work Experience Document
-                    </button>
+                    </button></div>
                     {workExperienceFiles.length > 0 && (
                         <div>
                             <h4>Selected Work Experience Files:</h4>
@@ -455,7 +465,8 @@ const ApplicationForm = () => {
                             </div>
                         </div>
                     ))}
-                    <button type="button" onClick={addTrainingRow}>Add Training</button>
+                         <div className="button-container">
+                    <button type="button" onClick={addTrainingRow}>Add Training</button></div>
                 </div>
                 <div className="input-container">
                     <input 
@@ -465,9 +476,10 @@ const ApplicationForm = () => {
                         style={{ display: 'none' }} 
                         ref={trainingFileInputRef} 
                     />
+                    <div className="button-container">
                     <button type="button" onClick={() => trainingFileInputRef.current.click()}>
                         Attach Training Document
-                    </button>
+                    </button></div>
                     {trainingFiles.length > 0 && (
                         <div>
                             <h4>Selected Training Files:</h4>
@@ -531,7 +543,8 @@ const ApplicationForm = () => {
                         </p>
                     </div>
                 </div>
-                <button type="submit" disabled={!formData.documents || !formData.compliance || !formData.understanding || !formData.certify }>Submit</button>
+                <div className="button-container">
+                <button type="submit" disabled={!formData.documents || !formData.compliance || !formData.understanding || !formData.certify }>Submit</button></div>
             </form>
         </div>
     );
