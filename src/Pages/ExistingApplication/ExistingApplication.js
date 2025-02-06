@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './ExistingApplication.css'; // Import the CSS file for styling
+import './ExistingApplication.css';
 import API_BASE_URL from '../../config';
 
 const ExistingApplication = () => {
@@ -26,9 +26,8 @@ const ExistingApplication = () => {
             }
             const jsonData = await response.json();
             setData(jsonData);
-            console.log(jsonData)
             if (role === jsonData.role) {
-            navigate(`/safety/${jsonData.role}/existing/${jsonData.tracking_code}`); // Navigate to the new route
+                navigate(`/safety/${jsonData.role}/existing/${jsonData.tracking_code}`);
             }
         } catch (err) {
             setError('Failed to fetch data. Please check the tracking number.');
@@ -36,14 +35,17 @@ const ExistingApplication = () => {
     };
 
     const handleBack = () => {
-        navigate(-1); // Navigate back to the previous page
+        navigate(-1);
     };
 
     return (
-        <div className="existing-tracking-form">
-            <h1>{role === 'Engineer' ? 'Safety Engineer' : 'Safety Inspector'} - Existing Application</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="existing-tracking-input-container">
+        <div className="existing-page">
+            <nav className="navbar-existing">
+                <div className="logo"></div>
+            </nav>
+            <div className="existing-tracking-form">
+                <h1>{role === 'Engineer' ? 'Safety Engineer' : 'Safety Inspector'} - Existing Application</h1>
+                <form onSubmit={handleSubmit}>
                     <input
                         type="text"
                         className="existing-tracking-input"
@@ -51,20 +53,21 @@ const ExistingApplication = () => {
                         onChange={handleInputChange}
                         placeholder="Enter Tracking Number"
                     />
-                </div>
-                {error && <div className="existing-tracking-error">{error}</div>}
-                <div className="existing-tracking-button-container">
-                    <button type="submit" className="existing-tracking-button">Track</button>
-                    <button type="button" className="existing-tracking-back-button" onClick={handleBack}>Back</button>
-                </div>
-            </form>
-            {data && (
-                <div>
-                    <h2>Tracking Information</h2>
-                    <p>Tracking Number: {data.tracking_code}</p>
-                    <p>Invalid Role it should be {data.role}</p>
-                </div>
-            )}
+                    {error && <div className="existing-tracking-error">{error}</div>}
+                    <div className="existing-tracking-button-container">
+                        <button type="submit" className="existing-tracking-button">Track</button>
+                        <button type="button" className="existing-tracking-back-button" onClick={handleBack}>Back</button>
+                    </div>
+                </form>
+                {data && (
+                    <div className="tracking-info">
+                        <h2>Tracking Information</h2>
+                        <p>Tracking Number: {data.tracking_code}</p>
+                        <p>Invalid Role it should be {data.role}</p>
+                    </div>
+                )}
+            </div>
+            <footer className="footer-existing"> © 2025 Mines and Geosciences Bureau</footer>
         </div>
     );
 };
