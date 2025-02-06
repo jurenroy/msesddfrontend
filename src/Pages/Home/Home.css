@@ -33,7 +33,7 @@ button:hover {
 }
 
 .home-wrapper {
-    height: 100vh; /* Changed from min-height to fixed height */
+    height: 100vh; 
     display: flex;
     flex-direction: column;
     overflow: hidden; /* This should prevent scrolling */
