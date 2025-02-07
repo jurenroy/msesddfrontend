@@ -40,7 +40,7 @@ button:hover {
     position: relative; /* Added to ensure proper stacking */
 }
 
-/* Header Styles */
+
 .main-header {
     background-color: #0096c7;
     padding: 0.5rem 0;
@@ -63,11 +63,17 @@ button:hover {
 }
 
 .logo {
-    font-size: 1.5rem;
+    width: 50px; 
+    height: 50px;
+    background-image: url('../images/denr\ logo.png'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
 }
 
 .header-text h1 {
-    margin: 15;
+    margin: 2px;
     font-size: 1.2rem;
 }
 
@@ -80,7 +86,7 @@ button:hover {
 main {
     flex: 1;
     position: relative;
-    overflow: hidden; /* Added to prevent scrolling */
+    overflow: hidden; 
 }
 
 .intro-section {
@@ -94,7 +100,7 @@ main {
     align-items: flex-start;
     justify-content: center;
     padding-top: 5vh;
-    overflow: hidden; /* Added to prevent scrolling */
+    overflow: hidden; 
 }
 
 .intro-section::before {
@@ -200,7 +206,7 @@ main {
     transition: all 0.3s ease;
     width: 100%;
     max-width: 400px;
-    margin: 0 auto; /* Added for better centering */
+    margin: 0 auto;
 }
 
 .role-card:hover {
@@ -225,7 +231,7 @@ main {
     font-size: 0.9rem;
 }
 
-/* Footer Styles */
+
 .main-footer {
     background-color: #333;
     color: white;
@@ -260,11 +266,11 @@ main {
 
     .intro-content h2 {
         font-size: 1.8rem;
-        margin-top: 1rem; /* Reduced from 2rem */
+        margin-top: 1rem; 
     }
 
     .intro-description {
-        margin-top: 0.5rem; /* Reduced from 1rem */
+        margin-top: 0.5rem; 
     }
 
     .quote {
@@ -274,10 +280,10 @@ main {
     .roles-container {
         display: flex;
         flex-direction: column;
-        align-items: center; /* Added for centering */
+        align-items: center;
         width: 100%;
-        margin: 1rem auto; /* Changed to auto for horizontal centering */
-        padding: 0 1rem; /* Added padding for edge spacing */
+        margin: 1rem auto; 
+        padding: 0 1rem; 
         gap: 1rem;
     }
 
