@@ -205,7 +205,7 @@ const ApplicationForm = () => {
                     <p className='damn' style={{marginLeft: '10px', marginTop: '-20px'}}>Permit Type</p>
                     <select name="permitType" onChange={handleChange} >
                         <option value="Permanent">Permanent</option>
-                        <option value="Temporary">Temporary</option>
+                        <option value="Temporary">Temporary1</option>
                     </select>
                 </div>
                 <div className="input-container">
