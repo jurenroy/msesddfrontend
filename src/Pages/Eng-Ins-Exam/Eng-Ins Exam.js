@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./Eng-Ins-Exam.css";
 import { useNavigate } from 'react-router-dom';
 
+
+
 const questions = [
   {
     question: "What does DAO stand for?",
@@ -184,32 +186,23 @@ const questions = [
     ],
   },
 ];
-
-const YourComponent = () => {
-    const navigate = useNavigate(); // Initialize navigate
-
-    const handleNextPage = () => {
-        navigate('/ExamSection2'); // Navigate to ExamSection2
-    };
-};
-
 const ExamForm = () => {
-    const navigate = useNavigate(); // Initialize navigate
-    const [shuffledQuestions, setShuffledQuestions] = useState([]);
-    const [answers, setAnswers] = useState({});
-  
-    useEffect(() => {
-      const shuffled = [...questions].sort(() => Math.random() - 0.5);
-      setShuffledQuestions(shuffled);
-    }, []);
-  
-    const handleChange = (index, answer) => {
-      setAnswers({ ...answers, [index]: answer });
-    };
-  
-    const handleNextPage = () => {
-      navigate('/safety/:role/existing/exam/matching'); // Navigate to MatchingExercise
-    };
+  const navigate = useNavigate(); // Initialize navigate
+  const [shuffledQuestions, setShuffledQuestions] = useState([]);
+  const [answers, setAnswers] = useState({});
+
+  useEffect(() => {
+    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    setShuffledQuestions(shuffled);
+  }, []);
+
+  const handleChange = (index, answer) => {
+    setAnswers({ ...answers, [index]: answer });
+  };
+
+  const handleNextPage = () => {
+    navigate('/safety/:role/existing/exam/matching'); // Navigate to ExamSection2
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -233,15 +226,17 @@ const ExamForm = () => {
             ))}
           </div>
         ))}
-        
-        <button
-                type="button"
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                onClick={handleNextPage} // Call function on click
-            >
-                Next Page
-            </button>
-        
+
+        {/* Button container with flex to align to the right */}
+        <div className="flex justify-end mt-4">
+          <button
+            type="button"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            onClick={handleNextPage} // Call function on click
+          >
+            Next Page
+          </button>
+        </div>
       </form>
     </div>
   );

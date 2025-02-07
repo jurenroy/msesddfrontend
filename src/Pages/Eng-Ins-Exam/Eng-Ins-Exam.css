@@ -49,7 +49,6 @@
     margin-right: 0.5rem;
   }
   
- 
   button {
     padding: 0.5rem 1rem;
     background-color: #3b82f6;
@@ -58,9 +57,11 @@
     font-size: 1rem;
     cursor: pointer;
     border: none;
-  }
-  
+    width: auto; /* Set to auto to let the width adjust based on padding */
+    margin-right: auto; /* Align the button to the right */
+    display: block; /* Ensure the button is a block-level element to take the full width from its container */
+}
+
   button:hover {
     background-color: #2563eb;
-  }
-  
+}
