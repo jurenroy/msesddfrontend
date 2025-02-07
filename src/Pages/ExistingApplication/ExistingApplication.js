@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import './ExistingApplication.css';
 import API_BASE_URL from '../../config';
 
@@ -42,31 +42,32 @@ const ExistingApplication = () => {
         <div className="existing-page">
             <nav className="navbar-existing">
                 <div className="logo"></div>
+                <h1 className="navbar-title">{role === 'Engineer' ? 'Safety Engineer' : 'Safety Inspector'} - Existing Application</h1>
             </nav>
-            <div className="existing-tracking-form">
-                <h1>{role === 'Engineer' ? 'Safety Engineer' : 'Safety Inspector'} - Existing Application</h1>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        className="existing-tracking-input"
-                        value={trackingNumber}
-                        onChange={handleInputChange}
-                        placeholder="Enter Tracking Number"
-                    />
-                    {error && <div className="existing-tracking-error">{error}</div>}
-                    <div className="existing-tracking-button-container">
-                        <button type="submit" className="existing-tracking-button">Track</button>
-                        <button type="button" className="existing-tracking-back-button" onClick={handleBack}>Back</button>
-                    </div>
-                </form>
-                {data && (
-                    <div className="tracking-info">
-                        <h2>Tracking Information</h2>
-                        <p>Tracking Number: {data.tracking_code}</p>
-                        <p>Invalid Role it should be {data.role}</p>
-                    </div>
-                )}
-            </div>
+            <form onSubmit={handleSubmit} className="existing-tracking-form">
+                <input
+                    type="text"
+                    className="existing-tracking-input"
+                    value={trackingNumber}
+                    onChange={handleInputChange}
+                    placeholder="Enter Tracking Number"
+                />
+                {error && <div className="existing-tracking-error">{error}</div>}
+                <div className="existing-tracking-button-container">
+                    <button type="submit" className="existing-tracking-button">Track</button>
+                    <button type="button" className="existing-tracking-back-button" onClick={handleBack}>Back</button>
+                    <Link to={`/safety/${role}/existing/exam`}>
+                        <button type="button" className="existing-tracking-button">Exam</button>
+                    </Link>
+                </div>
+            </form>
+            {data && (
+                <div className="tracking-info">
+                    <h2>Tracking Information</h2>
+                    <p>Tracking Number: {data.tracking_code}</p>
+                    <p>Invalid Role it should be {data.role}</p>
+                </div>
+            )}
             <footer className="footer-existing"> © 2025 Mines and Geosciences Bureau</footer>
         </div>
     );
