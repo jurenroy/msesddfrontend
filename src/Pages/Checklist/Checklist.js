@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../../config';
 import mgbxImage from '../../Assets/mgbx.png';
+import './Checklist.css'; // Import the CSS file for styling
 
 const Checklist = () => {
   const { role, trackingcode } = useParams();
@@ -128,7 +129,7 @@ const handleClick = (media) => {
                             </tr>
                     
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}> 
+                                <td className='table-detail'> 
                                     <div>
                                         <p>Duly filled-up Application Form</p>
                                         <div>
@@ -138,67 +139,67 @@ const handleClick = (media) => {
                                         </div>
                                     </div>
                                 </td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Form is complete</td>
+                                <td className='table-detail'>✔</td>
+                                <td className='table-detail'>✖</td>
+                                <td className='table-detail'>Form is complete</td>
                             </tr>
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Certified photocopy of college diploma or high school diploma, or pertinent credentials, as the case may be; ( <span onClick={() => handleClick(checklist.college_diploma)} style={{cursor: 'pointer', fontStyle: 'italic', fontWeight: 'bold', textDecoration: 'underline'}}>{checklist.college_diploma ? 'View File' : ''}</span>  )Duly Notarized</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Valid ID provided</td>
+                                <td className='table-detail'>Certified photocopy of college diploma or high school diploma, or pertinent credentials, as the case may be; ( <span onClick={() => handleClick(checklist.college_diploma)} style={{cursor: 'pointer', fontStyle: 'italic', fontWeight: 'bold', textDecoration: 'underline'}}>{checklist.college_diploma ? 'View File' : ''}</span>  )Duly Notarized</td>
+                                <td className='table-detail'>✔</td>
+                                <td className='table-detail'>✖</td>
+                                <td className='table-detail'>Valid ID provided</td>
                             </tr>
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Certificate of employment (present and previous), signed under oath; (Indicate name, position and date of appointment at present position using the official letter head of the company)</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Address not verified</td>
+                                <td className='table-detail'>Certificate of employment (present and previous), signed under oath; (Indicate name, position and date of appointment at present position using the official letter head of the company)</td>
+                                <td className='table-detail'>✖</td>
+                                <td className='table-detail'>✔</td>
+                                <td className='table-detail'>Address not verified</td>
                             </tr>
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Latest  photograph, 2 inches X 2 inches</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Payment confirmed</td>
+                                <td className='table-detail'>Latest  photograph, 2 inches X 2 inches</td>
+                                <td className='table-detail'>✔</td>
+                                <td className='table-detail'>✖</td>
+                                <td className='table-detail'>Payment confirmed</td>
                             </tr>
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Registration/Application Fee:</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Payment confirmed</td>
+                                <td className='table-detail'>Registration/Application Fee:</td>
+                                <td className='table-detail'>✔</td>
+                                <td className='table-detail'>✖</td>
+                                <td className='table-detail'>Payment confirmed</td>
                             </tr>
                            
                             <tr>
                                 <td colSpan={4} style={{ border: '1px solid black', padding: '0px' }}>
-                                    <p style={{marginTop: '2px', marginBottom: '2px', marginLeft: '10px', fontWeight: ' bold'}}>Other Requirements </p>
+                                    <p className='table-space-last2'>Other Requirements </p>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Endorsement Letter</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Form is complete</td>
+                                <td className='table-detail'>Endorsement Letter</td>
+                                <td className='table-detail'>✔</td>
+                                <td className='table-detail'>✖</td>
+                                <td className='table-detail'>Form is complete</td>
                             </tr>
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Photocopy of certificates Occupational Safety and Health (OSH) trainings/seminars sponsored by Bureau and/or other recognized institution.</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Valid ID provided</td>
+                                <td className='table-detail'>Photocopy of certificates Occupational Safety and Health (OSH) trainings/seminars sponsored by Bureau and/or other recognized institution.</td>
+                                <td className='table-detail'>✔</td>
+                                <td className='table-detail'>✖</td>
+                                <td className='table-detail'>Valid ID provided</td>
                             </tr>
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>For renewal application a photocopy of Safety Engineer's Permit last issued</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Address not verified</td>
+                                <td className='table-detail'>For renewal application a photocopy of Safety Engineer's Permit last issued</td>
+                                <td className='table-detail'>✖</td>
+                                <td className='table-detail'>✔</td>
+                                <td className='table-detail'>Address not verified</td>
                             </tr>
                             <tr>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>For New and Renewal: Proof/s of accomplishment or participation in OSH (at least one of the following).</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✔</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>✖</td>
-                                <td style={{ border: '1px solid black', padding: '5px' }}>Payment confirmed</td>
+                                <td className='table-detail'>For New and Renewal: Proof/s of accomplishment or participation in OSH (at least one of the following).</td>
+                                <td className='table-detail'>✔</td>
+                                <td className='table-detail'>✖</td>
+                                <td className='table-detail'>Payment confirmed</td>
                             </tr>
                             <tr>
-                                <td colSpan={2} style={{ border: '1px solid black', padding: '5px', fontWeight: 'bold' }}>
+                                <td colSpan={2} style={{ border: '1px solid black', padding: '5px', fontWeight: 'bold'}}>
                                 INITIAL EVALUATION
                                 </td>
                                 <td colSpan={2} style={{ border: '1px solid black', padding: '5px', fontWeight: 'bold'}}>
@@ -206,10 +207,10 @@ const handleClick = (media) => {
                                 </td>
                             </tr>
                             <tr>
-                                <td colSpan={2} style={{ border: '1px solid black', padding: '5px' }}>
+                                <td colSpan={2} className='table-detail'>
                                     asfdsaf
                                 </td>
-                                <td colSpan={2} style={{ border: '1px solid black', padding: '5px' }}>
+                                <td colSpan={2} className='table-detail'>
                                     asfdsaf
                                 </td>
                             </tr>
