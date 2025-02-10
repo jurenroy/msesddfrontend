@@ -34,12 +34,14 @@ export default function MatchingExercise() {
     const [filteredAvailableAnswers, setFilteredAvailableAnswers] = useState([]);
 
     const handleOpenModal = (questionId) => {
-        setCurrentQuestionId(questionId);
-        const filteredAnswers = availableAnswers.filter(answer => 
-            !Object.values(userAnswers).includes(answer.id)
-        );
-        setFilteredAvailableAnswers(filteredAnswers);
-        setIsModalOpen(true);
+        if (!userAnswers[questionId]) {
+            setCurrentQuestionId(questionId);
+            const filteredAnswers = availableAnswers.filter(answer =>
+                !Object.values(userAnswers).includes(answer.id)
+            );
+            setFilteredAvailableAnswers(filteredAnswers);
+            setIsModalOpen(true);
+        }
     };
 
     const handleCloseModal = () => {
@@ -57,12 +59,11 @@ export default function MatchingExercise() {
     };
 
     const handleRemoveAnswer = (e, questionId, answerId) => {
-        e.stopPropagation(); // Prevent modal from opening
-        // Find the answer to return to available answers
+        e.preventDefault(); // Add this line
+        e.stopPropagation(); // Keep this line
+        
         const answerToReturn = initialAnswers.find(a => a.id === answerId);
-        // Add it back to available answers
         setAvailableAnswers(prev => [...prev, answerToReturn]);
-        // Remove from user answers
         const newUserAnswers = { ...userAnswers };
         delete newUserAnswers[questionId];
         setUserAnswers(newUserAnswers);
@@ -72,73 +73,85 @@ export default function MatchingExercise() {
         window.history.back();
     };
 
+    const handleSubmit = () => {
+        // Add your submit logic here
+        console.log('Submitted answers:', userAnswers);
+    };
+
     return (
-        <div className="container">
-            <h1 className="title">Match the Activities at the Key Elements of the SHP</h1>
-            
-            <div className="exercise-grid">
-                <div className="questions-container">
-                    <h2 className="section-title">Activities</h2>
-                    {questions.map((question) => (
-                        <div key={question.id} className="question-box">
-                            <div className="question-header">
-                                <div className="letter-badge">{question.letter}</div>
-                                <div className="question-content">{question.content}</div>
-                            </div>
-                            <div 
-                                className={`drop-zone ${userAnswers[question.id] ? 'filled' : ''}`}
-                                onClick={() => !userAnswers[question.id] && handleOpenModal(question.id)}
-                            >
-                                {userAnswers[question.id] ? (
-                                    <div className="answer-wrapper">
-                                        <button 
-                                            className="remove-button"
-                                            onClick={(e) => handleRemoveAnswer(e, question.id, userAnswers[question.id])}
-                                        >
-                                            ×
-                                        </button>
-                                        <div className="answer-content">
-                                            {initialAnswers.find(a => a.id === userAnswers[question.id])?.content.map((line, i) => (
-                                                <div key={i} className="answer-bullet">{line}</div>
-                                            ))}
+        <>
+            <div className="container">
+                <h1 className="title">Match the Activities at the Key Elements of the SHP</h1>
+                
+                <div className="exercise-grid">
+                    <div className="questions-container">
+                        <h2 className="section-title">Activities</h2>
+                        {questions.map((question) => (
+                            <div key={question.id} className="question-box">
+                                <div className="question-header">
+                                    <div className="letter-badge">{question.letter}</div>
+                                    <div className="question-content">{question.content}</div>
+                                </div>
+                                <div 
+                                    className={`drop-zone ${userAnswers[question.id] ? 'filled' : ''}`}
+                                    onClick={() => handleOpenModal(question.id)}
+                                >
+                                    {userAnswers[question.id] ? (
+                                        <div className="answer-wrapper">
+                                            <button
+                                               className="remove-button"
+                                               onClick={(e) => handleRemoveAnswer(e, question.id, userAnswers[question.id])}
+                                               type="button" // Add this line
+                                           >
+                                               ×
+                                           </button>
+                                            <div className="answer-content">
+                                                {initialAnswers.find(a => a.id === userAnswers[question.id])?.content.map((line, i) => (
+                                                    <div key={i} className="answer-bullet">{line}</div>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                ) : (
-                                    <div className="drop-placeholder">
-                                        <div className="drop-placeholder-icon">📥</div>
-                                        Drop answer here
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                                    ) : (
+                                        <div className="drop-placeholder">
+    <div className="drop-placeholder-icon">📥</div>
+    Drop answer here  {/* This line was missing */}
+</div>
+)}
+</div>
+</div>
+))}
+</div>
 
-                <div className="answers-container">
-                    <h2 className="section-title">Key Elements</h2>
-                    {availableAnswers.map((answer) => (
-                        <div key={answer.id} className="answer-card">
-                            <div className="answer-content">
-                                {answer.content.map((line, i) => (
-                                    <div key={i} className="answer-bullet">{line}</div>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                </div>
+<div className="answers-container">
+    <h2 className="section-title">Key Elements</h2>
+    {availableAnswers.map((answer) => (
+        <div key={answer.id} className="answer-card">
+            <div className="answer-content">
+                {answer.content.map((line, i) => (
+                    <div key={i} className="answer-bullet">{line}</div>
+                ))}
             </div>
-
-            <div className="button-container">
-                <button className="button submit-button">Submit</button>
-                <button type="button" className="existing-tracking-back-button" onClick={handleBack}>Back</button>
-            </div>
-
-            <Modal 
-                isOpen={isModalOpen} 
-                onClose={handleCloseModal} 
-                answers={filteredAvailableAnswers}
-                onSelect={handleSelectAnswer} 
-            />
         </div>
-    );
+    ))}
+</div>
+</div>
+
+<div className="button-container">
+    <button className="button submit-button" onClick={handleSubmit}>
+        Submit
+    </button>
+    <button className="button existing-tracking-back-button" onClick={handleBack}>
+        Back
+    </button>
+</div>
+</div>
+
+<Modal 
+    isOpen={isModalOpen} 
+    onClose={handleCloseModal} 
+    answers={filteredAvailableAnswers}
+    onSelect={handleSelectAnswer} 
+/>
+</>
+);
 }
