@@ -54,12 +54,12 @@ const ExistingApplication = () => {
                 />
                 {error && <div className="existing-tracking-error">{error}</div>}
                 <div className="existing-tracking-button-container">
-                    <button type="submit" className="existing-tracking-button">Track</button>
-                    <button type="button" className="existing-tracking-back-button" onClick={handleBack}>Back</button>
-                    <Link to={`/safety/${role}/existing/exam`}>
-                        <button type="button" className="existing-tracking-button">Exam</button>
-                    </Link>
-                </div>
+                <button type="submit" className="existing-tracking-button">Track</button>
+                <button type="button" className="existing-tracking-back-button" onClick={handleBack}>Back</button>
+                <Link to={`/safety/${role}/existing/exam`}>
+                <button type="button" className="existing-tracking-exam-button">Exam</button>
+                  </Link>
+            </div>
             </form>
             {data && (
                 <div className="tracking-info">

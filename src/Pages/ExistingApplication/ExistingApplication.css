@@ -36,7 +36,7 @@
 .existing-tracking-form {
     max-width: 500px;
     margin: auto;
-    padding: 20px;
+    padding: 40px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -50,9 +50,10 @@
 
 /* Headings */
 h1 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 15px;
+    font-size: 1.8rem;
+    color: #ffffff;
+    margin-bottom: 5px;
+    margin-top: 11px;
 }
 
 /* Input Field */
@@ -70,10 +71,11 @@ h1 {
     border-color: #007bff;
 }
 
+
 /* Buttons */
 .existing-tracking-button-container {
     display: flex;
-    gap: 10px;
+    gap: 5px;
     margin-top: 15px;
 }
 
@@ -85,6 +87,7 @@ button {
     border-radius: 6px;
     cursor: pointer;
     transition: background 0.3s;
+    min-width: 100px;
 }
 
 .existing-tracking-button {
@@ -103,6 +106,32 @@ button {
 
 .existing-tracking-back-button:hover {
     background: #0056b3;
+}
+
+.existing-tracking-exam-button {
+    background: #0479d9; 
+    color: #fff;
+    text-decoration: none;
+}
+
+.existing-tracking-exam-button a {
+    text-decoration: none;
+}
+
+
+.existing-tracking-exam-button,
+.existing-tracking-exam-button a {
+    text-decoration: none;
+    display: inline-block; /* Ensures proper styling */
+}
+
+.existing-tracking-exam-button a:visited,
+.existing-tracking-exam-button a:hover,
+.existing-tracking-exam-button a:active {
+    text-decoration: none;
+}
+.existing-tracking-exam-button:hover {
+    background: #20f389ef; 
 }
 
 .existing-tracking-error {
