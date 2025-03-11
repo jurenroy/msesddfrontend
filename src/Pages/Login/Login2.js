@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault(); // Prevent page refresh
 
     // Dummy login validation (Replace this with actual authentication logic)
-    if (email === "MSES@gmail.com" && password === "#MGBExcel2025") {
+    if (email === "MSES@gmail.com" && password === "MSES2025") {
       alert("Login successful!");
       navigate("/admin"); // Redirect to admin page
     } else {
