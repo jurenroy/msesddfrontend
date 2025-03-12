@@ -24,7 +24,7 @@ const Login = () => {
       alert("Login successful!");
       navigate("/admin"); // Redirect to admin page
     } else {
-      alert("Invalid email or password.");
+      alert("Invalid email or passwordS.");
     }
   };
 
