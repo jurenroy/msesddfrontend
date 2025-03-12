@@ -124,12 +124,6 @@ const Dashboard = () => {
               CHECKLIST
             </li>
             <li 
-              className={activeTab === "NOTARIZE" ? "active" : ""}
-              onClick={() => setActiveTab("NOTARIZE")}
-            >
-              NOTARIZE
-            </li>
-            <li 
               className={activeTab === "RESULT EXAM" ? "active" : ""}
               onClick={() => setActiveTab("RESULT EXAM")}
             >
