@@ -1,0 +1,203 @@
+/* src/components/UserDash/UserDash.css */
+.user-dash-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header Styles */
+.user-dash-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #023e8a; /* Updated header color as specified */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  color: white; /* Added for better visibility against dark background */
+}
+
+.user-dash-logo {
+  width: 50px;
+  height: 50px;
+  background-image: url('../images/denr logo.png'); 
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 1rem;
+  border-radius: 50%;
+}
+
+.user-dash-org h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: white; /* Updated for better visibility against dark background */
+  font-weight: 600;
+}
+
+.user-dash-org p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8); /* Updated for better visibility against dark background */
+}
+
+/* Content Layout */
+.user-dash-content {
+  display: flex;
+  flex: 1;
+}
+
+/* Main Content Area */
+.user-dash-main {
+  flex: 1;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-dash-title {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.user-dash-announcement {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.user-dash-announcement:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.user-dash-announcement-header {
+  background-color: #4CAF50;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-dash-announcement-header h3 {
+  margin: 0;
+  color: white;
+  font-weight: 500;
+}
+
+.user-dash-bell {
+  width: 35px;
+  height: 35px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-dash-bell i {
+  color: white;
+}
+
+.user-dash-announcement-content {
+  padding: 1.5rem;
+}
+
+.user-dash-announcement-content p {
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
+  color: #333;
+}
+/* Add this to your UserDash.css file */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+}
+
+.tracking-code {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Button styles */
+.action-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.action-button i {
+  margin-right: 0.5rem;
+}
+
+.view-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.view-button:hover {
+  background-color: #388e3c;
+  transform: translateY(-2px);
+}
+
+.close-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.close-button:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+}
+
+/* Status badges */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  display: inline-block;
+}
+
+.status-passed {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #388e3c;
+  border: 1px solid #4CAF50;
+}
+
+.status-failed {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #d32f2f;
+  border: 1px solid #f44336;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .user-dash-content {
+    flex-direction: column;
+  }
+  
+  .user-dash-main {
+    padding: 1rem;
+  }
+}
