@@ -31,6 +31,10 @@
     position: relative;
     margin-bottom: 30px;
 }
+.application-form-container .display-value-container {
+    position: relative;
+    margin-bottom: 1px;
+}
 
 .application-form-container label {
     position: absolute;

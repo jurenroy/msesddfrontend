@@ -1,10 +1,9 @@
-// src/pages/ApplicationForm/ApplicationForm.js
-
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ApplicationForm.css'; // Import the CSS file
 import API_BASE_URL from '../../config';
+
 
 const ApplicationForm = () => {
     const { role } = useParams(); // Get the role from the URL parameters
@@ -39,7 +38,10 @@ const ApplicationForm = () => {
         permitType: 'Permanent', // Default value
         role: role,
         date: new Date().toLocaleDateString(), // Default date
+        
     });
+    
+    
 
     const [educationFiles, setEducationFiles] = useState([]);
     const [boardExamFiles, setBoardExamFiles] = useState([]);
@@ -113,6 +115,29 @@ const ApplicationForm = () => {
     const handleTrainingChange = (index, e) => {
         const newTrainings = [...formData.trainings];
         newTrainings[index][e.target.name] = e.target.value;
+        
+        // If the from or to date changes, calculate hours automatically
+        if (e.target.name === 'from' || e.target.name === 'to') {
+            const from = e.target.name === 'from' ? e.target.value : newTrainings[index].from;
+            const to = e.target.name === 'to' ? e.target.value : newTrainings[index].to;
+            
+            // Calculate hours if both dates are available
+            if (from && to) {
+                const fromDate = new Date(from);
+                const toDate = new Date(to);
+                
+                // Calculate difference in milliseconds
+                const diffInMs = toDate - fromDate;
+                
+                // Convert to hours (including partial days)
+                // Each day is counted as 8 hours
+                const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+                const hours = Math.max(0, Math.round(diffInDays * 8));
+                
+                newTrainings[index].hours = hours.toString();
+            }
+        }
+        
         setFormData({ ...formData, trainings: newTrainings });
     };
 
@@ -343,7 +368,7 @@ const ApplicationForm = () => {
                             </div>
                             <div className="input-container">
                                 <input type="text" name="regNo" placeholder=" " value={exam.regNo} onChange={(e) => handleBoardExamChange(index, e)} />
-                                <label htmlFor={`regNo-${index}`}>Registration No.</label>
+                                <label htmlFor={`regNo-${index}`}>Registration No.- PRC #</label>
                             </div>
                             <div className="input-container">
                                 <input type="date" name="regDate" placeholder=" " value={exam.regDate} onChange={(e) => handleBoardExamChange(index, e)} />
@@ -441,7 +466,7 @@ const ApplicationForm = () => {
                         <div key={index}>
                             <div className="input-container">
                                 <input type="text" name="title" placeholder=" " value={training.title} onChange={(e) => handleTrainingChange(index, e)} />
-                                <label htmlFor={`training -title-${index}`}>Title</label>
+                                <label htmlFor={`training-title-${index}`}>Title</label>
                             </div>
                             <div className="input-container">
                                 <input type="date" name="from" placeholder=" " value={training.from} onChange={(e) => handleTrainingChange(index, e)} />
@@ -452,7 +477,7 @@ const ApplicationForm = () => {
                                 <label htmlFor={`to-${index}`}>To</label>
                             </div>
                             <div className="input-container">
-                                <input type="number" name="hours" placeholder=" " value={training.hours} onChange={(e) => handleTrainingChange(index, e)} />
+                                <input type="number " name="hours" placeholder=" " value={training.hours} onChange={(e) => handleTrainingChange(index, e)} readOnly />
                                 <label htmlFor={`hours-${index}`}>No. of Hours</label>
                             </div>
                             <div className="input-container">
@@ -465,7 +490,7 @@ const ApplicationForm = () => {
                             </div>
                         </div>
                     ))}
-                         <div className="button-container">
+                    <div className="button-container">
                     <button type="button" onClick={addTrainingRow}>Add Training</button></div>
                 </div>
                 <div className="input-container">

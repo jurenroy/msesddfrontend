@@ -1,0 +1,140 @@
+/* Action Buttons Improvements */
+.action-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 0;
+  }
+  
+  /* Fixed width action buttons */
+  .action-button,
+  .view-button, 
+  .checklist-button, 
+  .exam-button,
+  .close-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 36px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+  
+  /* Button colors */
+  .view-button {
+    background-color: #e0f2ff;
+    color: #0077cc;
+  }
+  
+  .view-button:hover {
+    background-color: #d0e9ff;
+  }
+  
+  .close-button {
+    background-color: #f1f5f9;
+    color: #64748b;
+  }
+  
+  .close-button:hover {
+    background-color: #e2e8f0;
+  }
+  
+  .checklist-button {
+    background-color: #fef9c3;
+    color: #d97706;
+  }
+  
+  .checklist-button:hover {
+    background-color: #fef3c7;
+  }
+  
+  .exam-button {
+    background-color: #e0e7ff;
+    color: #4f46e5;
+  }
+  
+  .exam-button:hover {
+    background-color: #d1d9ff;
+  }
+  
+  /* Pagination Improvements */
+  .pagination-container {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+    margin-left: 250px; /* Adjust based on sidebar width */
+    z-index: 90;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 8px 12px;
+  }
+  
+  /* Mobile responsiveness for pagination */
+  @media (max-width: 992px) {
+    .pagination-container {
+      margin-left: 80px; /* Adjust based on collapsed sidebar width */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .pagination-container {
+      margin-left: 0;
+      bottom: 70px; /* Adjust to be above mobile navigation */
+    }
+    
+    .action-button,
+    .view-button, 
+    .checklist-button, 
+    .exam-button,
+    .close-button {
+      width: 100%; /* Full width on mobile */
+    }
+    
+    .action-cell {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+  
+  /* Adjust table bottom padding to prevent content being hidden by pagination */
+  .main-content {
+    padding-bottom: 90px;
+  }
+  
+  /* Table improvements for consistent row heights */
+  .data-table td {
+    vertical-align: middle;
+    height: 60px; /* Maintain consistent height */
+  }
+  
+  /* Improved active state for pagination buttons */
+  .pagination-button.active {
+    background-color: #1e3a8a;
+    color: white;
+    border-color: #1e3a8a;
+    box-shadow: 0 2px 5px rgba(30, 58, 138, 0.3);
+  }

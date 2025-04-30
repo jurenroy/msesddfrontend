@@ -1,0 +1,43 @@
+.otherstable {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 3px 0;
+  }
+  
+  .otherstable input[type="file"] {
+    width: 150px;
+    font-size: 10px;
+    margin-left: 5px;
+  }
+  
+  .otherstable input[type="file"]::-webkit-file-upload-button {
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 10px;
+  }
+  
+  .otherstable input[type="file"]::file-selector-button {
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 10px;
+  }
+  
+  .otherstable input[type="text"] {
+    width: 100px;
+    margin-left: 5px;
+    font-size: 10px;
+    height: 16px;
+    /* Add these properties to help maintain focus */
+    outline: none;
+    position: relative;
+    z-index: 10; /* Higher z-index to ensure it stays on top */
+  }

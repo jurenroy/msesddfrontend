@@ -2,7 +2,7 @@
 .a4-container {
     width: 210mm;  /* A4 width */
     height: auto; /* A4 height */
-    margin: 0 auto; /* Center the content */
+    margin: auto; /* Center the content */
     padding: 15mm;  /* Padding inside the A4 container */
     box-sizing: border-box;
     background-color: #fff;  /* Optional, for better visual appearance */
@@ -21,12 +21,12 @@
     text-align: center;
 }
 .tracking-header-text{
-    margin-top: -20px;
+    margin-top: -5px;
     font-size: 12px;
 }
 .tracking-header-bold{
-    margin-top: -20px;
-    margin-bottom: 10px;
+    margin-top: -5px;
+    margin-bottom: -5px;
     font-size: 15px;
 }
 .application-title{
@@ -39,7 +39,7 @@
 }
 
 .tracking-greetings p{
-    margin-top: -20px;
+    margin-top: -0px;
     font-size: 14px;
 }
 .indent-first-line {
@@ -60,8 +60,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr; /* Two columns for label-value pairs */
     align-items: center; /* Vertically center the items in each row */
-    margin-top: -20px;
-    margin-bottom: -40px;
+    margin-top: -0px;
+    margin-bottom: -0px;
+}
+.single-row3 {
+    display: flex;
+    align-items: flex-end; /* Vertically center the items in each row */
+    width: 90%;
+    flex-direction: column;
 }
 
 .single-row p:first-child {

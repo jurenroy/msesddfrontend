@@ -1,307 +1,1031 @@
+/* Main Dashboard Layout */
 .dashboard-container {
   display: flex;
   height: 100vh;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'Roboto', 'Segoe UI', sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+  overflow: hidden;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  background: linear-gradient(45deg, #1e3a8a, #3b82f6);color: white;
+/* Error Banner */
+.error-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #f44336;
   color: white;
-  padding: 20px;
+  padding: 12px 20px;
+  text-align: center;
+  font-weight: 500;
+  z-index: 9999;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* Loading Animation */
+.loading-container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f7f9fc;
 }
 
+.loading-spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid rgba(124, 193, 51, 0.2);
+  border-radius: 50%;
+  border-top-color: #7CC133;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: #555;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 250px;
+  background: linear-gradient(145deg, #1e3a8a, #304da6);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  transition: width 0.3s ease;
+  overflow-y: auto;
+}
+
+.logo-container {
+  padding: 25px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
 .sidebar .logo {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: 600;
   text-align: center;
-  margin-bottom: 20px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0;
+  letter-spacing: 0.5px;
+  color: white;
 }
 
-.sidebar nav {
-  margin-top: 10px; /* Optional spacing between logo and nav */
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 0;
 }
 
-.sidebar nav ul {
+.sidebar-nav ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.sidebar nav ul li {
-  padding: 10px;
+.nav-item {
+  padding: 14px 20px;
   cursor: pointer;
-  border-radius: 5px;
-  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  border-left: 4px solid transparent;
 }
 
-.sidebar nav ul li:hover,
-.sidebar nav ul li.active {
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-item.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-left-color: #7cc133;
+}
+
+.nav-icon {
+  margin-right: 12px;
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.nav-text {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-button {
+  width: 100%;
+  padding: 12px 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.logout-button:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Main Content */
+.logout-icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+/* Main Content Area */
 .main-content {
   flex: 1;
-  padding: 20px;
+  padding: 30px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  gap: 25px;
 }
 
-.users-table h2 {
-  text-align: center;
-  margin-top: 10px;   
-  margin-bottom: 20px; 
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+.content-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
 }
 
-.stat-card {
-  background-color: white;
-  padding: 15px;
+/* Search Bar */
+.search-container {
+  position: relative;
+  min-width: 300px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  padding-right: 40px;
   border-radius: 8px;
-  text-align: center;
-  font-weight: bold;
+  border: 1px solid #e0e0e0;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background-color: #fff;
 }
 
-.info-icon {
-  background: white;
-  color: #3498db;
-  display: flex; /* Changed from 'flexbox' to 'flex' */
+.search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none;
+}
+
+/* Data Card Styling */
+.data-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card-header {
+  padding: 20px 25px;
+  border-bottom: 1px solid #eaedf2;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  padding-bottom: 10px; /* Add padding to prevent cut-off at bottom */
+}
+
+/* Data Table Styling */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.data-table thead tr {
+  background-color: #f8f9fd;
+}
+
+.data-table th {
+  padding: 15px 20px;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 1px solid #eaedf2;
+}
+
+.data-table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eaedf2;
+  color: #333;
+}
+
+.data-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f8f9fd;
+}
+
+.no-results {
+  text-align: center;
+  padding: 30px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Role Badge */
+.role-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #e0f2ff;
+  color: #0077cc;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.status-pending {
+  background-color: #fff8e0;
+  color: #f59e0b;
+}
+
+.status-approved {
+  background-color: #ecfdf5;
+  color: #10b981;
+}
+
+.status-rejected {
+  background-color: #fef2f2;
+  color: #ef4444;
+}
+
+.status-passed {
+  background-color: #ecfdf5;
+  color: #10b981;
+}
+
+.status-failed {
+  background-color: #fef2f2;
+  color: #ef4444;
+}
+
+/* Action Buttons */
+
+.action-cell {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start; 
+}
+
+.view-button, .checklist-button, .exam-button {
+  display: inline-block;
+  margin: 2px;
+  width: 130px !important; /* Fixed width */
+  height: 45px; /* Fixed height */
+  line-height: 36px; /* Center text vertically */
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0 5px; /* Reduced padding */
+  box-sizing: border-box;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.view-button {
+  background-color: #e0f2ff;
+  color: #0077cc;
+}
+
+.view-button:hover {
+  background-color: #d0e9ff;
+}
+
+.close-button {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+.close-button:hover {
+  background-color: #e2e8f0;
+}
+
+.checklist-button {
+  background-color: #fef9c3;
+  color: #d97706;
+}
+
+.checklist-button:hover {
+  background-color: #fef3c7;
+}
+
+.exam-button {
+  background-color: #e0e7ff;
+  color: #4f46e5;
+}
+
+.exam-button:hover {
+  background-color: #d1d9ff;
+}
+
+.info-button {
+  width: 30px;
+  height: 30px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px; /* Set width */
-  height: 40px; /* Set height */
-  border-radius: 50%; /* Make the icon round */
+  border: none;
+  border-radius: 50%;
+  background-color: #f1f5f9;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* Modal styles */
+.info-button:hover {
+  background-color: #e2e8f0;
+}
+
+/* Modal Styling */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-container {
   background-color: white;
-  border-radius: 8px;
+  border-radius: 12px;
   width: 90%;
   max-width: 600px;
   max-height: 90vh;
+  margin: 0 auto; /* This helps with centering */
   overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+  position: relative; /* Ensure positioning context */
+  left: 0; /* Reset any left positioning */
+  transform: none; /* Reset any transforms */
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 10px;
-  border-bottom: 1px solid #eee;
-  position: relative;
+  padding: 20px 25px;
+  border-bottom: 1px solid #eaedf2;
 }
 
 .modal-header h2 {
   margin: 0;
+  font-size: 18px;
+  font-weight: 600;
   color: #333;
 }
 
-/* Close Button Styles */
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.modal-close-button {
   background: none;
   border: none;
-  font-size: 18px;
-  cursor: pointer;
-  color: #888; 
-  padding: 0;
-  transition: none; 
-}
-
-.close-button:hover {
-background: white !important}
-
-/* Info Icon Styles */
-.info-icon {
-  background: white;
-  color: #3498db;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 24px;
+  color: #64748b;
   cursor: pointer;
-  transition: none;
+  transition: all 0.2s ease;
 }
 
-.info-icon:hover {
-  background-color: transparent;
+.modal-close-button:hover {
+  background-color: #f1f5f9;
 }
 
 .modal-body {
-  padding: 20px;
+  padding: 25px;
+}
+
+.detail-grid {
+  display: grid;
+  gap: 16px;
 }
 
 .detail-row {
-  margin-bottom: 12px;
   display: flex;
   flex-wrap: wrap;
+  gap: 10px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
 }
 
 .detail-label {
+  min-width: 120px;
   font-weight: 600;
-  width: 120px;
-  color: #555;
+  color: #64748b;
 }
 
 .detail-value {
   flex: 1;
-  min-width: 200px;
-}
-
-.modal-footer {
-  padding: 15px 20px;
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-
-/* Loading Animation */
-.earth {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.earth-loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.earth-loader svg {
-  width: 60px;
-  height: 60px;
-  animation: rotate 3s infinite linear;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Additional styles for the MGB Users table */
-.users-table {
-  margin-top: 20px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.users-table header h1 {
-  margin-bottom: 15px;
-  font-size: 22px;
-}
-
-.users-table table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.users-table th,
-.users-table td {
-  text-align: center;
-  padding: 12px;
-  border-bottom: 1px solid #dddddd;
-}
-
-.users-table th {
-  background-color: #f9f9f9;
-  font-weight: bold;
-}
-
-/* Exam Results Table Styling */
-.exam-results-table {
-  margin: 30px auto;
-  width: 80%;
-  max-width: 1200px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.exam-results-table h2 {
-  text-align: center;
-  font-size: 32px;
-  margin-bottom: 20px;
   color: #333;
 }
 
-.exam-results-table table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 18px;
+
+/* Document Overlay Fix */
+.document-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
 }
 
-.exam-results-table th,
-.exam-results-table td {
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.document-overlay-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  height: 90vh;
+  overflow: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1001; /* Ensure content appears above overlay background */
+  animation: slideUp 0.3s ease-out;
 }
 
-.exam-results-table th {
-  background-color: #eee;
-  color: black;
-  font-weight: bold;
+.document-overlay-close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #64748b;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1002;
+  transition: all 0.2s ease;
 }
 
-.exam-results-table tr:hover {
-  background-color: #f1f1f1;
+.document-overlay-close-button:hover {
+  background-color: #f1f5f9;
 }
 
-.exam-results-table td {
-  background-color: #ffffff;
+.document-overlay-header {
+  padding: 25px;
+  border-bottom: 1px solid #eaedf2;
 }
 
-/* Adjust column width if needed */
-.exam-results-table th:nth-child(4),
-.exam-results-table td:nth-child(4),
-.exam-results-table th:nth-child(5),
-.exam-results-table td:nth-child(5) {
-  width: 15%; /* Adjust the width of the Score and Percentage columns */
+.document-overlay-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
 }
+
+.document-overlay-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.document-content-wrapper {
+  padding: 20px;
+  overflow: auto;
+}
+
+/* Print styles for document overlay */
+@media print {
+  @page {
+    size: auto; 
+    margin: 0; 
+  }
+  
+  .dashboard-container, .sidebar, .main-content {
+    display: none;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body * {
+    visibility: hidden;
+  }
+  
+  .document-overlay-content, .document-overlay-content * {
+    visibility: visible;
+  }
+  
+  .document-overlay-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    box-shadow: none;
+    overflow: visible;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .document-overlay-close-button, .document-overlay-header {
+    display: none; 
+  }
+}
+
+
+
+/* Animations for UI elements */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(124, 193, 51, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(124, 193, 51, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(124, 193, 51, 0); }
+}
+
+.role-badge {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.status-badge {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Override for conflicting close-button class */
+.action-button.close-button {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+.action-button.close-button:hover {
+  background-color: #e2e8f0;
+}
+
+/* Subtle hover effects for rows */
+.data-table tbody tr {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 1;
+  position: relative;
+}
+
+/* Add this media query at the bottom of your CSS file */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 70px;  /* Reduce sidebar width on small screens */
+  }
+ 
+  .sidebar .logo {
+    font-size: 16px;  /* Make logo text smaller */
+  }
+ 
+  .nav-text {
+    display: none;  /* Hide nav text on small screens */
+  }
+ 
+  .nav-icon {
+    margin-right: 0;  /* Remove margin since text is hidden */
+  }
+ 
+  .nav-item {
+    justify-content: center;  /* Center the remaining icon */
+    padding: 14px 10px;  /* Reduce padding */
+  }
+ 
+  .logout-button {
+    justify-content: center;  /* Center logout icon */
+  }
+ 
+  .logout-icon {
+    margin-right: 0;  /* Remove margin since text will be hidden */
+  }
+  
+  /* Search container adjustments */
+  .search-container {
+    min-width: 200px;  /* Reduce minimum width on mobile */
+    width: 100%;  /* Allow it to be responsive */
+  }
+ 
+  .search-input {
+    padding: 8px 12px;  /* Smaller padding */
+    padding-right: 30px;  /* Maintain space for search icon */
+    font-size: 12px;  /* Smaller font size */
+  }
+ 
+  .search-icon {
+    right: 10px;  /* Adjust icon position */
+    font-size: 14px;  /* Smaller icon size */
+  }
+ 
+  /* Content header adjustments */
+  .content-header {
+    flex-direction: column;  /* Stack elements vertically on small screens */
+    align-items: flex-start;  /* Align to left */
+    gap: 15px;  /* Add space between elements */
+  }
+ 
+  .content-header h1 {
+    font-size: 20px;  /* Smaller heading */
+  }
+  
+  /* Action buttons for mobile view */
+  .action-cell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .view-button, .checklist-button, .exam-button {
+    width: 100% !important;  /* Full width on mobile */
+    margin: 2px 0;
+    height: 38px;  /* Slightly smaller height */
+    font-size: 12px;  /* Smaller font */
+    line-height: 38px;  /* Match the height */
+  }
+}
+
+/* Media query for iPad/tablet devices */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+
+  .table-container {
+    padding-bottom: 12px; /* Add space for the scrollbar */
+  }
+  .sidebar {
+    width: 180px;  /* Wider than mobile but narrower than desktop */
+  }
+ 
+  .sidebar .logo {
+    font-size: 18px;
+  }
+ 
+  .nav-text {
+    font-size: 14px;  /* Smaller text but still visible */
+    display: block;
+  }
+ 
+  .nav-icon {
+    margin-right: 8px;  /* Reduced margin */
+  }
+ 
+  .nav-item {
+    padding: 12px 15px;
+  }
+ 
+  .search-container {
+    min-width: 250px;
+  }
+ 
+  .main-content {
+    padding: 20px;  /* Slightly reduced padding */
+  }
+ 
+  /* Table adjustments for iPad */
+  .data-table th,
+  .data-table td {
+    padding: 12px 15px;  /* Reduced padding */
+    font-size: 13px;  /* Slightly smaller font */
+  }
+ 
+  /* Action buttons adjustments for iPad - MATCHING MOBILE STYLE */
+  .action-cell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .view-button, .checklist-button, .exam-button {
+    width: 100% !important;  /* Full width */
+    margin: 2px 0;
+    height: 38px;  /* Same height as mobile */
+    font-size: 12px;  /* Same font size as mobile */
+    line-height: 38px;  /* Match the height */
+  }
+ 
+  /* Modal adjustments */
+  .modal-container {
+    max-width: 550px;
+  }
+ 
+  .modal-body {
+    padding: 20px;
+  }
+ 
+  /* Document overlay adjustments */
+  .document-overlay-content {
+    max-width: 800px;
+  }
+ 
+  .document-overlay-header {
+    padding: 20px;
+  }
+ 
+  .document-overlay-header h2 {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-resolution: 0.8dppx) {
+  /* Higher zoom levels */
+  .content-header {
+    flex-wrap: wrap;
+  }
+  
+  /* Ensure pagination controls remain usable when zoomed */
+  .pagination-controls {
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+}
+
+/* Additional zoom-specific styles for different screen sizes */
+@media screen and (max-width: 768px) and (max-resolution: 1dppx) {
+  /* This targets zoomed in mobile views */
+  .table-container {
+    padding-bottom: 10px; /* Add space for the scrollbar */
+  }
+  
+  /* Ensure action buttons remain accessible when zoomed */
+  .action-cell {
+    padding: 10px 8px;
+  }
+}
+/* Zoom-responsive styles using media queries based on zoom level */
+@media (min-resolution: 96dpi) and (max-resolution: 119dpi) {
+  /* 125% zoom level */
+  .table-container {
+    overflow-x: auto;
+    padding-bottom: 15px; /* Space for scrollbar */
+  }
+  
+  /* Apply iPad/tablet-like styling for tables when zoomed */
+  .data-table th,
+  .data-table td {
+    padding: 12px 15px;
+    font-size: 13px;
+  }
+  
+  /* Action buttons adjustments matching iPad style */
+  .action-cell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .view-button, .checklist-button, .exam-button {
+    max-width: 100% !important;
+
+    margin: 2px 0;
+    height: 38px;
+    font-size: 12px;
+    line-height: 38px;
+  }
+}
+
+@media (min-resolution: 120dpi) and (max-resolution: 143dpi) {
+  /* 150% zoom level */
+  .table-container {
+    overflow-x: auto;
+    padding-bottom: 15px;
+  }
+  
+  /* More compressed tablet/mobile styling */
+  .data-table th,
+  .data-table td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .action-cell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .view-button, .checklist-button, .exam-button {
+    max-width: 100% !important;
+    margin: 2px 0;
+    height: 36px;
+    font-size: 11px;
+    line-height: 36px;
+  }
+}
+
+@media (min-resolution: 144dpi) {
+  /* 175%+ zoom level - full mobile styling */
+  .table-container {
+    overflow-x: auto;
+    padding-bottom: 12px;
+  }
+  
+  /* Apply mobile styling completely */
+  .data-table th,
+  .data-table td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  
+  /* Content header matches mobile view */
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .content-header h1 {
+    font-size: 20px;
+  }
+  
+  /* Action buttons match mobile style */
+  .action-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px;
+  }
+  
+  .view-button, .checklist-button, .exam-button {
+    max-width: 100% !important;
+    margin: 2px 0;
+    height: 38px;
+    font-size: 12px;
+    line-height: 38px;
+  }
+  
+  /* Search adjustments for high zoom */
+  .search-container {
+    min-width: 200px;
+    max-width: 100%;
+  }
+  
+  .search-input {
+    padding: 8px 12px;
+    padding-right: 30px;
+    font-size: 12px;
+  }
+  
+  .search-icon {
+    right: 10px;
+    font-size: 14px;
+  }
+  
+  /* Pagination adjustments */
+  .pagination-controls {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+}
+
+/* Alternative zoom detection for browsers that don't fully support resolution queries */
+@media screen and (max-width: 1350px) {
+  /* This catches desktop screens when zoomed around 125-150% */
+  body:not(.mobile-device):not(.tablet-device) .table-container {
+    overflow-x: auto;
+    padding-bottom: 15px;
+  }
+  
+  body:not(.mobile-device):not(.tablet-device) .data-table th,
+  body:not(.mobile-device):not(.tablet-device) .data-table td {
+    padding: 12px 15px;
+    font-size: 13px;
+  }
+  
+  body:not(.mobile-device):not(.tablet-device) .action-cell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  body:not(.mobile-device):not(.tablet-device) .view-button,
+  body:not(.mobile-device):not(.tablet-device) .checklist-button,
+  body:not(.mobile-device):not(.tablet-device) .exam-button {
+    max-width: 100% !important;
+    margin: 2px 0;
+    height: 38px;
+    font-size: 12px;
+    line-height: 38px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  /* This catches desktop screens when zoomed to around 175% or more */
+  body:not(.mobile-device):not(.tablet-device) .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  body:not(.mobile-device):not(.tablet-device) .content-header h1 {
+    font-size: 20px;
+  }
+  
+  body:not(.mobile-device):not(.tablet-device) .data-table th,
+  body:not(.mobile-device):not(.tablet-device) .data-table td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}
+

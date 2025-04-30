@@ -2,34 +2,12 @@
     --primary-blue: #00b4d8;
     --dark-blue: #023e8a;
     --overlay-background: rgba(255, 255, 255, 0.308);
-  }
-  
-  * {
+}
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-
-
-.home-container {
-    text-align: center;
-    margin: 0px;
-}
-
-button {
-    margin: 11px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #90e0ef;
-    color: white;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #1bb9d5;
 }
 
 .home-wrapper {
@@ -39,7 +17,6 @@ button:hover {
     overflow: hidden; /* This should prevent scrolling */
     position: relative; /* Added to ensure proper stacking */
 }
-
 
 .main-header {
     background-color: #0096c7;
@@ -65,7 +42,7 @@ button:hover {
 .logo {
     width: 50px; 
     height: 50px;
-    background-image: url('../images/denr\ logo.png'); 
+    background-image: url('../images/denr logo.png'); 
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -115,21 +92,19 @@ main {
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0.4;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5); 
     z-index: -2;
 }
-
 .intro-section::after {
     content: "";
-    position: absolute;
+    position:absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color:  rgba(0, 0, 0, 0.5); 
     z-index: -1;
-}
-
+ }
 .intro-content {
     max-width: 700px;
     padding: 0 1rem;
@@ -164,13 +139,6 @@ main {
     text-align: center;
 }
 
-.quote {
-    font-size: 1.0rem;
-    color: white;
-    font-style: italic;
-    margin: 0;
-}
-
 .roles-section {
     position: relative;
     z-index: 2;
@@ -197,7 +165,7 @@ main {
 }
 
 .role-card {
-    background: rgba(255, 255, 255, 0.9);
+    background-color: rgb(54, 147, 222);
     border: 2px solid #e0e0e0;
     border-radius: 8px;
     padding: 1.5rem;
@@ -220,18 +188,6 @@ main {
     margin-bottom: 0.5rem;
 }
 
-.role-card h3 {
-    color: #c04949;
-    margin: 0 0 0.5rem 0;
-}
-
-.role-card p {
-    color: #333;
-    margin: 0;
-    font-size: 0.9rem;
-}
-
-
 .main-footer {
     background-color: #333;
     color: white;
@@ -251,72 +207,288 @@ main {
     font-size: 0.8rem;
     opacity: 0.8;
 }
-
-@keyframes rgbAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+/* Popup Overlay */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
 }
+
+/* Modal Container */
+.qualifications-modal {
+    display: flex;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    width: 1000px;
+    max-width: 95%;
+    max-height: 90vh;
+    overflow: auto;
+    animation: slideUp 0.4s ease-out;
+}
+
+.modal-left {
+    flex: 3;
+    padding: 20px;
+}
+
+.modal-right {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.close-button:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* Title */
+.qualifications-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Table Styles */
+.qualifications-table {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.table-header {
+    display: flex;
+    background-color: #00b7c7;
+}
+
+.header-cell {
+    flex: 1;
+    padding: 12px;
+    font-weight: bold;
+    text-align: center;
+    border-right: 1px solid #eee;
+}
+
+.header-cell:last-child {
+    border-right: none;
+}
+
+.table-content {
+    display: flex;
+}
+
+.content-cell {
+    flex: 1;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-right: 1px solid #ddd;
+}
+
+.content-cell:last-child {
+    border-right: none;
+}
+
+.content-cell ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.content-cell li {
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.highlight {
+    font-weight: bold;
+    color: #ca6702;
+}
+
+/* Bureau Info */
+.bureau-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.bureau-logo {
+    width: 80px;
+    height: 80px;
+    background-image: url('../images/denr logo.png'); /* Update path as needed */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 15px;
+}
+
+.bureau-name {
+    font-weight: bold;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* Apply Now Button */
+.apply-button {
+    background-color: #00b7c7;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    width: 90%;
+    margin: 15px 0 30px;
+    transition: background-color 0.2s;
+}
+
+.apply-button:hover {
+    background-color: #009baa;
+}
+
+/* Existing Section */
+.existing-section {
+    margin-top: auto;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.existing-section p {
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+.existing-section p:last-of-type {
+    margin-bottom: 0; /* Remove bottom margin from the last paragraph */
+}
+
+.tracking-button {
+    background-color: #d1ff6f;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    width: 90%;
+    margin-top: 5px; /* Reduced from 10px to move it closer to "Click here!" text */
+    transition: background-color 0.2s;
+}
+
+.tracking-button:hover {
+    background-color: #b5e74f;
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Alternative animation for slide down */
+.slide-down {
+    animation: slideDown 0.4s ease-out !important;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animation for gradient background */
+@keyframes rgbAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Responsive styles */
 @media (max-width: 768px) {
-    .header-content {
+    .qualifications-modal {
         flex-direction: column;
-        gap: 0.5rem;
-        text-align: center;
+        width: 90%;
     }
-
-    .intro-content h2 {
-        font-size: 1.8rem;
-        margin-top: 1rem; 
-    }
-
-    .intro-description {
-        margin-top: 0.5rem; 
-    }
-
-    .quote {
-        font-size: 1rem;
-    }
-
-    .roles-container {
-        display: flex;
+    
+    .table-header,
+    .table-content {
         flex-direction: column;
-        align-items: center;
-        width: 100%;
-        margin: 1rem auto; 
-        padding: 0 1rem; 
-        gap: 1rem;
     }
-
-    .role-card {
-        width: 100%;
-        max-width: 90%; 
-        margin: 0 auto; 
+    
+    .header-cell,
+    .content-cell {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
     }
-
-    .section-content {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 45vh;
+    
+    .header-cell:last-child,
+    .content-cell:last-child {
+        border-bottom: none;
     }
-
-    .intro-section {
-        height: 100%; 
-    }
-
-    .roles-section {
-        margin-top: 0;
+    
+    .modal-right {
         padding-top: 0;
     }
-
-    .quote-box {
-        margin-top: 1rem;
+    
+    .bureau-info {
+        margin-top: 10px;
+        margin-bottom: 20px;
     }
-
-    .main-footer {
-        position: fixed;
-        bottom: 0;
+    
+    .apply-button,
+    .tracking-button {
         width: 100%;
     }
-} 
+}

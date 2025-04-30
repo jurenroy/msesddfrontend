@@ -1,0 +1,299 @@
+/* Base container styles */
+.exam-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Typography */
+h1.exam-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.exam-description {
+  color: #4b5563;
+  margin-bottom: 2rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+/* Timer */
+.timer {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: #e7f0ff;
+  border-radius: 0.5rem;
+  color: #2563eb;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+
+.timer span {
+  margin-left: 0.5rem;
+}
+
+/* Loading state */
+.exam-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error state */
+.exam-error {
+  text-align: center;
+  color: #ef4444;
+  padding: 2rem;
+  background-color: #fef2f2;
+  border-radius: 0.5rem;
+  margin: 2rem 0;
+}
+
+.retry-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+/* Questions container */
+.exam-questions {
+  margin-bottom: 2rem;
+}
+
+/* Question styles */
+.question {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.answers {
+  margin-top: 0.75rem;
+}
+
+.answer {
+  margin-bottom: 0.75rem;
+}
+
+.answer label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.answer input[type="radio"] {
+  margin-right: 0.75rem;
+}
+
+/* Matching questions */
+.matching-section {
+  margin-top: 2rem;
+}
+
+.matching-question {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.matching-options {
+  margin-top: 1rem;
+}
+
+.matching-pair {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pair-prompt {
+  font-weight: 500;
+  margin-right: 1rem;
+  min-width: 150px;
+}
+
+.matching-pair select {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background-color: #fff;
+}
+
+/* Button styles */
+/* Button container for questions screen */
+.button-container {
+  display: flex;
+  justify-content: flex-end; /* Aligns buttons to the right */
+  margin-top: 2rem;
+  gap: 1rem; /* Creates space between adjacent buttons */
+  position: relative; /* Added for positioning context */
+}
+
+.next-button, .submit-button, .back-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.next-button {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.next-button:hover {
+  background-color: #2563eb;
+}
+
+.submit-button {
+  background-color: #059669;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #047857;
+}
+
+/* Back button styles for questions screen */
+.back-button {
+  background-color: #4776E6;
+  color: white;
+  padding: 1rem 4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #2563eb;
+}
+
+/* Results screen */
+.exam-result {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.exam-result h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.exam-result p {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.passed {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.failed {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Special styling for back button on the results screen */
+.exam-result .back-button {
+  position: static;
+  margin: 2rem;
+  color: white;
+  background-color: #4776E6;
+  padding: 0.75rem 2rem; /* Reduced padding to fit content better */
+  font-size: 1rem;
+ 
+  
+ 
+  white-space: nowrap; 
+  display: inline-block; 
+  text-align: center; 
+  width: auto; /* Allows the button to expand based on content */
+  min-width: 150px; /* Ensures minimum width to fit "Back to Exams" */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .exam-container {
+    padding: 1rem;
+  }
+  
+  .matching-pair {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .pair-prompt {
+    margin-bottom: 0.5rem;
+    margin-right: 0;
+  }
+  
+  .matching-pair select {
+    width: 100%;
+  }
+  
+  /* Stack buttons on mobile but keep their order */
+  .button-container {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  /* For mobile view on questions screen, reposition the back button */
+  .button-container .back-button {
+    position: static;
+    order: -1; /* Makes it appear first in the column */
+  }
+  
+  .back-button, .next-button, .submit-button {
+    width: 100%;
+  }
+}

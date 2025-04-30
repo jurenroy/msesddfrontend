@@ -1,85 +1,99 @@
 import React, { useState, useEffect } from "react";
 import "./Adboard.css";
+import "./ImprovedDashboard.css";
+import ChecklistView from "../Checklist/ChecklistView";
+import TrackingDocumentView from "../TrackingDocument/TrackingDocumentView";
+import { useNavigate } from "react-router-dom";
+import { get_notes } from "../Services/LoginService";
+import { ExamResults as fetchExamResults } from "../Services/examService";
+import { fetchUserData } from "../Services/safetyService";
+import PaginationArrow from "../Admin Dashboard/PaginationArrow";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("MGB APPLICANTS");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [safetySearchQuery, setSafetySearchQuery] = useState('');
+  const [checklistSearchQuery, setChecklistSearchQuery] = useState('');
+  const [examSearchQuery, setExamSearchQuery] = useState('');
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage]= useState(5);
+
+  const [checklist, setChecklist] = useState([]);
+  const [examResults, setExamResults] = useState([]);
+  const [userData, setUserData] = useState([]);
+
+  const [showApplicationView, setShowApplicationView] = useState(false);
+  const [selectedApplicationTrackingCode, setSelectedApplicationTrackingCode] = useState('');
+  const [selectedApplicationRole, setSelectedApplicationRole] = useState('');
+  
+  const [showChecklistView, setShowChecklistView] = useState(false);
+  const [selectedChecklistTrackingCode, setSelectedChecklistTrackingCode] = useState('');
+  const [selectedChecklistRole, setSelectedChecklistRole] = useState('');
+
+  console.log("Checklist:", checklist);
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 3000); // Simulating loading time
+    }, 2000); 
+  }, []);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const results = await fetchExamResults();
+        setExamResults(results); 
+        console.log(("Fetch Exam Results:", results))
+      } catch (err) {
+        setError(err.message); 
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    fetchData(); 
   }, []);
 
-  const employees = [
-    { 
-      id: 1, 
-      name: "Archieliz Asesor", 
-      roles: "Safety Engineer", 
-      email: "azizahgmail.com",
-      phone: "+63 912 345 6789",
-      address: "Burgos, Cagayan de Oro City",
-      education: "BSIT, University of Science and Technology of Southern Philippines",
-      experience: "15 years in software engineer",
-      skills: "Front-end Developer, Back-end Developer"
-    },
-    { 
-      id: 2, 
-      name: "Mary Alyssa Bual", 
-      roles: "Safety Inspector", 
-      email: "maryalyssa@gmail.com",
-      phone: "+63 923 456 7890",
-      address: "Gusa, Cagayan de Oro City",
-      education: "BSIT, University of Science and Technology of Southern Philippines",
-      experience: "12 years in inspecting",
-      skills: "Inspector, best in investigating"
-    },
-    { 
-      id: 3, 
-      name: "Krishallaine Calixtro", 
-      roles: "Safety Engineer", 
-      email: "krishallaine@gmail.com",
-      phone: "+63 934 567 8901",
-      address: "Calaanan, Cagayan de Oro City",
-      education: "BSIT, University of Science and Technology of Southern Philippines",
-      experience: "8 years in engineering",
-      skills: "creative, artistic"
-    },
-    { 
-      id: 4, 
-      name: "John Michael Calderon", 
-      roles: "Safety Inspector", 
-      email: "jmcacalds@gmail.com",
-      phone: "+63 934 567 8901",
-      address: "Agora Lapasan, Cagayan de Oro City",
-      education: "BSIT, University of Science and Technology of Southern Philippines",
-      experience: "8 years in inspecting",
-      skills: "abnormalism expert"
-    },
-    { 
-      id: 5, 
-      name: "Krisha Naldo", 
-      roles: "Safety Engineer", 
-      email: "krishaescarda@gmail.com",
-      phone: "+63 934 567 8901",
-      address: "Igpit, Opol",
-      education: "BSIT, University of Science and Technology of Southern Philippines",
-      experience: "20 years in engineering, team leadership",
-      skills: "abnormalism expert"
-    }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const user = await fetchUserData(); 
+        setUserData(user); 
+        console.log("Fetch User Data:", user);
+      } catch (err) {
+        setError(err.message); 
+      } finally {
+        setLoading(false); 
+      }
+    };
 
-  const examResults = [
-    { id: 1, code: "A001", name: "Archieliz Asesor", type: "SE", examScore: 28, status: "Passed" },
-    { id: 2, code: "A002", name: "Mary Alyssa Bual", type: "SI", examScore: 25, status: "Passed" },
-    { id: 3, code: "A003", name: "Krishallaine Calixtro", type: "SE", examScore: 29, status: "Passed" },
-    { id: 4, code: "A004", name: "John Michael Calderon", type: "SI", examScore: 20, status: "Failed" },
-    { id: 5, code: "A005", name: "Krisha Naldo", type: "SE", examScore: 26, status: "Passed" }
-  ];
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (Array.isArray(userData) && userData.length > 0) {
+      // Map userData to create a checklist summary
+      const derivedChecklist = userData.map(user => ({
+        trackingCode: user.tracking_code,
+        name: user.name,
+        appliedRole: user.role,
+        action: "Pending" // Default status, adjust as needed
+      }));
+      
+      setChecklist(derivedChecklist);
+      console.log("Derived checklist:", derivedChecklist);
+    }
+  }, [userData]);
 
   const openModal = (employee) => {
+
+    setShowApplicationView(false);
+    setShowChecklistView(false);
     setSelectedEmployee(employee);
     setShowModal(true);
   };
@@ -89,140 +103,390 @@ const Dashboard = () => {
     setSelectedEmployee(null);
   };
 
-  if (loading) {
-    return (
-      <div className="earth">
-        <div className="earth-loader">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-            <path transform="translate(100 100)" d="M29.4,-17.4C33.1,1.8,27.6,16.1,11.5,31.6C-4.7,47,-31.5,63.6,-43,56C-54.5,48.4,-50.7,16.6,-41,-10.9C-31.3,-38.4,-15.6,-61.5,-1.4,-61C12.8,-60.5,25.7,-36.5,29.4,-17.4Z" fill="#7CC133"></path>
-          </svg>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-            <path transform="translate(100 100)" d="M31.7,-55.8C40.3,-50,45.9,-39.9,49.7,-29.8C53.5,-19.8,55.5,-9.9,53.1,-1.4C50.6,7.1,43.6,14.1,41.8,27.6C40.1,41.1,43.4,61.1,37.3,67C31.2,72.9,15.6,64.8,1.5,62.2C-12.5,59.5,-25,62.3,-31.8,56.7C-38.5,51.1,-39.4,37.2,-49.3,26.3C-59.1,15.5,-78,7.7,-77.6,0.2C-77.2,-7.2,-57.4,-14.5,-49.3,-28.4C-41.2,-42.4,-44.7,-63,-38.5,-70.1C-32.2,-77.2,-16.1,-70.8,-2.3,-66.9C11.6,-63,23.1,-61.5,31.7,-55.8Z" fill="#7CC133"></path>
-          </svg>
-        </div>
-        <p>Connecting...</p>
-      </div>
-    );
-  }
+  const handleLogout = () => {
+    alert("Logging out...");
+    navigate("/login");
+  };
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    // Scroll to top of the table when page changes
+    document.querySelector('.data-table').scrollIntoView({ behavior: 'smooth' });
+  };
+  //KRISHA NALDO
+  const filteredUserData = Array.isArray(userData) ? userData.filter(user => 
+    user.tracking_code?.toLowerCase().includes(safetySearchQuery.toLowerCase()) || 
+    user.name?.toLowerCase().includes(safetySearchQuery.toLowerCase()) || 
+    user.role?.toLowerCase().includes(safetySearchQuery.toLowerCase())
+  ) : [];
+  const filteredExamResults = Array.isArray(examResults) ? examResults.filter(exam => 
+    exam.tracking_code && typeof exam.tracking_code === 'string' && 
+    exam.tracking_code.toLowerCase().includes(examSearchQuery.toLowerCase())
+  ) : [];
+
+
+  useEffect(() => {
+    if (showApplicationView || showChecklistView) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showApplicationView, showChecklistView]);
+
 
   return (
-    <div className="dashboard-container">
-      <aside className="sidebar">
-        <h2 className="logo"></h2>
-        <nav>
-          <ul>
-            <li 
-              className={activeTab === "MGB APPLICANTS" ? "active" : ""}
-              onClick={() => setActiveTab("MGB APPLICANTS")}
+    <>
+      <div className="dashboard-container">
+        {error && <div className="error-banner">{error}</div>}
+        
+        <aside className="sidebar">
+          <div className="logo-container">
+            <h2 className="logo"></h2>
+          </div>
+          
+          <nav className="sidebar-nav">
+            <ul>
+              <li 
+                className={activeTab === "MGB APPLICANTS" ? "nav-item active" : "nav-item"}
+                onClick={() => {
+                  setActiveTab("MGB APPLICANTS"); 
+                  setSafetySearchQuery('');
+                  setChecklistSearchQuery('');
+                  setExamSearchQuery('');
+                }}
+              >
+                <span className="nav-icon">👥</span>
+                <span className="nav-text">MGB APPLICANTS</span>
+              </li>
+              
+              <li 
+                className={activeTab === "CHECKLIST" ? "nav-item active" : "nav-item"}
+                onClick={() => {
+                  setActiveTab("CHECKLIST"); 
+                  setSafetySearchQuery('');
+                  setChecklistSearchQuery('');
+                  setExamSearchQuery('');
+                }}
+              >
+                <span className="nav-icon">✓</span>
+                <span className="nav-text">Checklist</span>
+              </li>
+              
+              <li 
+                className={activeTab === "RESULT EXAM" ? "nav-item active" : "nav-item"}
+                onClick={() => {
+                  setActiveTab("RESULT EXAM"); 
+                  setSafetySearchQuery('');
+                  setChecklistSearchQuery('');
+                  setExamSearchQuery('');
+                }}
+              >
+                <span className="nav-icon">📝</span>
+                <span className="nav-text">Result Exam</span>
+              </li>
+            </ul>
+          </nav>
+          
+          <div className="sidebar-footer">
+            <button 
+              className="logout-button"
+              onClick={handleLogout}
             >
-              MGB APPLICANTS
-            </li>
-            <li 
-              className={activeTab === "CHECKLIST" ? "active" : ""}
-              onClick={() => setActiveTab("CHECKLIST")}
-            >
-              CHECKLIST
-            </li>
-            <li 
-              className={activeTab === "RESULT EXAM" ? "active" : ""}
-              onClick={() => setActiveTab("RESULT EXAM")}
-            >
-              RESULT EXAM
-            </li>
-          </ul>
-        </nav>
-      </aside>
-      <main className="main-content">
-        {activeTab === "MGB APPLICANTS" && (
-          <section className="users-table">
-            <h2>List of Applicants for Safety Engineer and Inspector Roles</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Roles</th>
-                  <th>Email</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employees.map((employee) => (
-                  <tr key={employee.id}>
-                    <td>{employee.name}</td>
-                    <td>{employee.roles}</td>
-                    <td>{employee.email}</td>
-                    <td>
-                      <button 
-                        className="info-icon" 
-                        onClick={() => openModal(employee)}
-                        aria-label="View details"
-                      >
-                        <svg 
-                          xmlns="http://www.w3.org/2000/svg" 
-                          width="20" 
-                          height="20" 
-                          viewBox="0 0 24 24" 
-                          fill="none" 
-                          stroke="currentColor" 
-                          strokeWidth="2" 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round"
-                        >
-                          <circle cx="12" cy="12" r="10"></circle>
-                          <line x1="12" y1="16" x2="12" y2="12"></line>
-                          <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </section>
-        )}
-        {activeTab === "RESULT EXAM" && (
-  <section className="exam-results-table">
-    <h2>Exam Results</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Code</th> {/* Code column */}
-          <th>Name</th>
-          <th>Type</th> {/* Type column */}
-          <th>Score</th>
-          <th>Percentage</th> {/* Add Percentage column */}
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {examResults.map((result) => {
-          // Calculate percentage (assuming max score of 30)
-          const percentage = ((result.examScore / 30) * 100).toFixed(2);
+              <span className="logout-icon">⎋</span>
+              <span>Logout</span>
+            </button>
+          </div>
+        </aside>
+          
+        <main className="main-content">
+          <div className="content-header">
+            <h1>{activeTab}</h1>
+            {activeTab === "MGB APPLICANTS" && (
+              <div className="search-container">
+                <input
+                  type="text"
+                  placeholder="Search applicants..."
+                  value={safetySearchQuery}
+                  onChange={(e) => setSafetySearchQuery(e.target.value)}
+                  className="search-input"
+                />
+                <span className="search-icon">🔍</span>
+              </div>
+            )}
+            {activeTab === "CHECKLIST" && (
+              <div className="search-container">
+                <input
+                  type="text"
+                  placeholder="Search checklist..."
+                  value={checklistSearchQuery}
+                  onChange={(e) => setChecklistSearchQuery(e.target.value)}
+                  className="search-input"
+                />
+                <span className="search-icon">🔍</span>
+              </div>
+            )}
+            {activeTab === "RESULT EXAM" && (
+              <div className="search-container">
+                <input
+                  type="text"
+                  placeholder="Search exam results..."
+                  value={examSearchQuery}
+                  onChange={(e) => setExamSearchQuery(e.target.value)}
+                  className="search-input"
+                />
+                <span className="search-icon">🔍</span>
+              </div>
+            )}
+          </div>
+          
+          {activeTab === "MGB APPLICANTS" && Array.isArray(userData) && (
+            <div className="pagination-container" style={{
+              position: 'fixed',
+              bottom: '20px',
+              right: '20px',
+              zIndex: 100
+            }}>
+              <PaginationArrow 
+                currentPage={currentPage} 
+                onPageChange={handlePageChange}
+                hasMorePages={currentPage * itemsPerPage < userData.length}
+              />
+            </div>
+          )}
 
-          return (
-            <tr key={result.id}>
-              <td>{result.code}</td> {/* Code column */}
-              <td>{result.name}</td>
-              <td>{result.type}</td> {/* Type column */}
-              <td>{result.examScore}</td>
-              <td>{percentage}%</td> {/* Percentage column */}
-              <td>{result.status}</td>
+          {activeTab === "MGB APPLICANTS" && (
+            <section className="data-card">
+              <div className="card-header">
+                <h2>Safety Engineer and Inspector Applicants</h2>
+              </div>
+              <div className="table-responsive">
+              <div class="table-container">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Tracking Code</th>
+                      <th>Name</th>
+                      <th>Roles</th>
+                      <th>Email</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {Array.isArray(userData) && userData
+                          .filter(user => 
+                           user.tracking_code?.toLowerCase().includes(safetySearchQuery.toLowerCase()) || 
+                           user.name?.toLowerCase().includes(safetySearchQuery.toLowerCase()) || 
+                           user.role?.toLowerCase().includes(safetySearchQuery.toLowerCase())
+                      )
+                      .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) 
+                      .map((employee) => (
+                        <tr key={employee.id || employee.tracking_code}>
+                          <td>{employee.tracking_code}</td>
+                          <td>{employee.name}</td>
+                          <td><span className="role-badge">{employee.role}</span></td>
+                          <td>{employee.email}</td>
+                          <td className="action-cell">
+                            {selectedApplicationTrackingCode !== employee.tracking_code && (
+                              <button 
+                                className="action-button view-button"
+                                onClick={() => { 
+                                  setShowApplicationView(true); 
+                                  setSelectedApplicationRole(employee.role); 
+                                  setSelectedApplicationTrackingCode(employee.tracking_code);
+                                }}
+                              >
+                                View Application
+                              </button>
+                            )}
+                            
+                            
+                            {selectedApplicationTrackingCode === employee.tracking_code && (
+                              <button 
+                                className="action-button close-button"
+                                onClick={() => { 
+                                  setShowApplicationView(false); 
+                                  setSelectedApplicationRole(''); 
+                                  setSelectedApplicationTrackingCode(''); 
+                                }}
+                              >
+                                Close Application
+                              </button>
+                            )}
+                            
+                            <button 
+                              className="action-button checklist-button"
+                              onClick={() => { 
+                                setActiveTab("CHECKLIST"); 
+                                setChecklistSearchQuery(employee.tracking_code); 
+                              }}
+                            >
+                              View Checklist
+                            </button>
+                            
+                            <button 
+                              className="action-button exam-button"
+                              onClick={() => { 
+                                setActiveTab("RESULT EXAM"); 
+                                setExamSearchQuery(employee.tracking_code); 
+                              }}
+                            >
+                              View Exam
+                            </button>
+                            
+                            <button 
+                              className="info-button" 
+                              onClick={() => openModal(employee)}
+                              aria-label="View details"
+                            >
+                              ℹ️
+                            </button>
+                            
+                          </td>
+                        </tr>
+                      ))}
+                      
+                    {Array.isArray(userData) && userData.filter(user => 
+                      user.tracking_code?.toLowerCase().includes(safetySearchQuery.toLowerCase()) || 
+                      user.name?.toLowerCase().includes(safetySearchQuery.toLowerCase()) || 
+                      user.role?.toLowerCase().includes(safetySearchQuery.toLowerCase())
+                    ).length === 0 && (
+                      <tr>
+                        <td colSpan="5" className="no-results">No matching applicants found</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              </div>
+            </section>
+          )}
+          
+          {activeTab === "CHECKLIST" && (
+  <section className="data-card">
+    <div className="card-header">
+      <h2>Application Checklist</h2>
+    </div>
+    <div className="table-responsive">
+      <table className="data-table">
+        <thead>
+          <tr>
+            <th>Tracking Code</th>
+            <th>Name</th>
+            <th>Applied Role</th>
+            <th>Status / Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {checklist
+            .filter(item =>
+              item.name.toLowerCase().includes(checklistSearchQuery.toLowerCase()) ||
+              item.trackingCode.toLowerCase().includes(checklistSearchQuery.toLowerCase())
+            )
+            .map((item, index) => (
+              <tr key={index}>
+                <td>{item.trackingCode}</td>
+                <td>{item.name}</td>
+                <td><span className="role-badge">{item.appliedRole}</span></td>
+                <td>
+                  <span className={`status-badge status-${item.action.toLowerCase()}`}>
+                    {item.action}
+                  </span>
+                  
+                  <button
+                    className="action-button view-button"
+                    onClick={() => {
+                      setShowChecklistView(true);
+                      setSelectedChecklistRole(item.appliedRole);
+                      setSelectedChecklistTrackingCode(item.trackingCode);
+                    }}
+                  >
+                    View Checklist
+                  </button>
+                </td>
+              </tr>
+            ))}
+          
+          {checklist.filter(item =>
+            item.name.toLowerCase().includes(checklistSearchQuery.toLowerCase()) ||
+            item.trackingCode.toLowerCase().includes(checklistSearchQuery.toLowerCase())
+          ).length === 0 && (
+            <tr>
+              <td colSpan="4" className="no-results">No matching checklist items found</td>
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          )}
+        </tbody>
+      </table>
+    </div>
   </section>
 )}
-        {activeTab !== "MGB APPLICANTS" && activeTab !== "RESULT EXAM" && (
-          <section className="content-placeholder">
-            <header>
-              <h1>{activeTab}</h1>
-            </header>
-            <p>Content for {activeTab} coming soon...</p>
-          </section>
-        )}
-      </main>
+          
+          {activeTab === "RESULT EXAM" && (
+            <section className="data-card">
+              <div className="card-header">
+                <h2>Exam Results</h2>
+              </div>
+              <div className="table-responsive">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Tracking Code</th>
+                      <th>Name</th>
+                      <th>Score</th>
+                      <th>Percentage</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Array.isArray(examResults) && examResults
+                      .filter(exam => 
+                        exam.tracking_code && typeof exam.tracking_code === 'string' && 
+                        exam.tracking_code.toLowerCase().includes(examSearchQuery.toLowerCase())
+                      )
+                      .map((result) => {
+                        const details = result.details || {};
+                        const { examName, mc_score, score, mc_results, passing_score, passed } = details;
+
+                        return (
+                          <tr key={result.id || result.tracking_code}>
+                            <td>{result.tracking_code}</td>
+                            <td>{examName || 'N/A'}</td> 
+                            <td>{result.score}</td>
+                            <td>{mc_score || mc_results}%</td> 
+                            <td>
+                              <span className={`status-badge status-${passed ? 'passed' : 'failed'}`}>
+                                {passed ? 'Passed' : 'Failed'}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      
+                    {Array.isArray(examResults) && examResults.filter(exam => 
+                      exam.tracking_code && typeof exam.tracking_code === 'string' && 
+                      exam.tracking_code.toLowerCase().includes(examSearchQuery.toLowerCase())
+                    ).length === 0 && (
+                      <tr>
+                        <td colSpan="5" className="no-results">No matching exam results found</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
+          
+          {activeTab !== "MGB APPLICANTS" && activeTab !== "RESULT EXAM" && activeTab !== "CHECKLIST" && (
+            <section className="content-placeholder">
+              <header>
+                <h1>{activeTab}</h1>
+              </header>
+              <p>Content for {activeTab} coming soon...</p>
+            </section>
+          )}
+        </main>
+      </div>
       
       {/* Modal */}
       {showModal && selectedEmployee && (
@@ -231,51 +495,92 @@ const Dashboard = () => {
             <div className="modal-header">
               <h2>Applicant Details</h2>
               <button 
-                className="close-button" 
+                className="modal-close-button" 
                 onClick={closeModal}
                 aria-label="Close"
               >
-                &times;
+                ×
               </button>
             </div>
             <div className="modal-body">
-              <div className="detail-row">
-                <span className="detail-label">Name:</span>
-                <span className="detail-value">{selectedEmployee.name}</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Role:</span>
-                <span className="detail-value">{selectedEmployee.roles}</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Email:</span>
-                <span className="detail-value">{selectedEmployee.email}</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Phone:</span>
-                <span className="detail-value">{selectedEmployee.phone}</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Address:</span>
-                <span className="detail-value">{selectedEmployee.address}</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Education:</span>
-                <span className="detail-value">{selectedEmployee.education}</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Experience:</span>
-                <span className="detail-value">{selectedEmployee.experience}</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Skills:</span>
-                <span className="detail-value">{selectedEmployee.skills}</span>
+              <div className="detail-grid">
+                <div className="detail-row">
+                  <span className="detail-label">Name:</span>
+                  <span className="detail-value">{selectedEmployee.name}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Role:</span>
+                  <span className="detail-value">{selectedEmployee.role}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Email:</span>
+                  <span className="detail-value">{selectedEmployee.email}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Phone:</span>
+                  <span className="detail-value">{selectedEmployee.contactNo || 'N/A'}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Address:</span>
+                  <span className="detail-value">{selectedEmployee.address || 'N/A'}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Education:</span>
+                  <span className="detail-value">OnGoing_Test</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Experience:</span>
+                  <span className="detail-value">OnGoing_Test</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Skills:</span>
+                  <span className="detail-value">OnGoing_Test</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      )}  
+
+     {/* Application View Overlay */}
+      {showApplicationView && (
+        <div className="document-overlay">
+          <div className="document-overlay-content">
+            <button 
+              className="document-overlay-close-button"
+              onClick={() => { 
+                setShowApplicationView(false); 
+                setSelectedApplicationRole(''); 
+                setSelectedApplicationTrackingCode(''); 
+              }}
+            >
+              ×
+            </button>
+            <div className="document-overlay-header">
+              <h2>Application Document - {selectedApplicationTrackingCode}</h2>
+              <p>Role: {selectedApplicationRole}</p>
+            </div>
+            <div className="document-content-wrapper">
+              <TrackingDocumentView 
+                role={selectedApplicationRole} 
+                trackingcode={selectedApplicationTrackingCode}
+              />
+            </div>
+          </div>
+        </div>
       )}
-    </div>
+
+      {/* ChecklistView Overlay */}
+      {showChecklistView && (
+        
+              <ChecklistView 
+                role={selectedChecklistRole} 
+                trackingcode={selectedChecklistTrackingCode}
+                
+              />
+            
+      )}
+    </>
   );
 };
 

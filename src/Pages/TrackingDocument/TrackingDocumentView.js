@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './TrackingDocument.css'
 import API_BASE_URL from '../../config';
 
-const TrackingDocument = () => {
-    const { role, trackingcode } = useParams();
+const TrackingDocumentView = ({ role, trackingcode }) => {
     const [trackingData, setTrackingData] = useState(null);
     const [error, setError] = useState(null);
 
@@ -102,7 +100,7 @@ const TrackingDocument = () => {
 
 
     return (
-        <div style={{backgroundColor: 'gray', height: 'auto', position: 'relative'}}>
+        <div style={{backgroundColor: 'gray', height: 'auto', position: 'relative', zIndex: 999}}>
             {showPopup && (
         <div className="popup-overlay">
           <div className="popup-content">
@@ -267,7 +265,7 @@ const TrackingDocument = () => {
                                 <th>Date Taken</th>
                                 <th>Rating</th>
                                 <th colSpan="3" style={{textAlign: 'center'}}>
-                                    <p style={{margin: '-0px', borderBottom: '1px solid #ddd'}}>Registration - PRC #</p>
+                                    <p style={{margin: '-0px', borderBottom: '1px solid #ddd'}}>Registration</p>
                                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', margin: '-10px', marginBottom: '-27px'}}>
                                     <p>Kind</p>
                                     <p style={{fontSize: '20px', marginTop: '2px', fontWeight: 'normal', color: '#ddd'}}>|</p>
@@ -298,7 +296,7 @@ const TrackingDocument = () => {
                         <table className="json-table">
                             <thead>
                                 <tr>
-                                    <th>Position (from present to recent)</th>
+                                    <th>Position (from recent to present)</th>
                                     <th colSpan="2">Inclusive Date</th>
                                     <th>Length of Service</th>
                                     <th>Status of Appointment</th>
@@ -393,10 +391,11 @@ const TrackingDocument = () => {
               <button onClick={handleViewFiles}>View Notarize File</button>
               <button onClick={() => setShowPopup(true)}>Upload Notarize File</button>
               <button onClick={handlePrint}>Download / Print</button>
+              <button onclick={handleViewFiles}>View Checklist</button>
               
             </div>
         </div>
     );
 };
 
-export default TrackingDocument;
+export default TrackingDocumentView;

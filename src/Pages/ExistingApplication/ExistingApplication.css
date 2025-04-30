@@ -1,168 +1,405 @@
-/* Apply background only to this specific page */
-.existing-page {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    height: 100vh; /* Ensures full viewport height */
-    overflow: hidden; /* Prevents scrolling */
-    background-image: url('../images/tracking.jpg'); /* Background image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+/* Light theme redesign for Existing Application page */
+.existing-application-page {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa, #e4e9f2, #dfe6f0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Navbar */
-.navbar-existing {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background: rgba(48, 183, 217, 0.536);
-    color: white;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+/* Orbital background elements */
+.orbital-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
-.navbar-existing .logo {
-    background: url('../images/denr\ logo.png') no-repeat center;
-    background-size: contain;
-    width: 50px;
-    height: 50px;
-    display: block;
+.orbital {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+  border: 2px solid rgba(71, 118, 230, 0.3);
 }
 
-/* Form Container */
-.existing-tracking-form {
-    max-width: 500px;
-    margin: auto;
-    padding: 40px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
+.orbit-1 {
+  width: 60vw;
+  height: 60vw;
+  top: -15vw;
+  right: -15vw;
+  animation: rotate 80s linear infinite;
 }
 
-/* Headings */
-h1 {
-    font-size: 1.8rem;
-    color: #ffffff;
-    margin-bottom: 5px;
-    margin-top: 11px;
+.orbit-2 {
+  width: 40vw;
+  height: 40vw;
+  bottom: -10vw;
+  left: -10vw;
+  animation: rotate 60s linear infinite reverse;
 }
 
-/* Input Field */
-.existing-tracking-input {
-    width: 100%;
-    padding: 12px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    outline: none;
-    transition: border-color 0.3s;
+.orbit-3 {
+  width: 80vw;
+  height: 50vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 15s ease-in-out infinite;
 }
 
-.existing-tracking-input:focus {
-    border-color: #007bff;
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-
-/* Buttons */
-.existing-tracking-button-container {
-    display: flex;
-    gap: 5px;
-    margin-top: 15px;
+@keyframes pulse {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.2;
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.3;
+  }
 }
 
-button {
-    flex: 1;
-    padding: 10px;
-    font-size: 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s;
-    min-width: 100px;
+/* Main card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  width: 90%;
+  max-width: 500px;
+  z-index: 10;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.existing-tracking-button {
-    background: #4fbadd;
-    color: #fff;
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
-.existing-tracking-button:hover {
-    background: #0056b3;
+/* Card header */
+.card-header {
+  background: linear-gradient(90deg, #4776E6, #8E54E9);
+  padding: 20px;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.existing-tracking-back-button {
-    background: #4fbadd;
-    color: #fff;
+.page-title {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0 0 0 40px;
+  text-align: center;
 }
 
-.existing-tracking-back-button:hover {
-    background: #0056b3;
+/* Back button */
+.back-button {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s ease;
 }
 
-.existing-tracking-exam-button {
-    background: #0479d9; 
-    color: #fff;
-    text-decoration: none;
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-50%) scale(1.1);
 }
 
-.existing-tracking-exam-button a {
-    text-decoration: none;
+.back-button svg {
+  width: 20px;
+  height: 20px;
 }
 
-
-.existing-tracking-exam-button,
-.existing-tracking-exam-button a {
-    text-decoration: none;
-    display: inline-block; /* Ensures proper styling */
+/* Card content */
+.card-content {
+  padding: 30px;
 }
 
-.existing-tracking-exam-button a:visited,
-.existing-tracking-exam-button a:hover,
-.existing-tracking-exam-button a:active {
-    text-decoration: none;
-}
-.existing-tracking-exam-button:hover {
-    background: #20f389ef; 
+/* Form styling */
+.tracking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.existing-tracking-error {
-    color: red;
-    margin-top: 10px;
-    font-size: 14px;
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* Footer Styling */
-.footer-existing {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    color: black;
-    background: whitesmoke;
-    text-align: center;
-    padding: 10px;
-    font-size: 14px;
+.input-group label {
+  color: #454b60;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-/* Responsive Design */
+.tracking-input {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(71, 118, 230, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #454b60;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.tracking-input:focus {
+  border-color: #4776E6;
+  box-shadow: 0 0 0 2px rgba(71, 118, 230, 0.2);
+  background: rgba(255, 255, 255, 1);
+}
+
+.tracking-input::placeholder {
+  color: #a0a8bd;
+}
+
+.tracking-error {
+  color: #f04747;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* Button container */
+.buttons-container {
+  display: grid;
+  grid-template-columns: 1fr;  /* Single column */
+  justify-items: center;       /* Center horizontally */
+  gap: 12px;
+}
+
+/* Button styling */
+.action-button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.action-button:focus:not(:active)::after {
+  animation: ripple 0.8s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(30, 30);
+    opacity: 0;
+  }
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #4776E6, #8E54E9);
+  color: white;
+  box-shadow: 0 4px 12px rgba(71, 118, 230, 0.3);
+}
+
+.submit-button:hover {
+  background: linear-gradient(135deg, #3c66d6, #7e44d9);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(71, 118, 230, 0.4);
+}
+
+.track-button {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+  color: white;
+  box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3);
+}
+
+.track-button:hover {
+  background: linear-gradient(135deg, #0f897e, #32df71);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(17, 153, 142, 0.4);
+}
+
+.exam-button {
+  background: linear-gradient(135deg, #FF416C, #FF4B2B);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 65, 108, 0.3);
+  margin-top: 10px;
+}
+
+.exam-button:hover {
+  background: linear-gradient(135deg, #f13361, #ff3a16);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 65, 108, 0.4);
+}
+
+/* Notification styling */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  max-width: 350px;
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  animation: slideIn 0.3s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.notification-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.notification-message {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.notification-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  animation: progress 3s linear forwards;
+}
+
+@keyframes progress {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* Notification types */
+.success-message {
+  background: linear-gradient(to right, #43cea2, #185a9d);
+  color: white;
+}
+
+.success-message .notification-progress {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.input-error {
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  color: white;
+}
+
+.input-error .notification-progress {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.network-error {
+  background: linear-gradient(to right, #5c258d, #4389a2);
+  color: white;
+}
+
+.network-error .notification-progress {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Footer styling */
+.app-footer {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  color: #454b60;
+  font-size: 0.85rem;
+  z-index: 5;
+}
+
+/* Responsive adjustments */
 @media (max-width: 600px) {
-    .existing-tracking-form {
-        padding: 15px;
-    }
-    
-    .existing-tracking-button-container {
-        flex-direction: column;
-    }
-    
-    button {
-        width: 100%;
-    }
+  .glass-card {
+    width: 95%;
+    max-width: 100%;
+  }
+  
+  .page-title {
+    font-size: 1.2rem;
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .buttons-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .notification-container {
+    left: 10px;
+    right: 10px;
+    max-width: none;
+  }
+}
+
+/* Animation for warnings */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.input-error, .network-error {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
 }
