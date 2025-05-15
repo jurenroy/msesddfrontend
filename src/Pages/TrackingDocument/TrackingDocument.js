@@ -214,7 +214,7 @@ const TrackingDocument = () => {
                     </div>
 
 
-                    <div className="single-row3">
+                    <div className="single-row4">
                         <p>(by birth, naturalization, etc.)</p>
                     </div>
                     </div>
@@ -377,7 +377,7 @@ const TrackingDocument = () => {
                         at _________________________________________, Philippines.
                         </p>
                         <div className="single-row3">
-                            <p style={{marginRight: '0px', marginTop: '20px', fontWeight: 'normal'}}>__________________</p>
+                            <p style={{marginRight: '0px', marginTop: '30px', fontWeight: 'normal'}}>__________________</p>
                             <p>NOTARY PUBLIC</p>
                         </div>
                         <p>Doc. No.	____________</p>

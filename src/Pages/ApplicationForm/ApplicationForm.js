@@ -56,7 +56,30 @@ const ApplicationForm = () => {
     const trainingFileInputRef = useRef(null);
 
     const handleFileChange = (setter) => (event) => {
-        setter(event.target.files);
+        const files = event.target.files;
+        const maxSize = 10 * 1024 * 1024; // 10MB per file
+        const allowedTypes = [
+            'application/pdf', 
+            'image/jpeg', 
+            'image/png',
+            'image/jpg',
+            'application/msword',                                                  // .doc
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+        ];
+    
+        for (let file of files) {
+            if (file.size > maxSize) {
+                alert(`File ${file.name} is too large. Maximum size is 10MB`);
+                event.target.value = ''; 
+                return;
+            }
+            if (!allowedTypes.includes(file.type)) {
+                alert(`File ${file.name} type is not allowed. Please upload PDF, images, or document files.`);
+                event.target.value = ''; 
+                return;
+            }
+        }
+        setter(files);
     };
 
     const [isAlien, setIsAlien] = useState(false);

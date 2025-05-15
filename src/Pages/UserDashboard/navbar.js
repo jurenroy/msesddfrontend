@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './navbar.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -7,12 +8,78 @@ const Navbar = ({
   handleDashboardClick,
   handleChecklistClick,
   handleExamClick,
-  handleHomeClick
+  handleHomeClick,
+  handleApplicationClick,
+  trackingCode
 }) => {
   const [expanded, setExpanded] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
   
   const toggleSidebar = () => {
     setExpanded(!expanded);
+  };
+  
+  // Custom handler for exam click that passes tracking code
+  const onExamClick = () => {
+    // Get tracking code from props or location state
+    const currentTrackingCode = trackingCode || location.state?.trackingNumber || location.state?.trackingCodeData?.tracking_code;
+    
+    if (currentTrackingCode) {
+      navigate(`/safety/inspector/existing/exam_list`, {
+        state: { 
+          trackingCodeData: { tracking_code: currentTrackingCode },
+          showNavbar: true
+        }
+      });
+    }
+    
+    // Still call the original handler if provided
+    if (handleExamClick) {
+      handleExamClick();
+    }
+  };
+  
+  // Custom handler for checklist click
+  const onChecklistClick = () => {
+    // Get tracking code from props or location state
+    const currentTrackingCode = trackingCode || location.state?.trackingNumber || location.state?.trackingCodeData?.tracking_code;
+    
+    if (window.location.pathname.includes('exam_list')) {
+      // We're on the exam list page, need to navigate to dashboard first
+      navigate(`/safety/inspector/dashboard`, {
+        state: { 
+          trackingCodeData: { tracking_code: currentTrackingCode },
+          showChecklist: true  // Signal to show checklist on load
+        }
+      });
+    } else {
+      // We're already on a page with the modal capability, just call the handler
+      if (handleChecklistClick) {
+        handleChecklistClick();
+      }
+    }
+  };
+  
+  // Custom handler for application click
+  const onApplicationClick = () => {
+    // Get tracking code from props or location state
+    const currentTrackingCode = trackingCode || location.state?.trackingNumber || location.state?.trackingCodeData?.tracking_code;
+    
+    if (window.location.pathname.includes('exam_list')) {
+      // We're on the exam list page, need to navigate to dashboard first
+      navigate(`/safety/inspector/dashboard`, {
+        state: { 
+          trackingCodeData: { tracking_code: currentTrackingCode },
+          showApplication: true  // Signal to show application on load
+        }
+      });
+    } else {
+      // We're already on a page with the modal capability, just call the handler
+      if (handleApplicationClick) {
+        handleApplicationClick();
+      }
+    }
   };
   
   return (
@@ -48,7 +115,7 @@ const Navbar = ({
           {/* Checklist item */}
           <li
             className={activePage === 'checklist' ? 'active' : ''}
-            onClick={handleChecklistClick}
+            onClick={onChecklistClick}
           >
             <div className="nav-icon">
               <i className="fas fa-clipboard-list"></i>
@@ -56,10 +123,10 @@ const Navbar = ({
             {expanded && <span>Checklist</span>}
           </li>
           
-          {/* Exam item */}
+          {/* Exam item - Now uses our custom handler */}
           <li
             className={activePage === 'exam' ? 'active' : ''}
-            onClick={handleExamClick}
+            onClick={onExamClick}
           >
             <div className="nav-icon">
               <i className="fas fa-graduation-cap"></i>
@@ -67,8 +134,19 @@ const Navbar = ({
             {expanded && <span>Access Exam</span>}
           </li>
           
+          {/* Application item - Now uses custom handler */}
+          <li
+            className={activePage === 'application' ? 'active' : ''}
+            onClick={onApplicationClick}
+          >
+            <div className="nav-icon">
+              <i className="fas fa-file-alt"></i>
+            </div>
+            {expanded && <span>Application</span>}
+          </li>
+          
           {/* Home item */}
-          <li 
+          <li
             className={activePage === 'home' ? 'active' : ''}
             onClick={handleHomeClick}
           >
@@ -79,9 +157,8 @@ const Navbar = ({
           </li>
         </ul>
       </nav>
-      
-
-        </div>
+            
+    </div>
   );
 };
 

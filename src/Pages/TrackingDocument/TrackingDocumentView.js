@@ -94,11 +94,84 @@ const TrackingDocumentView = ({ role, trackingcode }) => {
         fetchTrackingData();
     }, [trackingcode]);
 
-    const handlePrint = () => {
-        window.print();
+  // Revised function to handle print and PDF functionality
+const handlePrint = () => {
+    // Set up a flag to track if printing completed
+    let printCompleted = false;
+    
+    // Add event listeners to track print process
+    window.addEventListener('afterprint', function onAfterPrint() {
+      // This event fires when print is completed OR canceled
+      // We'll use a short delay to detect if it was actually printed
+      setTimeout(() => {
+        if (printCompleted) {
+          // Only generate PDF if printing was completed
+          downloadPDF();
+        }
+        // Remove the event listener to prevent multiple bindings
+        window.removeEventListener('afterprint', onAfterPrint);
+      }, 100);
+    });
+    
+    // Add listener for beforeprint (optional, for tracking)
+    window.addEventListener('beforeprint', function onBeforePrint() {
+      console.log('Print dialog opened');
+      // Set flag to true - we'll assume printing will happen
+      printCompleted = true;
+      // Remove the event listener 
+      window.removeEventListener('beforeprint', onBeforePrint);
+    });
+    
+    // Open the print dialog
+    window.print();
+    
+    // Add a cancel detection method (focus change often indicates cancellation)
+    window.addEventListener('focus', function onFocus() {
+      // If focus returns to window quickly, print was likely canceled
+      setTimeout(() => {
+        if (document.hasFocus()) {
+          console.log('Print dialog appears to have been canceled');
+          printCompleted = false;
+        }
+        window.removeEventListener('focus', onFocus);
+      }, 300);
+    });
+  };
+  
+  // Separate function for PDF download
+  const downloadPDF = () => {
+    // First, check if the library is already loaded
+    if (typeof window.html2pdf === 'undefined') {
+      // Load the html2pdf.js library dynamically
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+      script.onload = () => {
+        if (window.html2pdf) {
+          generatePDF();
+        }
       };
-
-
+      document.body.appendChild(script);
+    } else {
+      // Library already loaded, generate PDF directly
+      generatePDF();
+    }
+  };
+  
+  // Function to generate and download PDF - same as before
+  const generatePDF = () => {
+    const content = document.querySelector('.a4-container');
+    const filename = `Application_${trackingData.permit_type}_${trackingData.role}_${trackingData.name.replace(/\s+/g, '_')}.pdf`;
+          
+    const pdfOptions = {
+      margin: 10,
+      filename: filename,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+          
+    window.html2pdf().from(content).set(pdfOptions).save();
+  };
     return (
         <div style={{backgroundColor: 'gray', height: 'auto', position: 'relative', zIndex: 999}}>
             {showPopup && (

@@ -6,7 +6,7 @@
     padding: 15mm;  /* Padding inside the A4 container */
     box-sizing: border-box;
     background-color: #fff;  /* Optional, for better visual appearance */
-    border: 1px solid white ;
+    border: 1px solid white;
 }
 
 /* Content inside the A4 container */
@@ -17,7 +17,7 @@
     padding: 0;
 }
 .tracking-header{
-    margin-top: -50px;
+    margin-top: 0; /* Fixed from -50px to make header visible */
     text-align: center;
 }
 .tracking-header-text{
@@ -106,6 +106,35 @@
     text-align: left;
     font-size: 13px;
 }
+
+/* Fixed: Made the registration columns properly align */
+.registration-header {
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    margin: 0;
+    padding: 2px;
+}
+
+.registration-columns {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
+
+.registration-columns p {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+    padding: 4px 0;
+}
+
+/* Add space above notary signature line */
+.notary-signature {
+    margin-top: 30px;
+    text-align: center;
+}
+
 .buttoncontainerzz{
    display: flex;
    flex-direction: column; 
@@ -218,61 +247,194 @@
       }
 }
 
-/* Style for printing */
+/* Style for printing - FIXED to prevent duplication */
 @media print {
+    /* Reset any background colors and borders for printing */
+    @page {
+        size: A4 portrait;
+        margin: 0.4cm;
+        margin-bottom: 0.3cm; /* Smaller bottom margin to fit more content */
+    }
+    
+    * {
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    body, html {
+        background-color: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        width: 100% !important;
+        overflow: visible !important;
+    }
+    
+    /* Prevent duplication by removing position: relative */
+    body > div {
+        background-color: white !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
     .a4-container {
-        width: 210mm;
-        height: auto;
-        margin: 0 auto;
-        padding: 15mm;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 3mm !important;
+        box-sizing: border-box !important;
+        border: none !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        transform: none !important;
+        float: none !important;
+        page-break-after: auto !important;
+        display: block !important;
     }
 
     /* Print-specific adjustments */
     .tracking-content {
-        width: 100%;
-        margin: 0;
-        padding: 0;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        display: block !important;
+        page-break-after: avoid !important;
+        page-break-before: avoid !important;
+        float: none !important;
     }
 
-    .tracking-container p,
-    .tracking-container h3,
-    .tracking-container h4 {
-        margin-bottom: 8px;
+    /* Further reduce font sizes for everything */
+    * {
+        font-size: 8pt !important;
     }
 
-    .tracking-container p {
-        font-size: 12pt;
-        line-height: 1.5;
+    /* Improve text display in print */
+    p, h1, h2, h3, h4, h5, h6 {
+        orphans: 3 !important;
+        widows: 3 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        margin-bottom: 2px !important;
+        margin-top: 2px !important;
+        line-height: 1.2 !important;
     }
 
-    .tracking-container h3 {
-        font-size: 14pt;
-        font-weight: bold;
-    }
-
-    .tracking-container h4 {
-        font-size: 13pt;
-        font-weight: bold;
-    }
-
+    /* Ensure proper page breaks */
     .tablediv {
-        page-break-inside: avoid; /* Prevent page breaks inside each table section */
-        margin-bottom: 20px; /* Add some space between sections */
+        page-break-inside: auto !important; /* Allow page breaks inside table sections when needed */
+        margin-bottom: 10px !important;
+        display: block !important;
+        clear: both !important;
     }
+    
+    /* Ensure tables break properly */
     .json-table {
-        width: 100%; /* Ensure tables take full width */
-        border-collapse: collapse; /* Collapse borders for better printing */
+        width: 100% !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+        page-break-inside: auto !important;
+        break-inside: auto !important;
+        font-size: 8pt !important;
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
     }
 
     .json-table th, .json-table td {
-        border: 1px solid #ddd; /* Add borders for table cells */
-        padding: 2px; /* Add padding for table cells */
-        word-wrap: break-word; /* Allow long words to break */
+        border: 0.5px solid #000 !important; /* Thinner borders for better printing */
+        padding: 1px !important;
+        word-wrap: break-word !important;
+        font-size: 8pt !important; /* Smaller font for tables to fit better */
+        max-width: 100% !important;
     }
-
-    .buttoncontainerzz{
-        display: none;
+    
+    /* Make Department header visible in print */
+    .tracking-header {
+        margin-top: 0 !important;
+    }
+    
+    .tracking-header-text {
+        margin-top: -2px !important;
+        font-size: 7pt !important;
+        visibility: visible !important;
+        display: block !important;
+    }
+    
+    .tracking-header-bold {
+        margin-top: -2px !important;
+        margin-bottom: -2px !important;
+        font-size: 10pt !important;
+    }
+    
+    .application-title {
+        font-size: 11pt !important;
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
+    }
+    
+    /* Hide anything not needed for printing */
+    .buttoncontainerzz,
+    .popup-overlay,
+    button {
+        display: none !important;
+    }
+    
+    /* Ensure columns display properly in print */
+    .single-row, .single-row2 {
+        display: grid !important;
+        width: 100% !important;
+    }
+    
+    /* Fix font sizes for printing */
+    .tracking-content {
+        font-size: 7pt !important;
+        line-height: 1.1 !important;
+    }
+    
+    /* Compress vertical spacing to fit more content */
+    .tracking-greetings p {
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+        font-size: 7pt !important;
+        line-height: 1.1 !important;
+    }
+    
+    /* Make sure the bottom content fits */
+    .single-row3 {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        width: 100% !important;
+        margin-bottom: 0px !important;
+        margin-top: 20px !important;
+        break-inside: avoid !important;
+    }
+    
+    /* Add space above notary signature line in print */
+    .notary-signature {
+        margin-top: 20px !important;
+    }
+    
+    /* Target the very last lines specifically */
+    .tracking-content > div:last-of-type {
+        display: block !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    
+    /* Specifically target the final four lines */
+    .tracking-content > div:last-of-type > p:nth-last-child(-n+4) {
+        display: block !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        line-height: 1.1 !important;
+        font-size: 7pt !important;
     }
 }

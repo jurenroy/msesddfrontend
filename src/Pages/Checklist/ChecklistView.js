@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import API_BASE_URL from '../../config';
 import mgbxImage from '../../Assets/mgbx.png';
+import { approveApplication } from '../Services/ChecklistStatusService'
 
 const ChecklistView = ({ role, trackingcode }) => {
   const [trackingData, setTrackingData] = useState(null);
@@ -9,7 +10,7 @@ const ChecklistView = ({ role, trackingcode }) => {
   const [notarizedFiles, setNotarizedFiles] = useState(null);
   const [error, setError] = useState(null);
   const [uploading, setUploading] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true); // Set to true by default
   const [adminRemarks, setAdminRemarks] = useState({});
   const [adminEvaluation, setAdminEvaluation] = useState("");
   const [adminReviewer, setAdminReviewer] = useState("");
@@ -154,18 +155,39 @@ const ChecklistView = ({ role, trackingcode }) => {
     window.open(url, '_blank');
 };
 
+const handleApproveApplication = async () => {
+  try {
+    const result = await approveApplication(trackingcode);
+
+    if (result && result.success) {
+      alert('Application approved successfully!');
+    } else {
+      alert('Error approving application. Please try again.');
+    }
+  } catch (err) {
+    console.error('Error in approveApplication:', err);
+    alert('Error approving application: ' + (err.response?.data?.message || err.message));
+  }
+};
+
 
 const handleFileUpload = async (e, fieldName) => {
-  if (isAdmin) return; // Block uploads for admin users
+  if (isAdmin) return;
 
   const file = e.target.files[0];
   if (!file) return;
+  
+  // Added PDF validation
+  if (file.type !== 'application/pdf') {
+    setError('Only PDF files are allowed. Please select a PDF file.');
+    return;
+  }
 
+  // Added upload status tracking
   setUploading(prev => ({ ...prev, [fieldName]: true }));
 
   try {
     const formData = new FormData();
-    // Append the file with the actual field name from the model
     formData.append(fieldName, file);
     
     const response = await axios.put(
@@ -177,18 +199,20 @@ const handleFileUpload = async (e, fieldName) => {
         }
       }
     );
-
-    // Update the local state with the returned file URL
-    setChecklist(prev => ({
-      ...prev,
-      [fieldName]: response.data[fieldName]
-    }));
-
-    setError(null);
+    if (response.data && response.data[fieldName]) {
+      setChecklist(prev => ({
+        ...prev,
+        [fieldName]: response.data[fieldName]
+      }));
+      setError(null);
+    } else {
+      throw new Error('File upload successful but no URL returned');
+    }
   } catch (err) {
     setError(`Error uploading file: ${err.message}`);
-    console.error(err);
+    console.error('File upload error:', err);
   } finally {
+    // Always clean up upload status
     setUploading(prev => ({ ...prev, [fieldName]: false }));
   }
 };
@@ -205,74 +229,70 @@ const handleFileUpload = async (e, fieldName) => {
   
   const handleAdminSave = async () => {
     if (!isAdmin) return;
-  
+
     try {
-      // Only include the fields we specifically want to update
-      const updatedData = {
-        // Only include these fields from the form
-        initial_evaluation: adminEvaluation,
-        reviewed_by: adminReviewer,
-        tracking_code: trackingcode,
-      };
-  
-      // Add compliance status fields that were explicitly set
-      Object.keys(complianceStatus).forEach(field => {
-        if (complianceStatus[field] !== null) {
-          const complianceKey = `${field}_compliance`;
-          updatedData[complianceKey] = complianceStatus[field] === "yes";
+        const updatedData = {
+            initial_evaluation: adminEvaluation,
+            reviewed_by: adminReviewer,
+            tracking_code: trackingcode,
+        };
+
+        Object.keys(complianceStatus).forEach(field => {
+            if (complianceStatus[field] !== null) {
+                const complianceKey = `${field}_compliance`;
+                updatedData[complianceKey] = complianceStatus[field] === "yes";
+            }
+        });
+
+        Object.keys(adminRemarks).forEach(field => {
+            if (adminRemarks[field] !== undefined && adminRemarks[field] !== "") {
+                const remarksKey = `${field}_remarks`;
+                updatedData[remarksKey] = adminRemarks[field];
+            }
+        });
+
+        console.log("Saving updated checklist:", updatedData);
+
+        const response = await axios.put(
+            `${API_BASE_URL}api/checklist/${trackingcode}/`, 
+            updatedData
+        );
+
+        if (response.data) {
+            setChecklist(prevChecklist => ({
+                ...prevChecklist,
+                initial_evaluation: response.data.initial_evaluation,
+                reviewed_by: response.data.reviewed_by,
+                ...Object.keys(complianceStatus)
+                    .filter(field => complianceStatus[field] !== null)
+                    .reduce((acc, field) => {
+                        const complianceKey = `${field}_compliance`;
+                        if (response.data[complianceKey] !== undefined) {
+                            acc[complianceKey] = response.data[complianceKey];
+                        }
+                        return acc;
+                    }, {}),
+                ...Object.keys(adminRemarks)
+                    .filter(field => adminRemarks[field] !== undefined && adminRemarks[field] !== "")
+                    .reduce((acc, field) => {
+                        const remarksKey = `${field}_remarks`;
+                        if (response.data[remarksKey] !== undefined) {
+                            acc[remarksKey] = response.data[remarksKey];
+                        }
+                        return acc;
+                    }, {})
+            }));
+            alert('Checklist evaluation saved successfully!');
+        } else {
+            alert('Checklist evaluation saved successfully!');
         }
-      });
-  
-      // Add remarks fields that were explicitly set
-      Object.keys(adminRemarks).forEach(field => {
-        if (adminRemarks[field] !== undefined && adminRemarks[field] !== "") {
-          const remarksKey = `${field}_remarks`;
-          updatedData[remarksKey] = adminRemarks[field];
-        }
-      });
-  
-      console.log("Saving updated checklist:", updatedData); 
-  
-      const response = await axios.put(
-        `${API_BASE_URL}api/checklist/${trackingcode}/`, 
-        updatedData
-      );
-  
-      if (response.data) {
-        // Update the specific fields in the UI that we changed
-        setChecklist(prevChecklist => ({
-          ...prevChecklist,
-          initial_evaluation: response.data.initial_evaluation,
-          reviewed_by: response.data.reviewed_by,
-          ...Object.keys(complianceStatus)
-            .filter(field => complianceStatus[field] !== null)
-            .reduce((acc, field) => {
-              const complianceKey = `${field}_compliance`;
-              if (response.data[complianceKey] !== undefined) {
-                acc[complianceKey] = response.data[complianceKey];
-              }
-              return acc;
-            }, {}),
-          ...Object.keys(adminRemarks)
-            .filter(field => adminRemarks[field] !== undefined && adminRemarks[field] !== "")
-            .reduce((acc, field) => {
-              const remarksKey = `${field}_remarks`;
-              if (response.data[remarksKey] !== undefined) {
-                acc[remarksKey] = response.data[remarksKey];
-              }
-              return acc;
-            }, {})
-        }));
-        alert('Checklist evaluation saved successfully!');
-      } else {
-        alert('Checklist evaluation saved successfully!');
-      }
     } catch (err) {
-      console.error("Error saving admin evaluation:", err);
-      setError('Error saving admin evaluation: ' + (err.response?.data?.message || err.message));
-      alert('Error saving evaluation: ' + (err.response?.data?.message || err.message));
+        console.error("Error saving admin evaluation:", err);
+        setError('Error saving admin evaluation: ' + (err.response?.data?.message || err.message));
+        alert('Error saving evaluation: ' + (err.response?.data?.message || err.message));
     }
-  };
+};
+
   
   const handleSaveChecklist = async () => {
     alert('Checklist saved successfully!');
@@ -297,7 +317,7 @@ const handleFileUpload = async (e, fieldName) => {
               cursor: isAdmin ? 'pointer' : 'default', 
               backgroundColor: isYes ? '#f0fff0' : 'transparent' 
             }}>
-          {isYes ? '✔' : '✔'} {/* Show checkmark if yes */}
+          {isYes ? '✔' :  '✔'} {/* Show checkmark if yes */}
         </td>
         <td onClick={() => isAdmin && toggleCompliance(field, "no")} 
             style={{ 
@@ -316,51 +336,70 @@ const handleFileUpload = async (e, fieldName) => {
   };
   
   const RemarksCell = ({ field, adminRemarks, setAdminRemarks }) => {
-  const remarksKey = `${field}_remarks`;
-  const textareaRef = useRef(null);
+    // Use local state for the textarea value
+    const [localValue, setLocalValue] = useState(adminRemarks[field] || "");
+    const textareaRef = useRef(null);
+    
+    // Sync local state with prop when adminRemarks changes from outside
+    useEffect(() => {
+      setLocalValue(adminRemarks[field] || "");
+    }, [field, adminRemarks]);
   
-  // Use useEffect to maintain focus after state changes
-  useEffect(() => {
-    if (textareaRef.current && document.activeElement === textareaRef.current) {
-      const length = textareaRef.current.value.length;
-      textareaRef.current.focus();
-      textareaRef.current.setSelectionRange(length, length);
-    }
-  }, [adminRemarks[field]]);
 
-  return (
-    <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-      {isAdmin ? (
-        <textarea
-          ref={textareaRef}
-          value={adminRemarks[field] || ""}
-          onChange={(e) => {
-            setAdminRemarks(prev => ({
-              ...prev,
-              [field]: e.target.value
-            }));
-          }}
-          style={{
-            width: '100%',
-            height: '100%',
-            minHeight: '80px',
-            padding: '8px',
-            border: '1px solid #ccc',
-            borderRadius: '4px',
-            fontSize: '14px',
-            resize: 'vertical',
-            outline: 'none'
-          }}
-          placeholder="Enter remarks"
-        />
-      ) : (
-        <p style={{ margin: 0 }}>
-          {(adminRemarks[field] || checklist[`${field}_remarks`] || 'No remarks provided.')}
-        </p>
-      )}
-    </td>
-  );
-};
+    const handleChange = (e) => {
+      setLocalValue(e.target.value);
+    };
+  
+    // Update parent state on blur (when user finishes typing)
+    const handleBlur = () => {
+      setAdminRemarks(prev => ({
+        ...prev,
+        [field]: localValue
+      }));
+    };
+  
+    // Also update parent state when user presses Enter or Tab
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter' || e.key === 'Tab') {
+        setAdminRemarks(prev => ({
+          ...prev,
+          [field]: localValue
+        }));
+      }
+    };
+  
+    return (
+      <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+        {isAdmin ? (
+          <textarea
+            ref={textareaRef}
+            value={localValue}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            style={{
+              width: '100%',
+              height: '100%',
+              minHeight: '80px',
+              padding: '8px',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              fontSize: '14px',
+              resize: 'vertical',
+              outline: 'none'
+            }}
+            placeholder="Enter remarks"
+          />
+        ) : (
+          <p style={{ margin: 0 }}>
+            {(adminRemarks[field] || checklist[`${field}_remarks`] || 'No remarks provided.')}
+          </p>
+        )}
+      </td>
+    );
+  };
+
+
   const textareaStyle = {
     ".textarea-remarks": {
       width: "100%",
@@ -388,68 +427,71 @@ const handleFileUpload = async (e, fieldName) => {
     }
   };
   
-  const FileUploadItem = ({ label, fieldName, existingFile }) => (
-    <p style={{ margin: '3px 0', display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-      • {label}
-      {!isAdmin && (
-        <span style={{ marginLeft: '10px', display: 'flex', alignItems: 'center' }}>
-          <label htmlFor={`file-${fieldName}`} style={{
-            padding: '5px 10px',
-            backgroundColor: '#0066cc',
-            color: 'white',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            margin: '5px 0',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-            display: 'inline-block'
-          }}>
-            CHOOSE FILE
-          </label>
-          <input 
-            type="file" 
-            id={`file-${fieldName}`}
-            onChange={(e) => handleFileUpload(e, fieldName)}
-            style={{ 
-              width: '0.1px',
-              height: '0.1px',
-              opacity: 0,
-              overflow: 'hidden',
-              position: 'absolute',
-              zIndex: '-1'
-            }}
-          />
-          {uploading[fieldName] && 
-            <span style={{ 
-              marginLeft: '5px', 
-              fontSize: '14px', 
-              fontWeight: 'bold',
-              color: '#ff6600'
-            }}>
-              Uploading...
-            </span>
-          }
-        </span>
-      )}
-      <span 
-        onClick={existingFile ? () => handleClick(existingFile) : null} 
-        style={{
-          cursor: existingFile ? 'pointer' : 'default', 
-          fontWeight: 'bold', 
-          marginLeft: '10px',
-          fontSize: '14px',
-          color: existingFile ? '#0066cc' : '#999',
+  // ... existing code ...
+const FileUploadItem = ({ label, fieldName, existingFile }) => (
+  <p style={{ margin: '3px 0', display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+    • {label}
+    {!isAdmin && (
+      <span style={{ marginLeft: '10px', display: 'flex', alignItems: 'center' }}>
+        <label htmlFor={`file-${fieldName}`} style={{
           padding: '3px 8px',
-          backgroundColor: existingFile ? '#f0f7ff' : '#f5f5f5',
-          borderRadius: '3px',
-          border: existingFile ? '1px solid #cce5ff' : '1px solid #ddd',
-          display: existingFile || isAdmin ? 'inline-block' : 'none'
+          backgroundColor: '#0066cc',
+          color: 'white',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          fontSize: '15px',
+          fontWeight: 'bold',
+          margin: '5px 0',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+          display: 'inline-block'
         }}>
-        {existingFile ? 'VIEW FILE' : (isAdmin ? 'NO DOCUMENT' : '')}
+          CHOOSE PDF
+        </label>
+        <input 
+          type="file" 
+          id={`file-${fieldName}`}
+          onChange={(e) => handleFileUpload(e, fieldName)}
+          accept=".pdf"
+          style={{ 
+            width: '0.1px',
+            height: '0.1px',
+            opacity: 0,
+            overflow: 'hidden',
+            position: 'absolute',
+            zIndex: '-1'
+          }}
+        />
+        {uploading[fieldName] && 
+          <span style={{ 
+            marginLeft: '5px', 
+            fontSize: '15px', 
+            fontWeight: 'bold',
+            color: '#ff6600'
+          }}>
+            Uploading...
+          </span>
+        }
       </span>
-    </p>
-  );
+    )}
+    <span 
+      onClick={existingFile ? () => handleClick(existingFile) : null} 
+      style={{
+        cursor: existingFile ? 'pointer' : 'default', 
+        fontWeight: 'bold', 
+        marginLeft: '10px',
+        fontSize: '14px',
+        color: existingFile ? '#0066cc' : '#999',
+        padding: '3px 8px',
+        backgroundColor: existingFile ? '#f0f7ff' : '#f5f5f5',
+        borderRadius: '3px',
+        border: existingFile ? '1px solid #cce5ff' : '1px solid #ddd',
+        display: existingFile || isAdmin ? 'inline-block' : 'none'
+      }}>
+      {existingFile ? 'VIEW FILE' : (isAdmin ? 'NO DOCUMENT' : '')}
+    </span>
+  </p>
+);
+
 
   return (
     <div style={{
@@ -629,7 +671,7 @@ const handleFileUpload = async (e, fieldName) => {
                             <RemarksCell field="application_form" 
                             adminRemarks={adminRemarks} 
                             setAdminRemarks={setAdminRemarks}
-                            />
+                            />  
                           </tr>
                           <tr style={{ backgroundColor: '#f9f9f9' }}>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>
@@ -665,7 +707,7 @@ const handleFileUpload = async (e, fieldName) => {
                                 <FileUploadItem 
                                   label="Present employer (duly notarized)" 
                                   fieldName="present_employment" 
-                                  existingFile={checklist.present_employer_notarized} 
+                                  existingFile={checklist.present_employment} 
                                 />
                                 <FileUploadItem 
                                   label="Previous employer" 
@@ -958,29 +1000,46 @@ const handleFileUpload = async (e, fieldName) => {
     <p style={{ margin: 0 }}>{checklist.reviewed_by || 'Not reviewed yet.'}</p>
   )}
 </td>
-                          </tr>
-                          <tr>
-                            <td colSpan={4} style={{ textAlign: 'right', padding: '10px' }}>
-                              {isAdmin && (
-                                <button 
-                                  onClick={handleAdminSave}
-                                  style={{
-                                    padding: '10px 15px',
-                                    backgroundColor: '#28a745',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '4px',
-                                    cursor: 'pointer',
-                                    fontSize: '14px',
-                                    fontWeight: 'bold',
-                                    marginTop: '10px'
-                                  }}
-                                >
-                                  Save Evaluation
-                                </button>
-                              )}
-                            </td>
-                          </tr>
+</tr>
+<tr>
+  <td colSpan={4} style={{ textAlign: 'right', padding: '10px' }}>
+    {isAdmin && (
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+        <button 
+          onClick={handleApproveApplication}
+          style={{
+            padding: '10px 15px',
+            backgroundColor: '#28a745', // Green color for approval
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}
+        >
+          Approve
+        </button>
+        <button 
+          onClick={handleAdminSave}
+          style={{
+            padding: '10px 15px',
+            backgroundColor: '#0066cc', // Changed to blue to differentiate
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}
+        >
+          Save Evaluation
+        </button>
+      </div>
+    )}
+  </td>
+</tr>
+
                         </tbody>
                       </table>
                     </div>
@@ -996,25 +1055,6 @@ const handleFileUpload = async (e, fieldName) => {
         <div style={{ color: 'red', marginTop: '20px' }}>
           {error}
         </div>
-      )}
-
-      {!isModalOpen && (
-        <button 
-          onClick={() => setIsModalOpen(true)}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            marginTop: '20px'
-          }}
-        >
-          Open Checklist
-        </button>
       )}
     </div>
   );
