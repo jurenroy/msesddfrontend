@@ -1,0 +1,323 @@
+.notif-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1.5rem;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Center the notification vertically and horizontally */
+.notif-centered {
+  align-items: center;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+.notif-container {
+  max-width: 28rem;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  pointer-events: auto;
+  transform: translateY(0);
+  opacity: 1;
+  animation: notifFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  border-top: 4px solid #4CAF50;
+  position: relative;
+}
+
+/* Make the notification larger */
+.notif-larger {
+  max-width: 32rem;
+  transform: scale(1.1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.notif-container.hidden {
+  transform: translateY(-12px);
+  opacity: 0;
+  transition: all 0.5s ease-out;
+}
+
+.notif-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A, #4CAF50);
+  background-size: 200% 100%;
+  animation: notifGradientMove 3s ease infinite;
+}
+
+.notif-inner {
+  padding: 1.5rem;
+  position: relative;
+}
+
+.notif-content {
+  display: flex;
+  align-items: flex-start;
+}
+
+.notif-icon-wrapper {
+  flex-shrink: 0;
+}
+
+.notif-success-circle {
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+  background-color: rgba(76, 175, 80, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notif-icon-container {
+  transition: all 0.7s ease;
+}
+
+.notif-icon-container.hidden {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.notif-icon-container.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.notif-check-icon {
+  color: #4CAF50;
+}
+
+.notif-text-container {
+  margin-left: 1.5rem;
+  flex: 1;
+  min-width: 0;
+  padding-top: 0.125rem;
+}
+
+.notif-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333333;
+  margin: 0;
+  transition: all 0.5s ease;
+}
+
+.notif-title.hidden {
+  opacity: 0;
+}
+
+.notif-title.visible {
+  opacity: 1;
+}
+
+.notif-message {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  color: #666666;
+  line-height: 1.5;
+  transition: all 0.5s ease;
+  transition-delay: 0.3s;
+}
+
+.notif-message.hidden {
+  opacity: 0;
+}
+
+.notif-message.visible {
+  opacity: 1;
+}
+
+.notif-button-container {
+  margin-top: 1.5rem;
+  transition: all 0.5s ease;
+  transition-delay: 0.7s;
+  display: flex;
+  justify-content: center;
+}
+
+.notif-button-container.hidden {
+  opacity: 0;
+}
+
+.notif-button-container.visible {
+  opacity: 1;
+}
+
+.notif-home-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notif-home-button:hover {
+  background-color: #1976D2;
+  transform: translateY(-2px);
+}
+
+.notif-home-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.3);
+}
+
+.notif-home-button:active {
+  background-color: #0D47A1;
+  transform: translateY(0);
+}
+
+.notif-home-icon {
+  margin-right: 0.5rem;
+}
+
+.notif-close-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  color: #9E9E9E;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0.25rem;
+  z-index: 10;
+}
+
+.notif-close-button:hover {
+  color: #616161;
+  transform: rotate(90deg);
+}
+
+.notif-close-button:focus {
+  outline: none;
+}
+
+/* Progress bar for auto-dismiss functionality */
+.notif-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.notif-progress-inner {
+  height: 100%;
+  width: 0;
+  background-color: #4CAF50;
+  animation: notifProgress 8s linear forwards;
+}
+
+/* Animations with prefixed names to avoid conflicts */
+@keyframes notifFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes notifPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes notifGradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes notifProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+/* Checkmark animation */
+.animate-checkmark {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: notifCheckmark 0.8s ease-in-out forwards;
+}
+
+.animate-circle {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: notifCircle 1s ease-in-out 0.2s forwards;
+}
+
+.animate-bounce-x {
+  animation: notifBounceX 1.5s infinite;
+}
+
+@keyframes notifCheckmark {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes notifCircle {
+  from {
+    stroke-dashoffset: 100;
+    stroke-dasharray: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 100;
+  }
+}
+
+@keyframes notifBounceX {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+/* Optional: Button hover glow effect */
+.hover-glow:hover {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}

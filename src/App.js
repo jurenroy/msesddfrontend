@@ -4,25 +4,27 @@ import Home from './Pages/Home/Home';
 import ApplicationForm from './Pages/ApplicationForm/ApplicationForm';
 import ExistingApplication from './Pages/ExistingApplication/ExistingApplication';
 import TrackingDocument from './Pages/TrackingDocument/TrackingDocument';
-import ExamList from './Pages/Exams/ExamList'; 
+import ExamList from './Pages/Exams/ExamList';
 import Checklist from './Pages/Checklist/Checklist';
 import ExamPage from './Pages/Exams/StartExam';
 import LoginForm from './Pages/Login/Login';
 import AdminDashboard from './Pages/Admin Dashboard/Adboard';
 import ResultsPage from "./Pages/Exams/ExamResults";
 import UserDash from './Pages/UserDashboard/UserDash';
+import NotifSubmit from './Pages/ApplicationForm/NotiSubmit'; // Import the NotifSubmit component
 import { Provider } from 'react-redux';
 import { store, persistor } from './/Redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+
 function App() {
     return (
         <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                    <Router>
+            <PersistGate loading={null} persistor={persistor}>
+                <Router>
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<LoginForm />} />
-                        <Route path="/Admin"  element={<AdminDashboard />} />
+                        <Route path="/Admin" element={<AdminDashboard />} />
                         <Route path="/safety/:role"/>
                         <Route path="/safety/:role/new" element={<ApplicationForm />} /> {/* Updated route */}
                         <Route path="/safety/:role/existing" element={<ExistingApplication />} />
@@ -31,8 +33,8 @@ function App() {
                         <Route path="/safety/:role/existing/:trackingcode/checklist" element={<Checklist />} />
                         <Route path="/safety/:role/existing/exam_list" element={<ExamList />} />
                         <Route path="/safety/:role/existing/exam/:examId" element={<ExamPage />} />
-                        <Route path="/safety/:role/existing/exam/results"element={<ResultsPage />}/>
-                        
+                        <Route path="/safety/:role/existing/exam/results" element={<ResultsPage />}/>
+                        <Route path="/submission-success" element={<NotifSubmit />} /> {/* Added new route for NotifSubmit */}
                     </Routes>
                 </Router>
             </PersistGate>
