@@ -250,7 +250,7 @@ main {
 }
 
 /* Close Button */
-.close-button {
+.qualification-modal-close-button {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -260,11 +260,15 @@ main {
     cursor: pointer;
     color: #666;
     padding: 5px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s;
 }
-
-.close-button:hover {
+.qualification-modal-close-button:hover {
     background-color: #f0f0f0;
     color: #333;
 }
@@ -460,6 +464,15 @@ main {
     .qualifications-modal {
         flex-direction: column;
         width: 90%;
+        max-height: 85vh;
+    }
+    
+    .qualification-modal-close-button {
+        top: 10px;
+        right: 10px;
+        font-size: 16px;
+        width: 26px;
+        height: 26px;
     }
     
     .table-header,
@@ -479,7 +492,7 @@ main {
     }
     
     .modal-right {
-        padding-top: 0;
+        padding-top: 10px;
     }
     
     .bureau-info {

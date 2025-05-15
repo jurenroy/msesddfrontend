@@ -83,15 +83,15 @@ const Navbar = ({
   };
   
   return (
-    <div className={`sidebar ${expanded ? 'expanded' : 'collapsed'}`}>
+    <div className={`mgb-sidebar ${expanded ? 'expanded' : 'collapsed'}`}>
       {/* Toggle button */}
-      <div className="toggle-button" onClick={toggleSidebar}>
+      <div className="mgb-sidebar-toggle-button" onClick={toggleSidebar}>
         <i className={`fas ${expanded ? 'fa-chevron-left' : 'fa-chevron-right'}`}></i>
       </div>
       
       {/* Organization header - only visible when expanded */}
       {expanded && (
-        <div className="org-header">
+        <div className="mgb-sidebar-org-header">
           <div className="org-logo"></div>
           <div className="org-info">
           </div>
@@ -99,14 +99,14 @@ const Navbar = ({
       )}
       
       {/* Navigation menu */}
-      <nav className="nav-menu">
+      <nav className="mgb-sidebar-nav-menu">
         <ul>
           {/* Dashboard item */}
           <li
             className={activePage === 'dashboard' ? 'active' : ''}
             onClick={handleDashboardClick}
           >
-            <div className="nav-icon dashboard-icon">
+            <div className="mgb-sidebar-nav-icon mgb-sidebar-dashboard-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
             {expanded && <span>Dashboard</span>}
@@ -117,7 +117,7 @@ const Navbar = ({
             className={activePage === 'checklist' ? 'active' : ''}
             onClick={onChecklistClick}
           >
-            <div className="nav-icon">
+            <div className="mgb-sidebar-nav-icon">
               <i className="fas fa-clipboard-list"></i>
             </div>
             {expanded && <span>Checklist</span>}
@@ -128,7 +128,7 @@ const Navbar = ({
             className={activePage === 'exam' ? 'active' : ''}
             onClick={onExamClick}
           >
-            <div className="nav-icon">
+            <div className="mgb-sidebar-nav-icon">
               <i className="fas fa-graduation-cap"></i>
             </div>
             {expanded && <span>Access Exam</span>}
@@ -139,7 +139,7 @@ const Navbar = ({
             className={activePage === 'application' ? 'active' : ''}
             onClick={onApplicationClick}
           >
-            <div className="nav-icon">
+            <div className="mgb-sidebar-nav-icon">
               <i className="fas fa-file-alt"></i>
             </div>
             {expanded && <span>Application</span>}
@@ -150,7 +150,7 @@ const Navbar = ({
             className={activePage === 'home' ? 'active' : ''}
             onClick={handleHomeClick}
           >
-            <div className="nav-icon home-icon">
+            <div className="mgb-sidebar-nav-icon mgb-sidebar-home-icon">
               <i className="fas fa-home"></i>
             </div>
             {expanded && <span>Home</span>}

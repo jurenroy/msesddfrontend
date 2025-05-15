@@ -86,7 +86,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div className="modal-right">
-                        <button className="close-button" onClick={onClose}>✖</button>
+                        <button className="qualification-modal-close-button" onClick={onClose}>✖</button>
                         <div className="bureau-info">
                             <div className="bureau-logo"></div>
                             <div className="bureau-name">Mines and Geosciences Bureau - Region X</div>

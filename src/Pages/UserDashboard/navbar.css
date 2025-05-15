@@ -1,6 +1,5 @@
-/* src/components/UserDash/navbar.css */
-.sidebar {
-  background-color: #2c3e50;
+.mgb-sidebar {
+  background-color: #023e8a;
   color: #ecf0f1;
   display: flex;
   flex-direction: column;
@@ -9,16 +8,16 @@
   transition: width 0.3s ease;
 }
 
-.sidebar.collapsed {
+.mgb-sidebar.collapsed {
   width: 80px;
 }
 
-.sidebar.expanded {
+.mgb-sidebar.expanded {
   width: 240px;
 }
 
-/* Toggle button */
-.toggle-button {
+/* Toggle button with specific class names */
+.mgb-sidebar-toggle-button {
   position: absolute;
   top: 10px;
   right: 1px;
@@ -36,7 +35,7 @@
 }
 
 /* Organization header */
-.org-header {
+.mgb-sidebar-org-header {
   display: flex;
   align-items: center;
   padding: 1.5rem 1rem;
@@ -44,18 +43,18 @@
 }
 
 /* Navigation menu */
-.nav-menu {
+.mgb-sidebar-nav-menu {
   flex: 1;
   padding: 1rem 0;
 }
 
-.nav-menu ul {
+.mgb-sidebar-nav-menu ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-.nav-menu li {
+.mgb-sidebar-nav-menu li {
   display: flex;
   align-items: center;
   padding: 0.75rem 1.5rem;
@@ -63,80 +62,86 @@
   transition: all 0.3s;
 }
 
-.sidebar.collapsed .nav-menu li {
+.mgb-sidebar.collapsed .mgb-sidebar-nav-menu li {
   padding: 0.75rem 0;
   justify-content: center;
 }
 
-.nav-menu li:hover {
+.mgb-sidebar-nav-menu li:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.nav-menu li.active {
+.mgb-sidebar-nav-menu li.active {
   background-color: rgba(255, 255, 255, 0.2);
   border-left: 4px solid #4CAF50;
 }
 
-.sidebar.collapsed .nav-menu li.active {
+.mgb-sidebar.collapsed .mgb-sidebar-nav-menu li.active {
   border-left: none;
   border-right: 4px solid #4CAF50;
 }
 
-.nav-icon {
+/* Fix for oblong icons - ensure they are perfectly square */
+.mgb-sidebar-nav-icon {
   width: 40px;
   height: 40px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(41, 176, 255, 0.968);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 0.75rem;
   transition: transform 0.3s;
+  min-width: 40px; /* Ensure minimum width */
+  min-height: 40px; /* Ensure minimum height */
+  max-width: 40px; /* Ensure maximum width */
+  max-height: 40px; /* Ensure maximum height */
+  box-sizing: border-box; /* Include padding in the width/height */
 }
 
-.sidebar.collapsed .nav-icon {
+.mgb-sidebar.collapsed .mgb-sidebar-nav-icon {
   margin-right: 0;
 }
 
-.nav-menu li:hover .nav-icon {
+.mgb-sidebar-nav-menu li:hover .mgb-sidebar-nav-icon {
   transform: scale(1.1);
 }
 
-.nav-icon i {
+.mgb-sidebar-nav-icon i {
   font-size: 1.2rem;
   color: #ecf0f1;
 }
 
-.nav-menu li span {
+.mgb-sidebar-nav-menu li span {
   font-size: 0.9rem;
   color: #ecf0f1;
   white-space: nowrap;
 }
 
-/* Special icon styling */
-.home-icon {
+/* Special icon styling with namespaced classes */
+.mgb-sidebar-home-icon {
   background-color: #4CAF50;
 }
 
-.dashboard-icon {
+.mgb-sidebar-dashboard-icon {
   background-color: #3498db;
 }
 
 /* User profile styling */
-.user-profile {
+.mgb-sidebar-user-profile {
   padding: 1rem;
   display: flex;
   align-items: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgb(105, 174, 220);
   margin-top: auto;
 }
 
-.sidebar.collapsed .user-profile {
+.mgb-sidebar.collapsed .mgb-sidebar-user-profile {
   justify-content: center;
   padding: 1rem 0;
 }
 
-.avatar {
+.mgb-sidebar-avatar {
   width: 40px;
   height: 40px;
   background-color: rgba(255, 255, 255, 0.1);
@@ -145,41 +150,44 @@
   align-items: center;
   justify-content: center;
   margin-right: 0.75rem;
+  min-width: 40px; /* Ensure minimum width */
+  min-height: 40px; /* Ensure minimum height */
 }
 
-.sidebar.collapsed .avatar {
+.mgb-sidebar.collapsed .mgb-sidebar-avatar {
   margin-right: 0;
 }
 
-.avatar i {
+.mgb-sidebar-avatar i {
   color: #000000;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .sidebar.expanded, .sidebar.collapsed {
+  .mgb-sidebar.expanded, 
+  .mgb-sidebar.collapsed {
     width: 100%;
     height: auto;
     min-height: unset;
   }
   
-  .toggle-button {
+  .mgb-sidebar-toggle-button {
     display: none; /* Hide the toggle button on mobile */
   }
   
-  .nav-menu ul {
+  .mgb-sidebar-nav-menu ul {
     display: flex;
     justify-content: space-between;
   }
   
-  .nav-menu li {
+  .mgb-sidebar-nav-menu li {
     flex-direction: column;
     padding: 0.5rem;
     flex: 1;
     text-align: center;
   }
   
-  .nav-icon {
+  .mgb-sidebar-nav-icon {
     margin-right: 0;
     margin-bottom: 0.25rem;
   }
