@@ -255,7 +255,7 @@ useEffect(() => {
                 </div>
                 <div className="status-card-content">
                   <div className="status-badge approved">
-                    <i className="fas fa-check-circle"></i> Approved
+                   
                   </div>
                   
                   <div className="status-details">

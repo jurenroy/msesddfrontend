@@ -42,6 +42,9 @@ const Dashboard = () => {
   const [selectedChecklistRole, setSelectedChecklistRole] = useState('');
   const [checklistKey, setChecklistKey] = useState(0); // Add a key to force re-render
 
+  const [checklistFilter, setChecklistFilter] = useState('ALL');
+  const [examFilter, setExamFilter] = useState('ALL');
+
   console.log("Checklist:", checklist);
   
   useEffect(() => {
@@ -291,6 +294,21 @@ const Dashboard = () => {
                 <span className="search-icon">🔍</span>
               </div>
             )}
+            {activeTab === "CHECKLIST" && (
+            <div className="filter-dropdown">
+              <select 
+                value={checklistFilter} 
+                onChange={(e) => setChecklistFilter(e.target.value)}
+                className="filter-select"
+              >
+                <option value="ALL">All Status</option>
+                <option value="APPROVED">Approved</option>
+                <option value="REJECTED">Rejected</option>
+                <option value="PENDING">Pending</option>
+                <option value="REVIEW">Under Review</option>
+              </select>
+            </div>
+          )}
             {activeTab === "RESULT EXAM" && (
               <div className="search-container">
                 <input
@@ -304,7 +322,20 @@ const Dashboard = () => {
               </div>
             )}
           </div>
-          
+             {activeTab === "RESULT EXAM" && (
+              <div className="filter-dropdown" style={{ display: 'flex', justifyContent: 'center' }}>
+                <select 
+                  value={examFilter} 
+                  onChange={(e) => setExamFilter(e.target.value)}
+                  className="filter-select"
+                >
+                  <option value="ALL">All Results</option>
+                  <option value="PASSED">Passed</option>
+                  <option value="FAILED">Failed</option>
+                </select>
+              </div>
+            )}
+
           {activeTab === "MGB APPLICANTS" && Array.isArray(userData) && (
             <div className="pagination-container">
             <PaginationArrow 
@@ -448,14 +479,16 @@ const Dashboard = () => {
                         <th>Tracking Code</th>
                         <th>Name</th>
                         <th>Applied Role</th>
-                        <th>Status / Actions</th>
+                        <th>Actions</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {checklist
                         .filter(item =>
-                          item.name.toLowerCase().includes(checklistSearchQuery.toLowerCase()) ||
-                          item.trackingCode.toLowerCase().includes(checklistSearchQuery.toLowerCase())
+                          (item.name.toLowerCase().includes(checklistSearchQuery.toLowerCase()) ||
+                          item.trackingCode.toLowerCase().includes(checklistSearchQuery.toLowerCase())) &&
+                          (checklistFilter === 'ALL' || item.action.toUpperCase() === checklistFilter)
                         )
                         .slice((checklistPage - 1) * itemsPerPage, checklistPage * itemsPerPage)
                         .map((item, index) => (
@@ -464,16 +497,21 @@ const Dashboard = () => {
                             <td>{item.name}</td>
                             <td><span className="role-badge">{item.appliedRole}</span></td>
                             <td>
-                              <span className={`status-badge status-${item.action.toLowerCase()}`}>
-                                {item.action}
-                              </span>
-                              
                               <button
                                 className="action-button view-button"
                                 onClick={() => openChecklistView(item.appliedRole, item.trackingCode)}
                               >
                                 View Checklist
                               </button>
+                            </td>
+                            <td>
+                              <span className={`status-badge status-${item.action.toLowerCase()}`}>
+                                {item.action.toLowerCase() === 'approved'}
+                                {item.action.toLowerCase() === 'rejected'}
+                                {item.action.toLowerCase() === 'pending'}
+                                {item.action.toLowerCase() === 'review'}
+                                {item.action}
+                              </span>
                             </td>
                           </tr>
                         ))}
@@ -525,14 +563,32 @@ const Dashboard = () => {
                 </thead>
                 <tbody>
                   {Array.isArray(examResults) && examResults
-                    .filter(exam => 
-                      exam.tracking_code && typeof exam.tracking_code === 'string' && 
-                      exam.tracking_code.toLowerCase().includes(examSearchQuery.toLowerCase())
-                    )
+                    .filter(exam => {
+                      // First apply search query filter
+                      const matchesSearch = exam.tracking_code && 
+                        typeof exam.tracking_code === 'string' && 
+                        exam.tracking_code.toLowerCase().includes(examSearchQuery.toLowerCase());
+                      
+                      // Then apply status filter if needed
+                      if (!matchesSearch) return false;
+                      
+                      if (examFilter === 'ALL') return true;
+                      
+                      const details = exam.details || {};
+                      const scoreValue = parseInt(exam.score) || 0;
+                      const percentValue = parseInt(details.mc_score || details.mc_results || 0);
+                      const isPassed = percentValue >= 70 || scoreValue >= 70;
+                      
+                      return (examFilter === 'PASSED' && isPassed) || (examFilter === 'FAILED' && !isPassed);
+                    })
                     .slice((examResultsPage - 1) * itemsPerPage, examResultsPage * itemsPerPage)
                     .map((result) => {
                       const details = result.details || {};
                       const { examName, mc_score, score, mc_results, passing_score, passed } = details;
+
+                      const scoreValue = parseInt(result.score) || 0;
+                      const percentValue = parseInt(mc_score || mc_results || 0);
+                      const isPassed = percentValue >= 70 || scoreValue >= 70;
 
                       return (
                         <tr key={result.id || result.tracking_code}>
@@ -541,8 +597,8 @@ const Dashboard = () => {
                           <td>{result.score}</td>
                           <td>{mc_score || mc_results}%</td> 
                           <td>
-                            <span className={`status-badge status-${passed ? 'passed' : 'failed'}`}>
-                              {passed ? 'Passed' : 'Failed'}
+                          <span className={`status-badge status-${isPassed ? 'passed' : 'failed'}`}>
+                              {isPassed ? 'PASSED' : 'FAILED'}
                             </span>
                           </td>
                         </tr>
@@ -663,6 +719,7 @@ const Dashboard = () => {
           key={checklistKey} // Add key to force remounting
           role={selectedChecklistRole} 
           trackingcode={selectedChecklistTrackingCode}
+          isAdminView={true} // Explicitly set admin view to true
         />
       )}
     </>

@@ -69,6 +69,13 @@ const ApprovalModal = ({
           const result = await StatusbyTrackingCode(trackingCode);
           
           if (result.success && result.data && Array.isArray(result.data)) {
+            // Format the approval date from the API response
+            if (result.data.length > 0 && result.data[0].status === 'approved') {
+              // Convert the ISO date string to a readable date format
+              const apiApprovalDate = new Date(result.data[0].created_at).toLocaleDateString();
+              setActualApprovalDate(apiApprovalDate);
+            }
+            
             // Transform the API response data into timeline items
             const statusHistory = result.data.map(item => ({
               date: new Date(item.created_at).toLocaleDateString(),
@@ -87,11 +94,6 @@ const ApprovalModal = ({
               // Update the current status
               setCurrentStatus(latestStatus.status);
               setLastUpdated(latestStatus.date);
-              
-              // Set approval date if status is approved
-              if (latestStatus.status === 'approved') {
-                setActualApprovalDate(latestStatus.date);
-              }
               
               // Set the notifications with the actual status history
               setNotifications(statusHistory);
@@ -135,6 +137,17 @@ const ApprovalModal = ({
 
   if (!isOpen) return null;
 
+  // Format the created_at date for display
+  const formatDate = (dateString) => {
+    if (!dateString) return "Pending";
+    // If it's already a formatted date string, return as is
+    if (!/^\d{4}-\d{2}-\d{2}T/.test(dateString)) return dateString;
+    
+    // Format the ISO date string
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   return (
     <div className="safety-approval-modal-overlay">
       <div className="safety-approval-modal">
@@ -166,7 +179,7 @@ const ApprovalModal = ({
               {currentStatus === 'approved' ? (
                 <>
                   <p>We are pleased to inform you that your safety application with tracking code <strong>{trackingCode}</strong> has been <span className="safety-status-approved">APPROVED</span>.</p>
-                  <p><strong>Approval Date:</strong> {actualApprovalDate || "Pending"}</p>
+                  <p><strong>Approval Date:</strong> {formatDate(actualApprovalDate)}</p>
                   <p>We are pleased to inform you that your submitted documentation has met all the required safety standards and regulatory requirements.</p>
                   <p>You may now proceed to the Mines and Geosciences Bureau Region X office to complete the payment transaction.</p>
                     <p>Please retain this information for your records.</p> 
@@ -174,7 +187,7 @@ const ApprovalModal = ({
               ) : ( 
                 <>
                   <p>Your safety application with tracking code <strong>{trackingCode}</strong> is currently <span className="safety-status-pending">UNDER REVIEW</span>.</p>
-                  <p><strong>Submission Date:</strong> {approvalDate || new Date().toLocaleDateString()}</p>
+                  <p><strong>Submission Date:</strong> {formatDate(approvalDate)}</p>
                   <p>Our team is carefully evaluating your submission to ensure all safety requirements are met. The typical review process takes 7-10 business days.</p>
                   <p>You will receive notification once the review process is complete.</p>
                 </>

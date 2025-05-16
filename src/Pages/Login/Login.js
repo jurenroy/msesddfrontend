@@ -35,9 +35,6 @@ const Login = () => {
       <div className="mgb-login-container">
         <div className="mgb-login-card">
           <div className="mgb-login-brand">
-            <div className="mgb-brand-logo"></div>
-            <h1>MGB Login</h1>
-            <p>Mines and Geosciences Bureau</p>
           </div>
           
           <div className="mgb-login-form-container">

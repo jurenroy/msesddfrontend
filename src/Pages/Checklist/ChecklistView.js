@@ -4,21 +4,28 @@ import API_BASE_URL from '../../config';
 import mgbxImage from '../../Assets/mgbx.png';
 import { approveApplication } from '../Services/ChecklistStatusService'
 
-const ChecklistView = ({ role, trackingcode }) => {
+const ChecklistView = ({ role, trackingcode, isAdminView }) => {
   const [trackingData, setTrackingData] = useState(null);
   const [checklist, setChecklist] = useState(null);
   const [notarizedFiles, setNotarizedFiles] = useState(null);
   const [error, setError] = useState(null);
   const [uploading, setUploading] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(true); // Set to true by default
+  const [isModalOpen, setIsModalOpen] = useState(true); 
   const [adminRemarks, setAdminRemarks] = useState({});
   const [adminEvaluation, setAdminEvaluation] = useState("");
   const [adminReviewer, setAdminReviewer] = useState("");
   const [complianceStatus, setComplianceStatus] = useState({});
   const modalRef = useRef(null);
 
-  const isAdmin = window.location.pathname.includes('/admin');
-  console.log("Is admin:", isAdmin);    
+  
+  const [isAdmin, setIsAdmin] = useState(isAdminView || false);
+  
+  useEffect(() => {
+    console.log("isAdminView prop:", isAdminView);
+    console.log("isAdmin state:", isAdmin);
+  }, [isAdminView, isAdmin]);
+  
+  console.log("Admin mode:", isAdmin ? "enabled" : "disabled");
 
   useEffect(() => {
     const fetchTrackingData = async () => {
@@ -157,10 +164,33 @@ const ChecklistView = ({ role, trackingcode }) => {
 
 const handleApproveApplication = async () => {
   try {
+    // First check if there's an email in the tracking data
+    if (!trackingData.email) {
+      const email = window.prompt("Please enter an email address for the applicant to receive the approval notification:", "");
+      
+      if (!email) {
+        alert("Email is required to send approval notification.");
+        return;
+      }
+      
+      setTrackingData({
+        ...trackingData,
+        email: email
+      });
+      
+      try {
+        await axios.get(`${API_BASE_URL}api/safety/update-email/${trackingcode}/?email=${encodeURIComponent(email)}`);
+        console.log("Email updated successfully");
+      } catch (emailErr) {
+        console.error("Failed to update email but continuing with approval:", emailErr);
+      }
+    }
+    
+    // Now approve the application
     const result = await approveApplication(trackingcode);
 
     if (result && result.success) {
-      alert('Application approved successfully!');
+      alert(`Application approved successfully! Notification email will be sent to ${trackingData.email || 'the applicant'}.`);
     } else {
       alert('Error approving application. Please try again.');
     }
@@ -169,7 +199,6 @@ const handleApproveApplication = async () => {
     alert('Error approving application: ' + (err.response?.data?.message || err.message));
   }
 };
-
 
 const handleFileUpload = async (e, fieldName) => {
   if (isAdmin) return;
@@ -218,7 +247,7 @@ const handleFileUpload = async (e, fieldName) => {
 };
 
   const toggleCompliance = (field, status) => {
-    if (!isAdmin) return;
+    if (!isAdmin) return; // Ensure only admins can toggle compliance
   
     setComplianceStatus(prev => {
       const newStatus = {...prev};
@@ -304,32 +333,73 @@ const handleFileUpload = async (e, fieldName) => {
     
     const isYes = complianceValue === "yes";
     const isNo = complianceValue === "no";
-  
+    
+    // For non-admin users, just render the display version with no click handlers
+    if (!isAdmin) {
+      return (
+        <>
+          <td style={{ 
+            border: '1px solid #ddd', 
+            padding: '8px', 
+            textAlign: 'center', 
+            color: isYes ? 'green' : '#ccc', 
+            fontWeight: isYes ? 'bold' : 'normal',
+            backgroundColor: isYes ? '#f0fff0' : 'transparent' 
+          }}>
+            {isYes ? '✔' : '✔'}
+          </td>
+          <td style={{ 
+            border: '1px solid #ddd', 
+            padding: '8px', 
+            textAlign: 'center', 
+            color: isNo ? 'red' : '#ccc', 
+            fontWeight: isNo ? 'bold' : 'normal',
+            backgroundColor: isNo ? '#fff0f0' : 'transparent' 
+          }}>
+            {isNo ? '✖' : '✖'}
+          </td>
+        </>
+      );
+    }
+
+    // Only admin users get the interactive version with explicit click handlers
     return (
       <>
-        <td onClick={() => isAdmin && toggleCompliance(field, "yes")} 
-            style={{ 
-              border: '1px solid #ddd', 
-              padding: '8px', 
-              textAlign: 'center', 
-              color: isYes ? 'green' : '#ccc', 
-              fontWeight: isYes ? 'bold' : 'normal', 
-              cursor: isAdmin ? 'pointer' : 'default', 
-              backgroundColor: isYes ? '#f0fff0' : 'transparent' 
-            }}>
-          {isYes ? '✔' :  '✔'} {/* Show checkmark if yes */}
+        <td 
+          onClick={() => {
+            if (isAdmin) {
+              toggleCompliance(field, "yes");
+            }
+          }}
+          style={{ 
+            border: '1px solid #ddd', 
+            padding: '8px', 
+            textAlign: 'center', 
+            color: isYes ? 'green' : '#ccc', 
+            fontWeight: isYes ? 'bold' : 'normal', 
+            cursor: 'pointer', 
+            backgroundColor: isYes ? '#f0fff0' : 'transparent' 
+          }}
+        >
+          {isYes ? '✔' :  '✔'} 
         </td>
-        <td onClick={() => isAdmin && toggleCompliance(field, "no")} 
-            style={{ 
-              border: '1px solid #ddd', 
-              padding: '8px', 
-              textAlign: 'center', 
-              color: isNo ? 'red' : '#ccc', 
-              fontWeight: isNo ? 'bold' : 'normal', 
-              cursor: isAdmin ? 'pointer' : 'default', 
-              backgroundColor: isNo ? '#fff0f0' : 'transparent' 
-            }}>
-          {isNo ? '✖' : '✖'} {/* Show X if no */}
+        <td 
+          onClick={() => {
+            if (isAdmin) {
+              toggleCompliance(field, "no");
+            }
+          }}
+          style={{ 
+            border: '1px solid #ddd', 
+            padding: '8px', 
+            textAlign: 'center', 
+            color: isNo ? 'red' : '#ccc', 
+            fontWeight: isNo ? 'bold' : 'normal', 
+            cursor: 'pointer', 
+            backgroundColor: isNo ? '#fff0f0' : 'transparent' 
+          }}
+        >
+          {isNo ? '✖' : '✖'} 
         </td>
       </>
     );
@@ -345,6 +415,18 @@ const handleFileUpload = async (e, fieldName) => {
       setLocalValue(adminRemarks[field] || "");
     }, [field, adminRemarks]);
   
+    // If not admin, just display remarks without any interactive elements
+    if (!isAdmin) {
+      const displayValue = adminRemarks[field] || 
+                          (checklist && checklist[`${field}_remarks`]) || 
+                          'No remarks provided.';
+      
+      return (
+        <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+          <p style={{ margin: 0 }}>{displayValue}</p>
+        </td>
+      );
+    }
 
     const handleChange = (e) => {
       setLocalValue(e.target.value);
@@ -368,33 +450,28 @@ const handleFileUpload = async (e, fieldName) => {
       }
     };
   
+    // Admin-only view with textarea
     return (
       <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-        {isAdmin ? (
-          <textarea
-            ref={textareaRef}
-            value={localValue}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            onKeyDown={handleKeyDown}
-            style={{
-              width: '100%',
-              height: '100%',
-              minHeight: '80px',
-              padding: '8px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              fontSize: '14px',
-              resize: 'vertical',
-              outline: 'none'
-            }}
-            placeholder="Enter remarks"
-          />
-        ) : (
-          <p style={{ margin: 0 }}>
-            {(adminRemarks[field] || checklist[`${field}_remarks`] || 'No remarks provided.')}
-          </p>
-        )}
+        <textarea
+          ref={textareaRef}
+          value={localValue}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          style={{
+            width: '100%',
+            height: '100%',
+            minHeight: '80px',
+            padding: '8px',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            fontSize: '14px',
+            resize: 'vertical',
+            outline: 'none'
+          }}
+          placeholder="Enter remarks"
+        />
       </td>
     );
   };

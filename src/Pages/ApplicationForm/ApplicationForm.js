@@ -186,6 +186,8 @@ const ApplicationForm = () => {
                 formDataToSubmit.append(key, formData[key]);
             }
         }
+            navigate('/submission-success');
+
 
         // Append education files
         for (let file of educationFiles) {
@@ -592,7 +594,7 @@ const ApplicationForm = () => {
                     </div>
                 </div>
                 <div className="button-container">
-                <button type="submit" disabled={!formData.documents || !formData.compliance || !formData.understanding || !formData.certify }>Submit</button></div>
+                <button type="submit" >Submit</button></div>
             </form>
         </div>
     );

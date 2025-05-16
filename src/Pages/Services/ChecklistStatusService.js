@@ -13,7 +13,6 @@ export const fetchChecklistStatus = async () => {
   }
 };
 
-
 export const approveApplication = async (trackingCode) => {
   try {
     // Make sure trackingCode is a string and properly formatted
