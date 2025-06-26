@@ -1,0 +1,108 @@
+@page {
+    size: A4;
+    margin: 0; /* Remove default margin for printing */
+  }
+
+  
+  @media print {
+    /* Ensure html and body are visible and take up space */
+  
+    .SafetyPermit {
+      visibility:visible;
+      margin-left: 5%;
+    }
+    button.SafetyPermit-print-button {
+      display: none;
+    }
+
+    h1, h2, h3, h4,  .SafetyPermit__title-main, .SafetyPermit__title, .stamphehe
+    .SafetyPermit__text-justified, .img-2x2inch, .rdsignature, .bottom, .bottom > div {
+        visibility: visible;
+    }
+    
+  }
+
+  
+  .SafetyPermit {
+    background-image: url('../../Assets/hnf.jpg'); /* Path to your image */
+    background-size: cover; /* Cover the entire area */
+    background-repeat: no-repeat; /* Prevent repeating */
+    width: 210mm; /* A4 width */
+    height: 297mm; /* A4 height */
+    padding: 30mm 20mm; /* Padding for content */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  
+  h1, h2, h3 {
+    margin: 10px 0; /* Margin for headings */
+    text-align: center; /* Center text */
+    color: #000; /* Text color */
+  }
+
+  .SafetyPermit__title-main {
+    margin: 10px 0; /* Margin for headings */
+    text-align: center; /* Center text */
+    color: #000; /* Text color */
+    font-family: 'Arial Black', sans-serif; /* Change font for this heading */
+  }
+  .SafetyPermit__title, 
+  .SafetyPermit__text-justified {
+    margin: 10px 0; /* Margin for headings */
+    color: #000; /* Text color */
+  }
+  .SafetyPermit__text-justified {
+    text-align: justify; /* Justify text */
+    text-indent: 50px; /* Indent the first line */
+  }
+
+  .img-2x2inch {
+    width: 2in;
+    height: 2in;
+    object-fit: contain; /* preserve aspect ratio, fit inside box */
+    display: block;
+    border: 2px solid black; /* black border around the image */
+    box-sizing: border-box; /* ensure border is included in the size */
+  }
+  .rdsignature {
+    width: auto;
+    height: 60px;
+    display: block;
+  }
+  
+  .bottom{
+    width: 150%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+  }
+  .bottom > div {
+    margin: 0 20px; /* Adjust the value as needed for spacing */
+  }
+  
+  button.print-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  
+  button.print-button:hover {
+    background-color: #2980b9;
+  }

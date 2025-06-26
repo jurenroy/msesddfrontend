@@ -14,6 +14,7 @@ const ApplicationForm = () => {
         contactNo: '',
         email: '',
         age: '',
+        sex: 'Male',
         civilStatus: '',
         dateOfBirth: '',
         placeOfBirth: '',
@@ -28,7 +29,7 @@ const ApplicationForm = () => {
         presentCompanyName: '',
         presentCompanyAddress: '',
         education: [{ school: '', address: '', date: '', degree: '' }],
-        boardExams: [{ title: '', dateTaken: '', rating: '', kind: '', regNo: '', regDate: '' }],
+        boardExams: [{ title: '', dateTaken: '', rating: '', regNo: '', regDate: '', valid: '' }],
         workExperience: [{ position: '', from: '', to: '', length: '', status: '', company: '' }],
         trainings: [{ title: '', from: '', to: '', hours: '', conductedBy: '', venue: '' }],
         documents: false,
@@ -118,7 +119,7 @@ const ApplicationForm = () => {
     const addBoardExamRow = () => {
         setFormData({
             ...formData,
-            boardExams: [...formData.boardExams, { title: '', dateTaken: '', rating: '', kind: '', regNo: '', regDate: '' }],
+            boardExams: [...formData.boardExams, { title: '', dateTaken: '', rating: '', regNo: '', regDate: '', valid: '' }],
         });
     };
 
@@ -267,6 +268,13 @@ const ApplicationForm = () => {
                     <input type="number" name="age" placeholder=" " value={formData.age} onChange={handleChange} />
                     <label htmlFor="age">Age:</label>
                 </div>
+                <div className="input-container" style={{ marginBottom: '10px' }}>
+                  <p className="damn" style={{ marginLeft: '10px', marginTop: '-20px' }}>Sex</p>
+                  <select name="sex" onChange={handleChange}>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
                 <div className="input-container">
                     <input type="text" name="civilStatus" placeholder=" " value={formData.civilStatus} onChange={handleChange} />
                     <label htmlFor="civilStatus">Civil Status:</label>
@@ -399,6 +407,10 @@ const ApplicationForm = () => {
                                 <input type="date" name="regDate" placeholder=" " value={exam.regDate} onChange={(e) => handleBoardExamChange(index, e)} />
                                 <label htmlFor={`regDate-${index}`}>Registration Date</label>
                             </div>
+                            <div className="input-container">
+                                <input type="date" name="valid" placeholder=" " value={exam.valid} onChange={(e) => handleBoardExamChange(index, e)} />
+                                <label htmlFor={`valid-${index}`}>Validity Date</label>
+                            </div>
                         </div>
                     ))}
                     <div className="button-container">
@@ -449,8 +461,21 @@ const ApplicationForm = () => {
                                 <label htmlFor={`length-${index}`}>Length of Service</label>
                             </div>
                             <div className="input-container">
-                                <input type="text" name="status" placeholder=" " value={work.status} onChange={(e) => handleWorkExperienceChange(index, e)} />
-                                <label htmlFor={`status-${index}`}>Status of Appointment</label>
+                            <p className="damn" style={{ marginLeft: '10px', marginTop: '-20px' }}>Status of Appointment</p>
+                              <select
+                                id={`status-${index}`}
+                                name="status"
+                                value={work.status}
+                                onChange={(e) => handleWorkExperienceChange(index, e)}
+                              >
+                                <option value="" disabled>
+                                  Select status
+                                </option>
+                                <option value="Permanent">Permanent</option>
+                                <option value="Temporary">Temporary</option>
+                                <option value="Probationary">Probationary</option>
+                                <option value="Contractual">Contractual</option>
+                              </select>
                             </div>
                             <div className="input-container">
                                 <input type="text" name="company" placeholder=" " value={work.company} onChange={(e) => handleWorkExperienceChange(index, e)} />

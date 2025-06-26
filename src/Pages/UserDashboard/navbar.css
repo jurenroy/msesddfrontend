@@ -192,3 +192,9 @@
     margin-bottom: 0.25rem;
   }
 }
+
+@media print{
+  .mgb-sidebar{
+    display: none;
+  }
+}

@@ -74,6 +74,7 @@ const ApprovalModal = ({
               // Convert the ISO date string to a readable date format
               const apiApprovalDate = new Date(result.data[0].created_at).toLocaleDateString();
               setActualApprovalDate(apiApprovalDate);
+              console.log(result.data)
             }
             
             // Transform the API response data into timeline items

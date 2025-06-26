@@ -269,11 +269,11 @@ const TrackingDocument = () => {
                                 <th colSpan="3" style={{textAlign: 'center'}}>
                                     <p style={{margin: '-0px', borderBottom: '1px solid #ddd'}}>Registration - PRC #</p>
                                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', margin: '-10px', marginBottom: '-27px'}}>
-                                    <p>Kind</p>
-                                    <p style={{fontSize: '20px', marginTop: '2px', fontWeight: 'normal', color: '#ddd'}}>|</p>
                                     <p>No.</p>
                                     <p style={{fontSize: '20px', marginTop: '2px', fontWeight: 'normal', color: '#ddd'}}>|</p>
                                     <p>Date</p>
+                                    <p style={{fontSize: '20px', marginTop: '2px', fontWeight: 'normal', color: '#ddd'}}>|</p>
+                                    <p>Validity</p>
                                     </div>
                                 </th> {/* Merged header for Registration */}
                             </tr>
@@ -284,9 +284,9 @@ const TrackingDocument = () => {
                                         <td>{exam.title}</td>
                                         <td>{exam.dateTaken}</td>
                                         <td>{exam.rating}</td>
-                                        <td>{exam.kind}</td>
-                                        <td>{exam.registrationNo}</td>
-                                        <td>{exam.registrationDate}</td>
+                                        <td>{exam.regNo}</td>
+                                        <td>{exam.regDate}</td>
+                                        <td>{exam.valid}</td>
                                     </tr>
                                 ))}
                             </tbody>

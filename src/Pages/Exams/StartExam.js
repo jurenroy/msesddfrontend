@@ -326,9 +326,9 @@ const ExamForm = () => {
                           >
                             <option value="">Select an option</option>
                             {/* Map through all matching options */}
-                            {examData.matching_questions.map((q) => (
+                            {examData.matching_answers.map((q) => (
                               <option key={q.id} value={q.id}>
-                                {q.letter}. {q.content}
+                                {q.identifier}. {q.content}
                               </option>
                             ))}
                           </select>

@@ -13,7 +13,7 @@ export const fetchChecklistStatus = async () => {
   }
 };
 
-export const approveApplication = async (trackingCode) => {
+export const approveApplication = async (trackingCode, orNumber) => {
   try {
     // Make sure trackingCode is a string and properly formatted
     if (!trackingCode || typeof trackingCode !== 'string') {
@@ -24,7 +24,7 @@ export const approveApplication = async (trackingCode) => {
     
     const response = await axios.post(
       `${API_BASE_URL}api/checklist/${trackingCode}/status/`,
-      { status: 'approved' }
+      { status: 'approved', or_no: orNumber}
     );
     
     return {
@@ -55,6 +55,32 @@ export const StatusbyTrackingCode = async (trackingCode) => {
     };
   } catch (error) {
     console.error('Error in StatusbyTrackingCode:', error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+};
+
+// Fetch checklist details by tracking code
+export const fetchChecklistDetails = async (trackingCode) => {
+  try {
+    if (!trackingCode || typeof trackingCode !== 'string') {
+      throw new Error('Invalid tracking code provided');
+    }
+    
+    console.log(`Fetching checklist details for tracking code: ${trackingCode}`);
+    
+    const response = await axios.get(
+      `${API_BASE_URL}api/checklist/${trackingCode}/`
+    );
+    
+    return {
+      success: true,
+      data: response.data
+    };
+  } catch (error) {
+    console.error('Error in fetchChecklistDetails:', error);
     return {
       success: false,
       error: error.message

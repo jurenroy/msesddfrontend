@@ -3,6 +3,7 @@ import axios from 'axios';
 import API_BASE_URL from '../../config';
 import mgbxImage from '../../Assets/mgbx.png';
 import { approveApplication } from '../Services/ChecklistStatusService'
+import ApprovalPopup from './ApprovalPopup';
 
 const ChecklistView = ({ role, trackingcode, isAdminView }) => {
   const [trackingData, setTrackingData] = useState(null);
@@ -19,6 +20,9 @@ const ChecklistView = ({ role, trackingcode, isAdminView }) => {
 
   
   const [isAdmin, setIsAdmin] = useState(isAdminView || false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // State to control the approval popup
+  const [orNumber, setOrNumber] = useState(''); // State to hold OR Number input
+  const [approvalError, setApprovalError] = useState(''); // State to hold approval error message
   
   useEffect(() => {
     console.log("isAdminView prop:", isAdminView);
@@ -162,8 +166,16 @@ const ChecklistView = ({ role, trackingcode, isAdminView }) => {
     window.open(url, '_blank');
 };
 
-const handleApproveApplication = async () => {
+const handleApproveApplication  = async (orNumber) =>{
+  
   try {
+    if (!orNumber) {
+      console.log('aprob!')
+      setError('OR Number is required.');
+      return;
+    }
+    console.log('aprob')
+    
     // First check if there's an email in the tracking data
     if (!trackingData.email) {
       const email = window.prompt("Please enter an email address for the applicant to receive the approval notification:", "");
@@ -187,17 +199,25 @@ const handleApproveApplication = async () => {
     }
     
     // Now approve the application
-    const result = await approveApplication(trackingcode);
+    const result = await approveApplication(trackingcode, orNumber);
 
     if (result && result.success) {
       alert(`Application approved successfully! Notification email will be sent to ${trackingData.email || 'the applicant'}.`);
+      setIsPopupOpen(false); // Close popup after approval
     } else {
       alert('Error approving application. Please try again.');
+      setApprovalError('Error approving application. Please try again.'); // Set error message if approval fails
     }
   } catch (err) {
     console.error('Error in approveApplication:', err);
     alert('Error approving application: ' + (err.response?.data?.message || err.message));
+    setApprovalError('Error approving application: ' + (err.response?.data?.message || err.message)); // Set error message
   }
+};
+
+// This function handles cancelling the approval process by closing the modal
+const handleCancelApproval = () => {
+  setIsModalOpen(false); // Simply close the modal without approving
 };
 
 const handleFileUpload = async (e, fieldName) => {
@@ -207,7 +227,7 @@ const handleFileUpload = async (e, fieldName) => {
   if (!file) return;
   
   // Added PDF validation
-  if (file.type !== 'application/pdf') {
+  if (!['application/pdf', 'image/jpeg', 'image/png'].includes(file.type)) {
     setError('Only PDF files are allowed. Please select a PDF file.');
     return;
   }
@@ -522,13 +542,13 @@ const FileUploadItem = ({ label, fieldName, existingFile }) => (
           boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
           display: 'inline-block'
         }}>
-          CHOOSE PDF
+          UPLOAD FILE
         </label>
         <input 
           type="file" 
           id={`file-${fieldName}`}
           onChange={(e) => handleFileUpload(e, fieldName)}
-          accept=".pdf"
+          accept=".pdf, image/png, image/jpeg, image/jpg"
           style={{ 
             width: '0.1px',
             height: '0.1px',
@@ -1083,7 +1103,7 @@ const FileUploadItem = ({ label, fieldName, existingFile }) => (
     {isAdmin && (
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
         <button 
-          onClick={handleApproveApplication}
+          onClick={() => setIsPopupOpen(true)}
           style={{
             padding: '10px 15px',
             backgroundColor: '#28a745', // Green color for approval
@@ -1125,8 +1145,22 @@ const FileUploadItem = ({ label, fieldName, existingFile }) => (
               </div>
             </div>
           </div>
+
         </div>
       )}
+
+      {/* Render the ApprovalPopup component */}
+      <ApprovalPopup 
+        isOpen={isPopupOpen} // Control visibility of the popup
+        onApprove={handleApproveApplication} // Function to call on approval
+        orNumber={orNumber}
+        onCancel={() => {
+          setIsPopupOpen(false); // Close the popup
+          setOrNumber(''); // Reset OR Number input
+          setApprovalError(''); // Clear any previous error messages
+        }}
+        error={approvalError} // Pass any error messages to the popup
+      />
 
       {error && (
         <div style={{ color: 'red', marginTop: '20px' }}>

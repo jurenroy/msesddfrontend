@@ -7,6 +7,7 @@ import ExamList from '../Exams/ExamList';
 import Navbar from './navbar';
 import TrackingDocumentView from "../TrackingDocument/TrackingDocumentView";
 import ApprovalModal from './ApprovalModal';
+import SafetyPermit from '../SafetyPermit/SafetyPermit'; // Import the SafetyPermit component
 
 const UserDash = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const UserDash = () => {
   const [showChecklist, setShowChecklist] = useState(false);
   const [showExam, setShowExam] = useState(false);
   const [showApplication, setShowApplication] = useState(false);
+  const [showPermit, setShowPermit] = useState(false); // State for Permit page
   const [approvalData, setApprovalData] = useState({
     approvalDate: "May 8, 2025",
     adminName: "Admin Officer",
@@ -44,11 +46,15 @@ useEffect(() => {
     setShowApplication(true);
     setShowChecklist(false);
     setShowExam(false);
+    setShowPermit(false); // Reset Permit visibility
+
   } else if (location.state?.showChecklist) {
     setActivePage('checklist');
     setShowChecklist(true);
     setShowApplication(false);
     setShowExam(false);
+    setShowPermit(false); // Reset Permit visibility
+
   }
 }, [location.state]);
 
@@ -68,6 +74,7 @@ useEffect(() => {
     setShowExam(true);
     setShowChecklist(false);
     setShowApplication(false);
+    setShowPermit(false); // Reset Permit visibility
   };
     
   const handleChecklistClick = () => {
@@ -75,6 +82,7 @@ useEffect(() => {
     setShowChecklist(true);
     setShowExam(false);
     setShowApplication(false);
+    setShowPermit(false); // Reset Permit visibility
   };
   
   const handleDashboardClick = () => {
@@ -82,11 +90,21 @@ useEffect(() => {
     setShowChecklist(false);
     setShowExam(false);
     setShowApplication(false);
+    setShowPermit(false); // Reset Permit visibility
   };
   
   const handleApplicationClick = () => {
     setActivePage('application');
     setShowApplication(true);
+    setShowChecklist(false);
+    setShowExam(false);
+    setShowPermit(false); // Reset Permit visibility
+  };
+
+  const handlePermitClick = () => {
+    setActivePage('permit');
+    setShowPermit(true); // Show Permit page
+    setShowApplication(false);
     setShowChecklist(false);
     setShowExam(false);
   };
@@ -107,6 +125,8 @@ useEffect(() => {
   const openApprovalModal = (status) => {
     setApprovalStatus(status);
     setIsApprovalModalOpen(true);
+    console.log(location)
+    console.log(approvalStatus)
   };
   
   const closeApprovalModal = () => {
@@ -162,6 +182,11 @@ useEffect(() => {
           </div>
         </div>
       );
+    }
+
+    // Show Permit page when requested
+    if (showPermit) {
+      return <SafetyPermit trackingCode={trackingCode}/>; // Render the SafetyPermit component
     }
     
     // Otherwise, show the regular content based on activePage
@@ -222,6 +247,10 @@ useEffect(() => {
             </div>
           </>
         );
+
+      case 'permit': // Add this case for the Permit page
+        return <SafetyPermit className="print-permit" trackingCode={trackingCode}/>; // Render the SafetyPermit component
+
       default: 
         return (
           <>
@@ -300,6 +329,7 @@ useEffect(() => {
         </div>
       </header>
       
+      
       {/* Main Content Area with Navbar and Content */}
       <div className="user-dash-content">
         {/* Use the Navbar component */}
@@ -310,11 +340,12 @@ useEffect(() => {
           handleHomeClick={handleHomeClick}
           handleExamClick={handleExamClick}
           handleApplicationClick={handleApplicationClick}
+          handlePermitClick={handlePermitClick}
           trackingCode={trackingCode}
         />
         
         {/* Content Area */}
-        <div className="user-dash-main">
+        <div className={`user-dash-main ${showPermit ? 'user-dash-main--center' : ''}`}>
           {renderContent()}
         </div>
       </div>
@@ -344,6 +375,7 @@ useEffect(() => {
               />
             </div>
           </div>
+          
         </div>
       )}
 
@@ -357,6 +389,7 @@ useEffect(() => {
         safetyName={`Applicant ${trackingCode}`}
       />
     </div>
+    
   );
 };
 

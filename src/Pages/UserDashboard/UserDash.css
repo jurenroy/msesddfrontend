@@ -55,6 +55,14 @@
   display: flex;
   flex-direction: column;
 }
+.user-dash-main--center {
+  flex: 1;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .user-dash-title {
   margin-top: 0;
@@ -270,6 +278,13 @@
 
   .buttoncontainerzz{
       display: none;
+  }
+
+  .print-permit {
+    scale: 1.5;
+  }
+  .user-dash-header{
+    display: none;
   }
 }
 

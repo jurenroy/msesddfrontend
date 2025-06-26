@@ -6,7 +6,7 @@ const REFRESH_URL = `${API_BASE_URL}api/token/refresh/`
 const NOTES_URL = `${API_BASE_URL}api/notes/`
 
 
-export const login = async (username, password) => {
+export const loginz = async (username, password) => {
     const response = await axios.post(LOGIN_URL,
         { username:username, password:password},  
         { withCredentials: true }

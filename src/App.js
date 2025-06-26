@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './Pages/Home/Home';
 import ApplicationForm from './Pages/ApplicationForm/ApplicationForm';
 import ExistingApplication from './Pages/ExistingApplication/ExistingApplication';
@@ -15,16 +15,23 @@ import NotifSubmit from './Pages/ApplicationForm/NotiSubmit'; // Import the Noti
 import { Provider } from 'react-redux';
 import { store, persistor } from './/Redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import PrivateRoute from './PrivateRoute';
 
 function App() {
+    // Access the auth state from the Redux store
+    const authState = store.getState().auth; // Assuming your auth state is in the 'auth' slice
+    console.log(authState)
+    const isLoggedIn = authState && typeof authState === 'object' && 'isLoggedIn' in authState
+    ? authState.isLoggedIn
+    : false; // Default to false if not logged in
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <Router>
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<LoginForm />} />
-                        <Route path="/Admin" element={<AdminDashboard />} />
+                        <Route path="/login" element={!isLoggedIn ? <LoginForm /> : <Navigate to="/Admin" />} />
+                        <Route path="/Admin" element={<PrivateRoute element={<AdminDashboard />} isLoggedIn={isLoggedIn} />} />
                         <Route path="/safety/:role"/>
                         <Route path="/safety/:role/new" element={<ApplicationForm />} /> {/* Updated route */}
                         <Route path="/safety/:role/existing" element={<ExistingApplication />} />

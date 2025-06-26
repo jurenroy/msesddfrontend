@@ -197,7 +197,7 @@ const handleClick = (media) => {
                       </tr>
                       <tr>
                         <td colSpan={2} className="border border-black p-1 font-bold">
-                          INITIAL EVALUATION
+                          INITIAL EVALUATIONz
                         </td>
                         <td colSpan={2} className="border border-black p-1 font-bold">
                           REVIEWED BY:

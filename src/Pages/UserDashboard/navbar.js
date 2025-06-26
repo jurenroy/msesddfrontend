@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { StatusbyTrackingCode } from '../Services/ChecklistStatusService';
 import './navbar.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -10,11 +11,40 @@ const Navbar = ({
   handleExamClick,
   handleHomeClick,
   handleApplicationClick,
+  handlePermitClick,
   trackingCode
 }) => {
   const [expanded, setExpanded] = useState(true);
+  const [latestStatus, setLatestStatus] = useState(null);
+  const [isLoadingStatus, setIsLoadingStatus] = useState(false);
+  const [statusError, setStatusError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const fetchLatestStatus = async (code) => {
+    setIsLoadingStatus(true);
+    setStatusError(null);
+    try {
+      const result = await StatusbyTrackingCode(code);
+      if (result.success && result.data && Array.isArray(result.data) && result.data.length > 0) {
+        // Sort data newest first by created_at
+        const sortedData = result.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        setLatestStatus(sortedData[0].status);
+      } else {
+        setLatestStatus(null);
+      }
+    } catch (error) {
+      setStatusError(error.message || 'Failed to fetch status');
+      setLatestStatus(null);
+    } finally {
+      setIsLoadingStatus(false);
+    }
+  };
+  useEffect(() => {
+    if (trackingCode) {
+      fetchLatestStatus(trackingCode);
+    }
+  }, [trackingCode]);
   
   const toggleSidebar = () => {
     setExpanded(!expanded);
@@ -81,6 +111,27 @@ const Navbar = ({
       }
     }
   };
+
+  // Custom handler for application click
+  const onPermitClick = () => {
+    // Get tracking code from props or location state
+    const currentTrackingCode = trackingCode || location.state?.trackingNumber || location.state?.trackingCodeData?.tracking_code;
+    
+    if (window.location.pathname.includes('exam_list')) {
+      // We're on the exam list page, need to navigate to dashboard first
+      navigate(`/safety/inspector/dashboard`, {
+        state: { 
+          trackingCodeData: { tracking_code: currentTrackingCode },
+          showApplication: true  // Signal to show application on load
+        }
+      });
+    } else {
+      // We're already on a page with the modal capability, just call the handler
+      if (handlePermitClick) {
+        handlePermitClick();
+      }
+    }
+  };
   
   return (
     <div className={`mgb-sidebar ${expanded ? 'expanded' : 'collapsed'}`}>
@@ -144,8 +195,23 @@ const Navbar = ({
             </div>
             {expanded && <span>Application</span>}
           </li>
+
+          {/*Permit Item*/}
+          {/* Permit item shown only if latestStatus is 'approved' */}
+          {latestStatus === 'approved' && (
+            <li
+              className={activePage === 'permit' ? 'active' : ''}
+              onClick={onPermitClick}
+            >
+              <div className="mgb-sidebar-nav-icon">
+                <i className="fa-solid fa-file-invoice"></i>
+              </div>
+              {expanded && <span>Permit</span>}
+            </li>
+          )}
           
           {/* Home item */}
+
           <li
             className={activePage === 'home' ? 'active' : ''}
             onClick={handleHomeClick}

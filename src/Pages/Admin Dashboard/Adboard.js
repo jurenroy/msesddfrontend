@@ -9,8 +9,11 @@ import { ExamResults as fetchExamResults } from "../Services/examService";
 import { fetchUserData } from "../Services/safetyService";
 import PaginationArrow from "../Admin Dashboard/PaginationArrow";
 import { fetchChecklistStatus } from "../Services/ChecklistStatusService";
+import { logout } from "../../Redux/Auth/AuthSlice";
+import { useDispatch } from "react-redux";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -165,7 +168,9 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     alert("Logging out...");
+    dispatch(logout())
     navigate("/login");
+    window.location.reload()
   };
   
   const handlePageChange = (newPage) => {

@@ -199,6 +199,26 @@
     width: fit-content;
 }
 
+.input-container select {
+    width: 100%;              /* Make select full width of container */
+    padding: 8px 12px;        /* Comfortable padding */
+    font-size: 16px;          /* Readable font size */
+    border-radius: 8px;       /* Rounded corners */
+    border: 1.5px solid #ccc; /* Light gray border */
+    background-color: white;  /* White background */
+    box-sizing: border-box;   /* Include padding in width */
+    outline: none;            /* Remove default outline */
+    cursor: pointer;          /* Pointer cursor on hover */
+    -webkit-appearance: none; /* Remove default arrow (optional) */
+    -moz-appearance: none;
+    appearance: none;
+  }
+  /* Optional: add a subtle focus style */
+  .input-container select:focus {
+    border-color: #6366f1;  /* Indigo border on focus */
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+  }
+
 @media only screen and (max-width: 767px) {
     .application-form-container select{
         width: 102%;

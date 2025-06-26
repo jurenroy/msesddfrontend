@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../Services/LoginService";
+import { loginz } from "../Services/LoginService";
 import "./Login.css";
+import { useDispatch } from "react-redux";
+import { login } from "../../Redux/Auth/AuthSlice";
 
 const Login = () => {
   const [isRightPanelActive] = useState(false);
@@ -10,6 +12,7 @@ const Login = () => {
   const [error, setError] = useState(""); // State for error messages
   const [loading, setLoading] = useState(false); // State for loading
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,9 +20,11 @@ const Login = () => {
     setError(""); // Reset error state
     
     try {
-      const success = await login(username, password);
+      const success = await loginz(username, password);
       if (success) {
+        dispatch(login())
         navigate("/Admin"); // Redirect to dashboard on success
+        window.location.reload()
       } else {
         setError("Invalid username or password."); // Set error message
       }

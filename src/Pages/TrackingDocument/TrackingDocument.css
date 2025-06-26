@@ -306,9 +306,9 @@
     }
 
     /* Further reduce font sizes for everything */
-    * {
+    /* * {
         font-size: 8pt !important;
-    }
+    } */
 
     /* Improve text display in print */
     p, h1, h2, h3, h4, h5, h6 {
