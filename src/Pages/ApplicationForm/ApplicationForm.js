@@ -234,7 +234,7 @@ const ApplicationForm = () => {
 
     return (
         <div className="application-form-container">
-            <h1>Application for Safety {role.charAt(0).toUpperCase() + role.slice(1)}</h1>
+            <h2>Application for Safety {role.charAt(0).toUpperCase() + role.slice(1)}'s Permit</h2>
             <form onSubmit={handleSubmit}>
                 <div className="input-container">
                     <input type="text" value={new Date().toLocaleDateString()} readOnly />
@@ -254,7 +254,7 @@ const ApplicationForm = () => {
                 </div>
                 <div className="input-container">
                     <input type="text" name="address" placeholder=" " value={formData.address} onChange={handleChange} />
-                    <label htmlFor="address">Post Office Address:</label>
+                    <label htmlFor="address">Current Address:</label>
                 </div>
                 <div className="input-container">
                     <input type="text" name="email" placeholder=" " value={formData.email} onChange={handleChange} />
@@ -273,6 +273,7 @@ const ApplicationForm = () => {
                   <select name="sex" onChange={handleChange}>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
+                    <option value="They">Prefer not to say</option>
                   </select>
                 </div>
                 <div className="input-container">
@@ -324,14 +325,22 @@ const ApplicationForm = () => {
                         </div>
                     </>
                 )}
-                <h3>Present Company:</h3>
+                <h3>Employment Details:</h3>
                 <div className="input-container">
                     <input type="text" name="presentCompanyName" placeholder=" " value={formData.presentCompanyName} onChange={handleChange} />
-                    <label htmlFor="presentCompanyName">Name of Present Company:</label>
+                    <label htmlFor="presentCompanyName">Name of Current Employer:</label>
                 </div>
                 <div className="input-container">
                     <input type="text" name="presentCompanyAddress" placeholder=" " value={formData.presentCompanyAddress} onChange={handleChange} />
-                    <label htmlFor="presentCompanyAddress">Present Company Address:</label>
+                    <label htmlFor="presentCompanyAddress">Employer Address:</label>
+                </div>
+                <div className="input-container">
+                    <input type="text" name="presentCompanyAddress" placeholder=" " value={formData.presentCompanyAddress} onChange={handleChange} />
+                    <label htmlFor="presentCompanyAddress">Designation:</label>
+                </div>
+                <div className="input-container">
+                    <input type="text" name="presentCompanyAddress" placeholder=" " value={formData.presentCompanyAddress} onChange={handleChange} />
+                    <label htmlFor="presentCompanyAddress">Start Date of Employment:</label>
                 </div>
                 <div>
                     <h3>Educational Attainment:</h3>
@@ -347,11 +356,11 @@ const ApplicationForm = () => {
                             </div>
                             <div className="input-container">
                                 <input type="text" name="date" placeholder=" " value={edu.date} onChange={(e) => handleEducationChange(index, e)} />
-                                <label htmlFor={`date-${index}`}>Date of Attendance</label>
+                                <label htmlFor={`date-${index}`}>Year Graduated</label>
                             </div>
                             <div className="input-container">
                                 <input type="text" name="degree" placeholder=" " value={edu.degree} onChange={(e) => handleEducationChange(index, e)} />
-                                <label htmlFor={`degree-${index}`}>Units Earned or Degree Obtained</label>
+                                <label htmlFor={`degree-${index}`}>Bachelor's Degree</label>
                             </div>
                         </div>
                     ))}
@@ -384,10 +393,10 @@ const ApplicationForm = () => {
                     )}
                 </div>
                 <div>
-                    <h3>Board Examination Taken:</h3>
+                    <h3>Professional License:</h3>
                     {formData.boardExams.map((exam, index) => (
                         <div key={index}>
-                            <div className="input-container">
+                            {/* <div className="input-container">
                                 <input type="text" name="title" placeholder=" " value={exam.title} onChange={(e) => handleBoardExamChange(index, e)} />
                                 <label htmlFor={`title-${index}`}>Title of Examination</label>
                             </div>
@@ -398,7 +407,7 @@ const ApplicationForm = () => {
                             <div className="input-container">
                                 <input type="text" name="rating" placeholder=" " value={exam.rating} onChange={(e) => handleBoardExamChange(index, e)} />
                                 <label htmlFor={`rating-${index}`}>Rating</label>
-                            </div>
+                            </div> */}
                             <div className="input-container">
                                 <input type="text" name="regNo" placeholder=" " value={exam.regNo} onChange={(e) => handleBoardExamChange(index, e)} />
                                 <label htmlFor={`regNo-${index}`}>Registration No.- PRC #</label>
@@ -427,7 +436,7 @@ const ApplicationForm = () => {
                     />
                     <div className="button-container">
                     <button type="button" onClick={() => boardExamFileInputRef.current.click()}>
-                        Attach Board Exam Document
+                        Upload a photo of PRC ID
                     </button></div>
                     {boardExamFiles.length > 0 && (
                         <div>
@@ -444,10 +453,7 @@ const ApplicationForm = () => {
                     <h3>Work Experience:</h3>
                     {formData.workExperience.map((work, index) => (
                         <div key={index}>
-                            <div className="input-container">
-                                <input type="text" name="position" placeholder=" " value={work.position} onChange={(e) => handleWorkExperienceChange(index, e)} />
-                                <label htmlFor={`position-${index}`}>Position</label>
-                            </div>
+                            
                             <div className="input-container">
                                 <input type="date" name="from" placeholder=" " value={work.from} onChange={(e) => handleWorkExperienceChange(index, e)} />
                                 <label htmlFor={`from-${index}`}>From</label>
@@ -456,7 +462,7 @@ const ApplicationForm = () => {
                                 <input type="date" name="to" placeholder=" " value={work.to} onChange={(e) => handleWorkExperienceChange(index, e)} />
                                 <label htmlFor={`to-${index}`}>To</label>
                             </div>
-                            <div className="input-container">
+                            {/* <div className="input-container">
                                 <input type="text" name="length" placeholder=" " value={work.length} onChange={(e) => handleWorkExperienceChange(index, e)} />
                                 <label htmlFor={`length-${index}`}>Length of Service</label>
                             </div>
@@ -476,10 +482,18 @@ const ApplicationForm = () => {
                                 <option value="Probationary">Probationary</option>
                                 <option value="Contractual">Contractual</option>
                               </select>
+                            </div> */}
+                            <div className="input-container">
+                                <input type="text" name="company" placeholder=" " value={work.company} onChange={(e) => handleWorkExperienceChange(index, e)} />
+                                <label htmlFor={`company-${index}`}>Name of Employer</label>
                             </div>
                             <div className="input-container">
                                 <input type="text" name="company" placeholder=" " value={work.company} onChange={(e) => handleWorkExperienceChange(index, e)} />
-                                <label htmlFor={`company-${index}`}>Company Name</label>
+                                <label htmlFor={`company-${index}`}>Employer Address</label>
+                            </div>
+                            <div className="input-container">
+                                <input type="text" name="position" placeholder=" " value={work.position} onChange={(e) => handleWorkExperienceChange(index, e)} />
+                                <label htmlFor={`position-${index}`}>Designation</label>
                             </div>
                         </div>
                     ))}
@@ -514,9 +528,39 @@ const ApplicationForm = () => {
                     <h3>OSH Related Trainings / Seminars attended:</h3>
                     {formData.trainings.map((training, index) => (
                         <div key={index}>
-                            <div className="input-container">
+                            {/* <div className="input-container">
                                 <input type="text" name="title" placeholder=" " value={training.title} onChange={(e) => handleTrainingChange(index, e)} />
                                 <label htmlFor={`training-title-${index}`}>Title</label>
+                            </div> */}
+                            <div className="input-container">
+                                {/* <input 
+                                    type="text" 
+                                    name="title" 
+                                    placeholder=" " 
+                                    value={training.title} 
+                                    onChange={(e) => handleTrainingChange(index, e)} 
+                                /> */}
+                                {/* <label htmlFor={`training-title-${index}`}>Title</label> */}
+
+                                {/* Dropdown for common safety and health trainings */}
+                                <p className="damn" style={{ marginLeft: '10px', marginTop: '-0px' }}>Title</p>
+                                <select
+                                    id={`training-dropdown-${index}`}
+                                    name="training"
+                                    value={training.training}
+                                    onChange={(e) => handleTrainingChange(index, e)}
+                                >
+                                    <option value="" disabled>
+                                        Select a training
+                                    </option>
+                                    <option value="BOSH">Basic Occupational Safety and Health Office (BOSH) Training</option>
+                                    <option value="COSH">Construction Occupational Safety and Health (COSH) Training</option>
+                                    <option value="FireSafety">Fire Safety Training</option>
+                                    <option value="FirstAid">First Aid and Basic Life Support Training</option>
+                                    <option value="RescueRecovery">Rescue and Recovery Training</option>
+                                    <option value="BombThreat">Bomb Threat Response Training</option>
+                                    <option value="Other">Other (please specify)</option>
+                                </select>
                             </div>
                             <div className="input-container">
                                 <input type="date" name="from" placeholder=" " value={training.from} onChange={(e) => handleTrainingChange(index, e)} />
@@ -534,10 +578,10 @@ const ApplicationForm = () => {
                                 <input type="text" name="conductedBy" placeholder=" " value={training.conductedBy} onChange={(e) => handleTrainingChange(index, e)} />
                                 <label htmlFor={`conductedBy-${index}`}>Conducted By</label>
                             </div>
-                            <div className="input-container">
+                            {/* <div className="input-container">
                                 <input type="text" name="venue" placeholder=" " value={training.venue} onChange={(e) => handleTrainingChange(index, e)} />
                                 <label htmlFor={`venue-${index}`}>Venue</label>
-                            </div>
+                            </div> */}
                         </div>
                     ))}
                     <div className="button-container">
