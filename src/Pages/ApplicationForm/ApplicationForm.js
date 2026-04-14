@@ -28,6 +28,8 @@ const ApplicationForm = () => {
         companyName: '',
         presentCompanyName: '',
         presentCompanyAddress: '',
+        presentCompanyDesignation: '',
+        presentCompanyStartDate: '',
         education: [{ school: '', address: '', date: '', degree: '' }],
         boardExams: [{ title: '', dateTaken: '', rating: '', regNo: '', regDate: '', valid: '' }],
         workExperience: [{ position: '', from: '', to: '', length: '', status: '', company: '' }],
@@ -488,7 +490,7 @@ const ApplicationForm = () => {
                                 <label htmlFor={`company-${index}`}>Name of Employer</label>
                             </div>
                             <div className="input-container">
-                                <input type="text" name="company" placeholder=" " value={work.company} onChange={(e) => handleWorkExperienceChange(index, e)} />
+                                <input type="text" name="company" placeholder=" " value={work.length} onChange={(e) => handleWorkExperienceChange(index, e)} />
                                 <label htmlFor={`company-${index}`}>Employer Address</label>
                             </div>
                             <div className="input-container">

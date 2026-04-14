@@ -261,7 +261,7 @@ const handlePrint = () => {
                         <p>{trackingData.name}</p>
                     </div>
                     <div className="single-row">
-                        <p style={{fontWeight: 'bold'}}>2. Post Office Address: </p>
+                        <p style={{fontWeight: 'bold'}}>2. Current Address: </p>
                         <p>{trackingData.address}</p>   
                     </div>
                     <div className="single-row">
@@ -285,7 +285,7 @@ const handlePrint = () => {
                     </div>
 
 
-                    <div className="single-row3">
+                    <div className="single-row4">
                         <p>(by birth, naturalization, etc.)</p>
                     </div>
                     </div>
@@ -313,8 +313,8 @@ const handlePrint = () => {
                                 <tr>
                                     <th>Name of School</th>
                                     <th>Address/Location</th>
-                                    <th>Date of Attendance</th>
-                                    <th>Units Earned or Degree Obtained</th>
+                                    <th>Year Graduated</th>
+                                    <th>Bachelor's Degree</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -334,9 +334,9 @@ const handlePrint = () => {
                         <table className="json-table">
                             <thead>
                             <tr>
-                                <th>Title of Examination</th>
+                                {/* <th>Title of Examination</th>
                                 <th>Date Taken</th>
-                                <th>Rating</th>
+                                <th>Rating</th> */}
                                 <th colSpan="3" style={{textAlign: 'center'}}>
                                     <p style={{margin: '-0px', borderBottom: '1px solid #ddd'}}>Registration - PRC #</p>
                                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', margin: '-10px', marginBottom: '-27px'}}>
@@ -352,9 +352,9 @@ const handlePrint = () => {
                             <tbody>
                                 {trackingData.boardExams.map((exam, index) => (
                                     <tr key={index}>
-                                        <td>{exam.title}</td>
+                                        {/* <td>{exam.title}</td>
                                         <td>{exam.dateTaken}</td>
-                                        <td>{exam.rating}</td>
+                                        <td>{exam.rating}</td> */}
                                         <td>{exam.regNo}</td>
                                         <td>{exam.regDate}</td>
                                         <td>{exam.valid}</td>
@@ -369,11 +369,12 @@ const handlePrint = () => {
                         <table className="json-table">
                             <thead>
                                 <tr>
-                                    <th>Position (from recent to present)</th>
+                                    <th>Position (from present to recent)</th>
                                     <th colSpan="2">Inclusive Date</th>
-                                    <th>Length of Service</th>
-                                    <th>Status of Appointment</th>
                                     <th>Company</th>
+                                    <th>Company Address</th>
+                                    {/* <th>Status of Appointment</th> */}
+                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -382,9 +383,10 @@ const handlePrint = () => {
                                         <td>{work.position}</td>
                                         <td>{work.from}</td>
                                         <td>{work.to}</td>
-                                        <td>{work.length}</td>
-                                        <td>{work.status}</td>
                                         <td>{work.company}</td>
+                                        <td>{work.length}</td>
+                                        {/* <td>{work.status}</td> */}
+                                        
                                     </tr>
                                 ))}
                             </tbody>
@@ -448,7 +450,7 @@ const handlePrint = () => {
                         at _________________________________________, Philippines.
                         </p>
                         <div className="single-row3">
-                            <p style={{marginRight: '0px', marginTop: '20px', fontWeight: 'normal'}}>__________________</p>
+                            <p style={{marginRight: '0px', marginTop: '30px', fontWeight: 'normal'}}>__________________</p>
                             <p>NOTARY PUBLIC</p>
                         </div>
                         <p>Doc. No.	____________</p>
